@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import FirebaseAuth
 
 class FirstViewController: UIViewController {
 
@@ -20,6 +21,20 @@ class FirstViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
 
-
+    /*
+     * Temporary function, to be removed/moved to settings
+     * Logs out the user, moves view to loginView
+     */
+    @IBAction func logOutButtonTapped(_ sender: UIButton) {
+        do {
+            try Auth.auth().signOut()
+            let storyBoard: UIStoryboard = UIStoryboard(name: "Login", bundle: nil)
+            let newViewController = storyBoard.instantiateViewController(withIdentifier: "LoginVC")
+            self.present(newViewController, animated: true, completion: nil)
+        } catch {
+            //error handling logout error
+        }
+    }
+    
 }
 
