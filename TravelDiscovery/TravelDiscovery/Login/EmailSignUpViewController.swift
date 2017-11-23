@@ -21,6 +21,7 @@ class EmailSignUpViewController: UIViewController, UITextFieldDelegate {
 
         emailTextField.delegate = self
         passwordTextField.delegate = self
+        reenterPasswordField.delegate = self
         self.hideKeyboardWhenTappedAround()
     }
 
@@ -37,7 +38,7 @@ class EmailSignUpViewController: UIViewController, UITextFieldDelegate {
         if reenterPasswordField.text == passwordTextField.text {
             Auth.auth().createUser(withEmail: emailTextField.text!, password: passwordTextField.text!, completion: { (user, error) in
                 if error != nil {
-                    let signuperrorAlert = UIAlertController(title: "Signup error", message: "\(String(describing: error?.localizedDescription)) Please try again", preferredStyle: .alert)
+                    let signuperrorAlert = UIAlertController(title: "Signup error", message: "\(error?.localizedDescription ?? "Something went wrong. Sorry.") Please try again", preferredStyle: .alert)
                     signuperrorAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
                     self.present(signuperrorAlert, animated: true, completion: nil)
                     return
@@ -58,12 +59,12 @@ class EmailSignUpViewController: UIViewController, UITextFieldDelegate {
     func sendEmail() {
         Auth.auth().signIn(withEmail: emailTextField.text!, password: passwordTextField.text!, completion: { (user, error) in
             if error != nil {
-                print("Error: \(String(describing:error!.localizedDescription))")
+                print("Error: \(error!.localizedDescription)")
                 return
             }
             Auth.auth().currentUser?.sendEmailVerification(completion: { (error) in
                 if error != nil {
-                    let emailNOTSendAlert = UIAlertController(title: "Email Verification", message: "Verification email failed to send: \(String(describing: error?.localizedDescription))", preferredStyle: .alert)
+                    let emailNOTSendAlert = UIAlertController(title: "Email Verification", message: "Verification email failed to send: \(error?.localizedDescription ?? "Something went wrong. Sorry.")", preferredStyle: .alert)
                     emailNOTSendAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
                     self.present(emailNOTSendAlert, animated: true, completion: nil)
                 } else {
@@ -82,6 +83,20 @@ class EmailSignUpViewController: UIViewController, UITextFieldDelegate {
             })
         })
     }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if textField == emailTextField {
+            passwordTextField.becomeFirstResponder()
+        } else if textField == passwordTextField {
+            reenterPasswordField.becomeFirstResponder()
+        } else if textField == reenterPasswordField {
+            self.view.endEditing(true)
+        } else {
+            textField.resignFirstResponder()
+        }
+        return true
+    }
+    
     /*
     // MARK: - Navigation
 

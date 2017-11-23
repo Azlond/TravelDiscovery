@@ -4,6 +4,8 @@
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<key>CFBundleDisplayName</key>
+	<string>TravelDiscovery</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -23,7 +25,7 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>com.googleusercontent.apps.540283049388-2fk0kkpm71ko1fl89e0qinghs7sid07t</string>
+				<string>com.googleusercontent.apps.540283049388-b9eviluncafci2l4o7vbpspc44sg370j</string>
 			</array>
 		</dict>
 	</array>
