@@ -68,7 +68,7 @@ class EmailSignUpViewController: UIViewController, UITextFieldDelegate {
                     emailNOTSendAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
                     self.present(emailNOTSendAlert, animated: true, completion: nil)
                 } else {
-                    let emailSentAlert = UIAlertController(title: "Email Verification", message: "Verification email has been sent. Please tap on te link the email to verify your account before you can use the features in the app.", preferredStyle: .alert)
+                    let emailSentAlert = UIAlertController(title: "Email Verification", message: "Verification email has been sent. Please tap on the link the email to verify your account before you can use the features in the app.", preferredStyle: .alert)
                     emailSentAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
                     self.present(emailSentAlert, animated: true, completion: {
                         self.dismiss(animated: true, completion: nil)
