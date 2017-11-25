@@ -10,19 +10,24 @@ import UIKit
 import ScratchCard
 
 class ScratchcardViewController: UIViewController, ScratchUIViewDelegate {
-
+   
     var scratchCard: ScratchUIView!
     var country: String!
-       
+    var parentVC: MapViewController!
+    
     @IBOutlet var scratchView: UIView!
     @IBOutlet weak var navigationBar: UINavigationBar!
+    
+    override var prefersStatusBarHidden: Bool {
+        return true
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         print("Country: " + country)
         print(UIScreen.main.nativeBounds.width)
         
-        scratchCard  = ScratchUIView(frame: CGRect(x:0, y:navigationBar.bounds.height, width:scratchView.bounds.width, height:scratchView.bounds.height-20),Coupon: country, MaskImage: "mask.png", ScratchWidth: CGFloat(40))
+        scratchCard  = ScratchUIView(frame: CGRect(x:5, y:navigationBar.bounds.height+5, width:scratchView.bounds.width-10, height:scratchView.bounds.height-navigationBar.bounds.height-10),Coupon: "USA", MaskImage: "mask.png", ScratchWidth: CGFloat(40))
         scratchCard.delegate = self
         self.view.addSubview(scratchCard)
     }
@@ -38,7 +43,7 @@ class ScratchcardViewController: UIViewController, ScratchUIViewDelegate {
         
         let scratchPercent: Double = scratchCard.getScratchPercent()
         if scratchPercent > 0.9 {
-            self.dismiss(animated: true, completion: nil)
+            finishSuccess()
         }
     }
     
@@ -46,7 +51,7 @@ class ScratchcardViewController: UIViewController, ScratchUIViewDelegate {
     func scratchMoved(_ view: ScratchUIView) {
         let scratchPercent: Double = scratchCard.getScratchPercent()
         if scratchPercent > 0.9 {
-                self.dismiss(animated: true, completion: nil)
+            finishSuccess()
         }
         print("scratchMoved")
         
@@ -66,12 +71,23 @@ class ScratchcardViewController: UIViewController, ScratchUIViewDelegate {
         
         let scratchPercent: Double = scratchCard.getScratchPercent()
         if scratchPercent > 0.9 {
-            self.dismiss(animated: true, completion: nil)
+            finishSuccess()
         }
         
     }
     
-
+    @IBAction func cancelButtonTapped(_ sender: UIBarButtonItem) {
+        self.dismiss(animated: true, completion: nil)
+    }
+    @IBAction func autocompleteButtonTaped(_ sender: UIBarButtonItem) {
+        finishSuccess()
+    }
+    
+    func finishSuccess() {
+        parentVC.markCountry(name: country)
+        self.dismiss(animated: true, completion: nil)
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.

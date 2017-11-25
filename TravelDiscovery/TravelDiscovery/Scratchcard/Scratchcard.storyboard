@@ -22,7 +22,18 @@
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                 <items>
-                                    <navigationItem title="Scratch" id="oT5-vS-Zcw"/>
+                                    <navigationItem title="Scratch" id="oT5-vS-Zcw">
+                                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="OAF-HI-SQN">
+                                            <connections>
+                                                <action selector="cancelButtonTapped:" destination="uDC-fA-YMa" id="fi0-7q-7Fj"/>
+                                            </connections>
+                                        </barButtonItem>
+                                        <barButtonItem key="rightBarButtonItem" title="Autocomplete" id="vhK-WP-UNP">
+                                            <connections>
+                                                <action selector="autocompleteButtonTaped:" destination="uDC-fA-YMa" id="5j7-LG-9gf"/>
+                                            </connections>
+                                        </barButtonItem>
+                                    </navigationItem>
                                 </items>
                             </navigationBar>
                         </subviews>
