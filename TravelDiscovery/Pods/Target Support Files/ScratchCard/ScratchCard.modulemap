@@ -1,0 +1,6 @@
+framework module ScratchCard {
+  umbrella header "ScratchCard-umbrella.h"
+
+  export *
+  module * { export * }
+}

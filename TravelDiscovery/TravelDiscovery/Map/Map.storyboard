@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="FhY-kj-KBO">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="fSW-X2-ug8">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -11,21 +11,21 @@
     </dependencies>
     <scenes>
         <!--Map-->
-        <scene sceneID="gX1-K4-Cxs">
+        <scene sceneID="ttg-R5-iko">
             <objects>
-                <viewController storyboardIdentifier="MapVC" id="FhY-kj-KBO" customClass="MapViewController" customModule="TravelDiscovery" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="0KQ-2p-Bmy">
+                <viewController storyboardIdentifier="MapVC" id="fSW-X2-ug8" customClass="MapViewController" customModule="TravelDiscovery" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="kwc-mW-fJY">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <viewLayoutGuide key="safeArea" id="hhr-L5-bbH"/>
+                        <viewLayoutGuide key="safeArea" id="GxC-pI-SKq"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Map" id="gwd-xc-Zrm"/>
+                    <tabBarItem key="tabBarItem" title="Map" id="l5b-af-jjL"/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="TVa-eJ-7aD" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="6Wt-rf-Mvj" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="202" y="140"/>
+            <point key="canvasLocation" x="154" y="64"/>
         </scene>
     </scenes>
 </document>
