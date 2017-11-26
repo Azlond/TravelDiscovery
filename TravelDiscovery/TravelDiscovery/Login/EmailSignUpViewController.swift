@@ -29,33 +29,23 @@ class EmailSignUpViewController: UIViewController, UITextFieldDelegate {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
+    /**
+     * cancel the signupView, go back to LoginView
+     */
     @IBAction func cancelButton(_ sender: UIBarButtonItem) {
         dismiss(animated: true, completion: nil)
     }
     
+    /**
+     * Create account button clicked - same effect as if pressed 'go' on keyboard
+     */
     @IBAction func createAccountButtonTapped(_ sender: UIBarButtonItem) {
-        if reenterPasswordField.text == passwordTextField.text {
-            Auth.auth().createUser(withEmail: emailTextField.text!, password: passwordTextField.text!, completion: { (user, error) in
-                if error != nil {
-                    let signuperrorAlert = UIAlertController(title: "Signup error", message: "\(error?.localizedDescription ?? "Something went wrong. Sorry.") Please try again", preferredStyle: .alert)
-                    signuperrorAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-                    self.present(signuperrorAlert, animated: true, completion: nil)
-                    return
-                }
-                self.sendEmail()
-                self.dismiss(animated: true, completion: nil)
-            })
-        } else {
-            let passwordNotMatchingAlert = UIAlertController(title: "Oops!", message: "Your passwords do not match. Please reenter your password again.", preferredStyle: .alert)
-            passwordNotMatchingAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
-                self.passwordTextField.text = ""
-                self.reenterPasswordField.text = ""
-            }))
-            self.present(passwordNotMatchingAlert, animated: true, completion: nil)
-        }
+        createAccount()
     }
     
+    /**
+     * Notifies the user that a verification email has been sent - or that an error happened.
+     */
     func sendEmail() {
         Auth.auth().signIn(withEmail: emailTextField.text!, password: passwordTextField.text!, completion: { (user, error) in
             if error != nil {
@@ -68,7 +58,7 @@ class EmailSignUpViewController: UIViewController, UITextFieldDelegate {
                     emailNOTSendAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
                     self.present(emailNOTSendAlert, animated: true, completion: nil)
                 } else {
-                    let emailSentAlert = UIAlertController(title: "Email Verification", message: "Verification email has been sent. Please tap on the link the email to verify your account before you can use the features in the app.", preferredStyle: .alert)
+                    let emailSentAlert = UIAlertController(title: "Email Verification", message: "Verification email has been sent. Please tap on the link in the email to verify your account before you can use the features in the app.", preferredStyle: .alert)
                     emailSentAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
                     self.present(emailSentAlert, animated: true, completion: {
                         self.dismiss(animated: true, completion: nil)
@@ -84,6 +74,35 @@ class EmailSignUpViewController: UIViewController, UITextFieldDelegate {
         })
     }
     
+    /**
+     * Notify the user if an error happened while creating an account
+     * Otherwise, go to sendEmail and dismiss SignUpView, go back to loginView
+     */
+    func createAccount() {
+        if reenterPasswordField.text == passwordTextField.text {
+            Auth.auth().createUser(withEmail: emailTextField.text!, password: passwordTextField.text!, completion: { (user, error) in
+                if error != nil {
+                    let signuperrorAlert = UIAlertController(title: "Signup error", message: "\(error?.localizedDescription ?? "Something went wrong. Sorry.") Please try again", preferredStyle: .alert)
+                    signuperrorAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                    self.present(signuperrorAlert, animated: true, completion: nil)
+                    return
+                }
+                self.sendEmail()
+                self.dismiss(animated: true, completion: nil)
+            })
+        } else {
+            let passwordNotMatchingAlert = UIAlertController(title: "Oops!", message: "Your passwords do not match. Please enter your password again.", preferredStyle: .alert)
+            passwordNotMatchingAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
+                self.passwordTextField.text = ""
+                self.reenterPasswordField.text = ""
+            }))
+            self.present(passwordNotMatchingAlert, animated: true, completion: nil)
+        }
+    }
+    
+    /**
+     * handle textFieldReturn events
+     */
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if textField == emailTextField {
             passwordTextField.becomeFirstResponder()
@@ -91,6 +110,7 @@ class EmailSignUpViewController: UIViewController, UITextFieldDelegate {
             reenterPasswordField.becomeFirstResponder()
         } else if textField == reenterPasswordField {
             self.view.endEditing(true)
+            createAccount()
         } else {
             textField.resignFirstResponder()
         }
@@ -110,6 +130,9 @@ class EmailSignUpViewController: UIViewController, UITextFieldDelegate {
 }
 
 extension UIViewController {
+    /**
+     * Hide keyboard when tapping in the view besides the textfields
+     */
     func hideKeyboardWhenTappedAround() {
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UIViewController.dismissKeyboard))
         tap.cancelsTouchesInView = false

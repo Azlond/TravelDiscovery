@@ -9,23 +9,22 @@
 import UIKit
 import FirebaseAuth
 
+// TODO: Beautify UI for all login screens
+
 class LoginViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        Auth.auth().addStateDidChangeListener { auth, user in
+        Auth.auth().addStateDidChangeListener { (auth, user) in
             if let user = user {
                 //User is already logged in, no need to show login storyboard
                 print(user.email!)
                 let storyBoard: UIStoryboard = UIStoryboard(name: "NavigationTabBar", bundle: nil)
                 let newViewController = storyBoard.instantiateViewController(withIdentifier: "NavigationTabBarController") as! UITabBarController
                 self.present(newViewController, animated: true, completion: nil)
-            } else {
-                print("not signed in")
             }
         }
-        // Do any additional setup after loading the view.
     }
 
     override func didReceiveMemoryWarning() {

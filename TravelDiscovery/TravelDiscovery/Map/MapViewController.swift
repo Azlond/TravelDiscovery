@@ -42,13 +42,13 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
         
         // Get the name of the selected state.
         if let feature = features.first, let state = feature.attribute(forKey: "name") as? String{
-            changeOpacity(name: state)
-        } else {
-            changeOpacity(name: "")
+            loadScratchcard(name: state)
         }
     }
 
     // Wait until the style is loaded before modifying the map style.
+    // TODO: use correct data sources and variables for the world, instead of the US
+    // TODO: load already scratched countries in their respective colors
     func mapView(_ mapView: MGLMapView, didFinishLoading style: MGLStyle) {
         let url = URL(string: "mapbox://examples.69ytlgls")!
         let source = MGLVectorSource(identifier: "state-source", configurationURL: url)
@@ -74,22 +74,25 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
         //----
     }
     
-    func changeOpacity(name: String) {
-        // Check if a state was selected, then change the opacity of the states that were not selected.
-        if name.count > 0 {
-            let storyBoard: UIStoryboard = UIStoryboard(name: "Scratchcard", bundle: nil)
-            let scratchVC = storyBoard.instantiateViewController(withIdentifier: "ScratchcardVC") as! ScratchcardViewController
-            scratchVC.parentVC = self
-            scratchVC.country = name
-            self.present(scratchVC, animated: true, completion: nil)
-        }
+    /**
+     * load the Scratchcard with the selected country
+     * add self as viewcontroller to the scratchview, in order to be able to call the markCountry() function from scratchView
+     * add countryname to scratchview to load the correct image
+     */
+    func loadScratchcard(name: String) {
+        let storyBoard: UIStoryboard = UIStoryboard(name: "Scratchcard", bundle: nil)
+        let scratchVC = storyBoard.instantiateViewController(withIdentifier: "ScratchcardVC") as! ScratchcardViewController
+        scratchVC.parentVC = self
+        scratchVC.country = name
+        self.present(scratchVC, animated: true, completion: nil)
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
+    /**
+     * Parameter: countryname
+     * Mark a country in a color
+     * TODO: color selection based on surrounding countries (no two countries with same color next to each other)
+     * TODO: save colored countries on disk/to firebase after edit
+     */
     @objc public func markCountry(name: String) {
         let layer = mapView.style?.layer(withIdentifier: "state-layer") as! MGLFillStyleLayer
         if name.count > 0 {
@@ -101,6 +104,10 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
         
     }
     
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
     
     /*
     // MARK: - Navigation
