@@ -23,8 +23,11 @@
 		3D7830F91FC8EA5100305D1D /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D7830F81FC8EA5100305D1D /* SettingsViewController.swift */; };
 		3D7830FD1FC8EC1900305D1D /* FeedTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D7830FC1FC8EC1900305D1D /* FeedTableViewController.swift */; };
 		3D7830FF1FC8EC5B00305D1D /* TravelsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D7830FE1FC8EC5B00305D1D /* TravelsTableViewController.swift */; };
-		3D7831011FC8EC8500305D1D /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D7831001FC8EC8500305D1D /* MapViewController.swift */; };
 		3D7F34CC1FC785330005129C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3D7F34CB1FC785330005129C /* GoogleService-Info.plist */; };
+		3D979C861FC9A64700350C9E /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D979C851FC9A64700350C9E /* HealthKit.framework */; };
+		3D979C881FC9B89E00350C9E /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D979C871FC9B89E00350C9E /* MapViewController.swift */; };
+		3D979C8B1FC9BCAC00350C9E /* Scratchcard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3D979C8A1FC9BCAC00350C9E /* Scratchcard.storyboard */; };
+		3D979C8D1FC9BCCC00350C9E /* ScratchcardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D979C8C1FC9BCCC00350C9E /* ScratchcardViewController.swift */; };
 		58F635D632DE69D8F79A6C71 /* Pods_TravelDiscoveryTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F68A9D7ED9532E30AFC203B8 /* Pods_TravelDiscoveryTests.framework */; };
 		81F7BF082CA64BC6DC302CF6 /* Pods_TravelDiscovery.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 59A094B9D15DD5382A747194 /* Pods_TravelDiscovery.framework */; };
 /* End PBXBuildFile section */
@@ -60,8 +63,12 @@
 		3D7830F81FC8EA5100305D1D /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		3D7830FC1FC8EC1900305D1D /* FeedTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedTableViewController.swift; sourceTree = "<group>"; };
 		3D7830FE1FC8EC5B00305D1D /* TravelsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TravelsTableViewController.swift; sourceTree = "<group>"; };
-		3D7831001FC8EC8500305D1D /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		3D7F34CB1FC785330005129C /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		3D979C841FC9A64700350C9E /* TravelDiscovery.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TravelDiscovery.entitlements; sourceTree = "<group>"; };
+		3D979C851FC9A64700350C9E /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
+		3D979C871FC9B89E00350C9E /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
+		3D979C8A1FC9BCAC00350C9E /* Scratchcard.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Scratchcard.storyboard; sourceTree = "<group>"; };
+		3D979C8C1FC9BCCC00350C9E /* ScratchcardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScratchcardViewController.swift; sourceTree = "<group>"; };
 		4788F5809283A9294A57339F /* Pods-TravelDiscovery.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TravelDiscovery.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TravelDiscovery/Pods-TravelDiscovery.debug.xcconfig"; sourceTree = "<group>"; };
 		4BEB1DD982A34EBDA546EB93 /* Pods-TravelDiscoveryTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TravelDiscoveryTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TravelDiscoveryTests/Pods-TravelDiscoveryTests.release.xcconfig"; sourceTree = "<group>"; };
 		59A094B9D15DD5382A747194 /* Pods_TravelDiscovery.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TravelDiscovery.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -76,6 +83,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				81F7BF082CA64BC6DC302CF6 /* Pods_TravelDiscovery.framework in Frameworks */,
+				3D979C861FC9A64700350C9E /* HealthKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -113,6 +121,7 @@
 		3D21C0741FC4EA6E00F4DFC3 /* TravelDiscovery */ = {
 			isa = PBXGroup;
 			children = (
+				3D979C891FC9BC6A00350C9E /* Scratchcard */,
 				3D7831021FC8ED1600305D1D /* Navigation */,
 				3D7830EF1FC8E9C700305D1D /* Settings */,
 				3D7830EE1FC8E9BF00305D1D /* Feed */,
@@ -124,6 +133,7 @@
 				3D21C0801FC4EA6E00F4DFC3 /* LaunchScreen.storyboard */,
 				3D21C0831FC4EA6E00F4DFC3 /* Info.plist */,
 				3D7F34CB1FC785330005129C /* GoogleService-Info.plist */,
+				3D979C841FC9A64700350C9E /* TravelDiscovery.entitlements */,
 			);
 			path = TravelDiscovery;
 			sourceTree = "<group>";
@@ -152,7 +162,7 @@
 			isa = PBXGroup;
 			children = (
 				3D7830F41FC8EA0800305D1D /* Map.storyboard */,
-				3D7831001FC8EC8500305D1D /* MapViewController.swift */,
+				3D979C871FC9B89E00350C9E /* MapViewController.swift */,
 			);
 			path = Map;
 			sourceTree = "<group>";
@@ -192,9 +202,19 @@
 			path = Navigation;
 			sourceTree = "<group>";
 		};
+		3D979C891FC9BC6A00350C9E /* Scratchcard */ = {
+			isa = PBXGroup;
+			children = (
+				3D979C8A1FC9BCAC00350C9E /* Scratchcard.storyboard */,
+				3D979C8C1FC9BCCC00350C9E /* ScratchcardViewController.swift */,
+			);
+			path = Scratchcard;
+			sourceTree = "<group>";
+		};
 		7910EB6D0195B8B0018569E2 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				3D979C851FC9A64700350C9E /* HealthKit.framework */,
 				59A094B9D15DD5382A747194 /* Pods_TravelDiscovery.framework */,
 				F68A9D7ED9532E30AFC203B8 /* Pods_TravelDiscoveryTests.framework */,
 			);
@@ -273,6 +293,9 @@
 							com.apple.BackgroundModes = {
 								enabled = 1;
 							};
+							com.apple.HealthKit = {
+								enabled = 1;
+							};
 						};
 					};
 					3D21C0871FC4EA6F00F4DFC3 = {
@@ -311,6 +334,7 @@
 				3D7830F71FC8EA1900305D1D /* Feed.storyboard in Resources */,
 				3D7F34CC1FC785330005129C /* GoogleService-Info.plist in Resources */,
 				3D7830F51FC8EA0800305D1D /* Map.storyboard in Resources */,
+				3D979C8B1FC9BCAC00350C9E /* Scratchcard.storyboard in Resources */,
 				3D7830F11FC8E9EF00305D1D /* Settings.storyboard in Resources */,
 				3D6763001FC6162600CFFF32 /* Login.storyboard in Resources */,
 				3D21C07D1FC4EA6E00F4DFC3 /* NavigationTabBar.storyboard in Resources */,
@@ -342,8 +366,11 @@
 				"${BUILT_PRODUCTS_DIR}/GTMOAuth2/GTMOAuth2.framework",
 				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
+				"${PODS_ROOT}/Mapbox-iOS-SDK/dynamic/Mapbox.framework",
+				"${PODS_ROOT}/Mapbox-iOS-SDK/dynamic/Mapbox.framework.dSYM",
 				"${BUILT_PRODUCTS_DIR}/Protobuf/Protobuf.framework",
 				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
+				"${BUILT_PRODUCTS_DIR}/ScratchCard/ScratchCard.framework",
 				"${BUILT_PRODUCTS_DIR}/gRPC/GRPCClient.framework",
 				"${BUILT_PRODUCTS_DIR}/gRPC-Core/grpc.framework",
 				"${BUILT_PRODUCTS_DIR}/gRPC-ProtoRPC/ProtoRPC.framework",
@@ -360,8 +387,11 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMOAuth2.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Mapbox.framework",
+				"${DWARF_DSYM_FOLDER_PATH}/Mapbox.framework.dSYM",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Protobuf.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ScratchCard.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GRPCClient.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/grpc.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtoRPC.framework",
@@ -475,11 +505,12 @@
 				3D6763021FC6163C00CFFF32 /* LoginViewController.swift in Sources */,
 				3D6763091FC6292100CFFF32 /* EmailLoginViewController.swift in Sources */,
 				3D7830F91FC8EA5100305D1D /* SettingsViewController.swift in Sources */,
-				3D7831011FC8EC8500305D1D /* MapViewController.swift in Sources */,
 				3D7830FD1FC8EC1900305D1D /* FeedTableViewController.swift in Sources */,
 				3D7830FF1FC8EC5B00305D1D /* TravelsTableViewController.swift in Sources */,
 				3D21C0761FC4EA6E00F4DFC3 /* AppDelegate.swift in Sources */,
+				3D979C8D1FC9BCCC00350C9E /* ScratchcardViewController.swift in Sources */,
 				3D6763071FC628EF00CFFF32 /* EmailSignUpViewController.swift in Sources */,
+				3D979C881FC9B89E00350C9E /* MapViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -633,6 +664,7 @@
 			baseConfigurationReference = 4788F5809283A9294A57339F /* Pods-TravelDiscovery.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = TravelDiscovery/TravelDiscovery.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = Q632JFQA88;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -661,7 +693,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = iOSTravelCrew.TravelDiscovery;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -670,6 +702,7 @@
 			baseConfigurationReference = FC9C25524CA74ED489C2405E /* Pods-TravelDiscovery.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = TravelDiscovery/TravelDiscovery.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = Q632JFQA88;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -698,7 +731,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = iOSTravelCrew.TravelDiscovery;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

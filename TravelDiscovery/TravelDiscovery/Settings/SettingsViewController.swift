@@ -22,6 +22,11 @@ class SettingsViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    /**
+     * Logging the user out
+     * TODO: Move function to better UI, logout can stay the same though
+     * TODO: Potentially upload/save everything to firebase before logout
+     */
     @IBAction func temporaryLogoutTapped(_ sender: UIButton) {
         do {
             try Auth.auth().signOut()

@@ -130,12 +130,14 @@ PODS:
   - GTMSessionFetcher/Full (1.1.12):
     - GTMSessionFetcher/Core (= 1.1.12)
   - leveldb-library (1.20)
+  - Mapbox-iOS-SDK (3.7.0)
   - nanopb (0.3.8):
     - nanopb/decode (= 0.3.8)
     - nanopb/encode (= 0.3.8)
   - nanopb/decode (0.3.8)
   - nanopb/encode (0.3.8)
   - Protobuf (3.5.0)
+  - ScratchCard (1.0.15)
   - SDWebImage (4.2.2):
     - SDWebImage/Core (= 4.2.2)
   - SDWebImage/Core (4.2.2)
@@ -148,6 +150,8 @@ DEPENDENCIES:
   - Firebase/Core
   - Firebase/Database
   - FirebaseUI
+  - Mapbox-iOS-SDK (~> 3.7)
+  - ScratchCard (~> 1.0.15)
 
 SPEC CHECKSUMS:
   Bolts: 8a7995239dbe724f9cba2248b766d48b7ebdd322
@@ -172,12 +176,14 @@ SPEC CHECKSUMS:
   GTMOAuth2: be83fd28d63ae3087e7d351b1f39c1a7e24ab6e7
   GTMSessionFetcher: ebaa1f79a5366922c1735f1566901f50beba23b7
   leveldb-library: 4f9eedf84ab46b4fa3b7893bf30714b2a1a74022
+  Mapbox-iOS-SDK: 699818d30e1ed4985d3efc6a06c40b90907c586d
   nanopb: 5601e6bca2dbf1ed831b519092ec110f66982ca3
   Protobuf: 8a9838fba8dae3389230e1b7f8c104aa32389c03
+  ScratchCard: 407d4dd945a9566027a49a8f4782332b2c6b8224
   SDWebImage: 89a9d32cd520bbb46eb14e541d5109b3564af198
   TwitterCore: e0420b01e02e7d20e94690e37f43e75de219ab8d
   TwitterKit: 205ac89824bbfe9e85a16c420d30bb7bcbedac45
 
-PODFILE CHECKSUM: 90dfd7aa5e81e7806290e7276f970063b3759ca7
+PODFILE CHECKSUM: 505cf214bd4736c86c3a6cd66a3f0d534e23f486
 
 COCOAPODS: 1.3.1

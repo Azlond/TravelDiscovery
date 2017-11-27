@@ -30,34 +30,23 @@ class EmailLoginViewController: UIViewController, UITextFieldDelegate {
         // Dispose of any resources that can be recreated.
     }
     
+    /**
+     * cancel the signupView, go back to LoginView
+     */
     @IBAction func cancelButtonTapped(_ sender: UIBarButtonItem) {
         dismiss(animated: true, completion: nil)
     }
     
+    /**
+     * Login button clicked - same effect as if pressed 'go' on keyboard
+     */
     @IBAction func loginButtonTapped(_ sender: UIBarButtonItem) {
-        Auth.auth().signIn(withEmail: emailField.text!, password: passwordField.text!, completion: { (user, error) in
-            if error != nil {
-                let loginErrorAlert = UIAlertController(title: "Login error!", message: "\(error?.localizedDescription ?? "Something went wrong. Sorry.") Please try again", preferredStyle: .alert)
-                loginErrorAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-                self.present(loginErrorAlert, animated: true, completion: nil)
-                return
-            }
-            if user!.isEmailVerified {
-                // Take user to Firebase Realtime Database
-                self.performSegue(withIdentifier: "emailLoggedIn", sender: self)
-            } else {
-                let notVerifiedAltert = UIAlertController(title: "Not verified", message: "Your account is pending verification. Please check your email and verify your account.", preferredStyle: .alert)
-                notVerifiedAltert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-                self.present(notVerifiedAltert, animated: true, completion: nil)
-                do {
-                    try Auth.auth().signOut()
-                } catch {
-                    // Handle error
-                }
-            }
-        })
+        logIn()
     }
     
+    /**
+     * Tell the user to enter their email for the lost password mail. Notify of success or failure of sending the mail.
+     */
     @IBAction func forgotPasswordTapped(_ sender: UIButton) {
         let forgotPasswordAlert = UIAlertController(title: "Forgot Password?", message: "Don't worry. We can reset if for you. Just enter your email address here.", preferredStyle: .alert)
         forgotPasswordAlert.addTextField { (textField) in
@@ -81,11 +70,42 @@ class EmailLoginViewController: UIViewController, UITextFieldDelegate {
         self.present(forgotPasswordAlert, animated: true, completion: nil)
     }
     
+    /**
+     * Log the user in. Notify is something went wrong.
+     */
+    func logIn() {
+        Auth.auth().signIn(withEmail: emailField.text!, password: passwordField.text!, completion: { (user, error) in
+            if error != nil {
+                let loginErrorAlert = UIAlertController(title: "Login error!", message: "\(error?.localizedDescription ?? "Something went wrong. Sorry.") Please try again.", preferredStyle: .alert)
+                loginErrorAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                self.present(loginErrorAlert, animated: true, completion: nil)
+                return
+            }
+            if user!.isEmailVerified {
+                // Take user to Firebase Realtime Database
+                self.performSegue(withIdentifier: "emailLoggedIn", sender: self)
+            } else {
+                let notVerifiedAltert = UIAlertController(title: "Not verified", message: "Your account is pending verification. Please check your email and verify your account.", preferredStyle: .alert)
+                notVerifiedAltert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                self.present(notVerifiedAltert, animated: true, completion: nil)
+                do {
+                    try Auth.auth().signOut()
+                } catch {
+                    // Handle error
+                }
+            }
+        })
+    }
+    
+    /**
+     * handle textFieldReturn events
+     */
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if textField == emailField {
             passwordField.becomeFirstResponder()
         } else {
             textField.resignFirstResponder()
+            logIn()
         }
         return true
     }
