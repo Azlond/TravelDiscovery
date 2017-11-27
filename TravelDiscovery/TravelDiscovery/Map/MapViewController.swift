@@ -31,6 +31,9 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
         let gesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
         gesture.delegate = self
         mapView.addGestureRecognizer(gesture)
+        mapView.allowsRotating = false
+        mapView.allowsTilting = false
+        mapView.showsUserLocation = true
     }
     
     @objc func handleTap(_ gesture: UITapGestureRecognizer) {
