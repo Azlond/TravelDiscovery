@@ -75,6 +75,7 @@ class ScratchcardViewController: UIViewController, ScratchUIViewDelegate {
      * Cancel scratchcard without coloring the selected country
      */
     @IBAction func cancelButtonTapped(_ sender: UIBarButtonItem) {
+        scratchCard.interrupted = true
         self.dismiss(animated: true, completion: nil)
     }
     /**
@@ -84,13 +85,15 @@ class ScratchcardViewController: UIViewController, ScratchUIViewDelegate {
         finishSuccess()
     }
     
+    
     /**
      * Call function in parent to color the scratched country
      * Dismiss scratch view
      */
     func finishSuccess() {
-        parentVC.markCountry(name: country)
-        self.dismiss(animated: true, completion: nil)
+        scratchCard.autoScratch()
+        //self.parentVC.markCountry(name: self.country)
+        //self.dismiss(animated: true, completion: nil)
     }
     
     override func didReceiveMemoryWarning() {

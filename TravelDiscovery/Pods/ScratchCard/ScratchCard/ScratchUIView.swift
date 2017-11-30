@@ -22,6 +22,7 @@ open class ScratchUIView: UIView, ScratchViewDelegate {
     
     open weak var delegate: ScratchUIViewDelegate!
     public var scratchView: ScratchView!
+    open var interrupted: Bool!
     var couponImage: UIImageView!
     var coupon: String!
     open var scratchPosition: CGPoint!
@@ -32,6 +33,43 @@ open class ScratchUIView: UIView, ScratchViewDelegate {
     
     open func getScratchPercent() -> Double {
         return scratchView.getAlphaPixelPercent()
+    }
+    
+    open func autoScratch() {
+        let viewSize = couponImage.bounds
+        let screenWidth = Int(viewSize.width)
+        let screenHeight = Int(viewSize.height)
+
+        let stepSize = 6
+        
+        DispatchQueue.global(qos: .background).async {
+            for heightIndex in 0 ..< screenHeight / stepSize {
+                if (heightIndex % 2 != 0) {
+                    for widthIndex in  (0 ..< screenWidth / stepSize).reversed() {
+                        if self.interrupted {
+                            return
+                        }
+                        let startPoint = CGPoint(x: widthIndex*stepSize, y: heightIndex)
+                        let endPoint = CGPoint(x:widthIndex*stepSize+stepSize, y:heightIndex*stepSize+stepSize)
+                        DispatchQueue.main.async {
+                            self.scratchView.renderLineFromPoint(startPoint, end: endPoint)
+                        }
+                        usleep(25)                    }
+                } else {
+                    for widthIndex in 0 ..< screenWidth / stepSize {
+                        if self.interrupted {
+                            return
+                        }
+                        let startPoint = CGPoint(x: widthIndex*stepSize, y: heightIndex)
+                        let endPoint = CGPoint(x:widthIndex*stepSize+stepSize, y:heightIndex*stepSize+stepSize)
+                        DispatchQueue.main.async {
+                            self.scratchView.renderLineFromPoint(startPoint, end: endPoint)
+                        }
+                        usleep(25)                    }
+                }
+            }
+        }
+        
     }
     
     public init(frame: CGRect, Coupon: String, MaskImage: String, ScratchWidth: CGFloat) {
@@ -51,6 +89,7 @@ open class ScratchUIView: UIView, ScratchViewDelegate {
         couponImage = UIImageView(image: UIImage(named: coupon))
         scratchView = ScratchView(frame: self.frame, MaskImage: maskImage, ScratchWidth: uiScratchWidth)
         
+        self.interrupted = false
         couponImage.frame = CGRect(x: 0, y: 0, width: self.frame.width, height: self.frame.height)
         scratchView.frame = CGRect(x: 0, y: 0, width: self.frame.width, height: self.frame.height)
         scratchView.delegate = self
