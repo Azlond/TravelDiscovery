@@ -40,36 +40,43 @@ open class ScratchUIView: UIView, ScratchViewDelegate {
         let screenWidth = Int(viewSize.width)
         let screenHeight = Int(viewSize.height)
 
-        let stepSize = 6
+        var xyArray = [(Int,Int)]()
         
-        DispatchQueue.global(qos: .background).async {
-            for heightIndex in 0 ..< screenHeight / stepSize {
-                if (heightIndex % 2 != 0) {
-                    for widthIndex in  (0 ..< screenWidth / stepSize).reversed() {
-                        if self.interrupted {
-                            return
-                        }
-                        let startPoint = CGPoint(x: widthIndex*stepSize, y: heightIndex)
-                        let endPoint = CGPoint(x:widthIndex*stepSize+stepSize, y:heightIndex*stepSize+stepSize)
-                        DispatchQueue.main.async {
-                            self.scratchView.renderLineFromPoint(startPoint, end: endPoint)
-                        }
-                        usleep(25)                    }
-                } else {
-                    for widthIndex in 0 ..< screenWidth / stepSize {
-                        if self.interrupted {
-                            return
-                        }
-                        let startPoint = CGPoint(x: widthIndex*stepSize, y: heightIndex)
-                        let endPoint = CGPoint(x:widthIndex*stepSize+stepSize, y:heightIndex*stepSize+stepSize)
-                        DispatchQueue.main.async {
-                            self.scratchView.renderLineFromPoint(startPoint, end: endPoint)
-                        }
-                        usleep(25)                    }
+        let lineWidth: CGFloat!
+        lineWidth = 40
+        
+        scratchView.overrideLineCap(lineWidth: lineWidth)
+        
+        for i in 1 ... 2 {
+            for x in 0 ..< screenHeight / Int(lineWidth) {
+                for y in 0 ..< screenWidth / Int(lineWidth) {
+                    xyArray.append((x * Int(lineWidth), y * Int(lineWidth) * i))
                 }
             }
         }
         
+        DispatchQueue.global(qos: .background).async {
+            while (xyArray.count > 0 && self.getScratchPercent() < 1) {
+                /*If interrupted, stop scratching*/
+                if self.interrupted {
+                    return
+                }
+                /*Get random array index*/
+                let randomXY = Int(arc4random_uniform(UInt32(xyArray.count)))
+                
+                let startPoint = CGPoint(x: xyArray[randomXY].0, y: xyArray[randomXY].1)
+                let endPoint = startPoint
+                
+                /*send render command to AsyncQueue*/
+                DispatchQueue.main.async {
+                    self.scratchView.renderLineFromPoint(startPoint, end: endPoint)
+                }
+                /*remove chosen index from array*/
+                xyArray.remove(at: randomXY)
+                
+                usleep(500)
+            }
+        }
     }
     
     public init(frame: CGRect, Coupon: String, MaskImage: String, ScratchWidth: CGFloat) {

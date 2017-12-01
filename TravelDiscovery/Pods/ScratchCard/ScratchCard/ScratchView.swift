@@ -44,6 +44,10 @@ open class ScratchView: UIView {
         self.Init()
     }
     
+    open func overrideLineCap(lineWidth: CGFloat) {
+        alphaPixels.setLineWidth(lineWidth*2.5)
+    }
+    
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         
