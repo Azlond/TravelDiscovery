@@ -8,45 +8,63 @@
 
 import UIKit
 
-class TravelsTableViewController: UITableViewController {
+class TravelsTableViewController: UITableViewController, UISearchBarDelegate {
 
+    @IBOutlet var travelsTableView: UITableView!
+   
+    var countries = [String]()
+   // var countryImages = [UIImage]()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationItem.leftBarButtonItem = self.editButtonItem
 
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
+    
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
 
+    
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 0
+        return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return 0
+        return countries.count
     }
 
-    /*
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-
+        let row = indexPath.row
+        let cell =
+          //  UITableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: nil )
+           tableView.dequeueReusableCell(withIdentifier: "countryCell", for: indexPath)
+        cell.textLabel!.text = countries[row]
+       // cell.imageView!.image = countryImages[row]
         // Configure the cell...
 
         return cell
     }
-    */
+    
 
+    
+    @IBAction func countryAddTapped() {
+        let alert = UIAlertController(title: "Add Country", message: nil, preferredStyle: .alert)
+        alert.addTextField{(countryTF) in countryTF.placeholder = "Enter Country"
+        }
+        let action = UIAlertAction(title: "Add", style: .default) { (_) in
+            guard let country = alert.textFields?.first?.text else { return }
+            print(country)
+            self.countries.append(country)
+            self.tableView.reloadData()
+        }
+        alert.addAction(action)
+        present(alert, animated: true)
+    }
     /*
     // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
@@ -55,24 +73,27 @@ class TravelsTableViewController: UITableViewController {
     }
     */
 
-    /*
+    
     // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
+        guard editingStyle == .delete else { return }
             // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
+            //tableView.deleteRows(at: [indexPath], with: .fade)
+            countries.remove(at: indexPath.row)
+        
+            tableView.deleteRows(at: [indexPath], with: .automatic)
         }    
-    }
-    */
 
-    /*
+   
+
+    
     // Override to support rearranging the table view.
     override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
+        let countryToMove = countries[(fromIndexPath as NSIndexPath).row]
+        countries.remove(at: (fromIndexPath as NSIndexPath).row)
+        countries.insert(countryToMove, at: (to as NSIndexPath).row)
     }
-    */
+    
 
     /*
     // Override to support conditional rearranging of the table view.
@@ -82,14 +103,20 @@ class TravelsTableViewController: UITableViewController {
     }
     */
 
-    /*
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
-    }
-    */
+       
+        if segue.identifier == "travelDetail" {
+            let cell = sender as! UITableViewCell
+            let indexPath = self.travelsTableView.indexPath(for: cell)
+            let countryDetailView = segue.destination as! TravelDetailViewController
+            countryDetailView.setCountryName(countries[((indexPath as NSIndexPath?)?.row)!])
+        }
 
+    }
 }
