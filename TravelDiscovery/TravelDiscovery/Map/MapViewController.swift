@@ -86,7 +86,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
         let storyBoard: UIStoryboard = UIStoryboard(name: "Scratchcard", bundle: nil)
         let scratchVC = storyBoard.instantiateViewController(withIdentifier: "ScratchcardVC") as! ScratchcardViewController
         scratchVC.parentVC = self
-        scratchVC.country = name
+        scratchVC.country = name // country identifier from dictionary (image name)
         self.present(scratchVC, animated: true, completion: nil)
     }
     
