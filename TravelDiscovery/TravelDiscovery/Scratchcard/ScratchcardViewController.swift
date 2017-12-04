@@ -87,13 +87,27 @@ class ScratchcardViewController: UIViewController, ScratchUIViewDelegate {
     
     
     /**
+     * finish the scratching
+     * receive notification from async thread to check if we can already dismiss the view
+     */
+    func finishSuccess() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(dismissToPrevious(notification:)),
+            name: Notification.Name("dismissScratch"),
+            object: nil)
+        scratchCard.autoScratch()
+    }
+    
+    /**
      * Call function in parent to color the scratched country
      * Dismiss scratch view
      */
-    func finishSuccess() {
-        scratchCard.autoScratch()
-        //self.parentVC.markCountry(name: self.country)
-        //self.dismiss(animated: true, completion: nil)
+    @objc func dismissToPrevious(notification: NSNotification) {
+        if (scratchCard.getScratchPercent() == 1) {
+            self.parentVC.markCountry(name: self.country)
+            self.dismiss(animated: true, completion: nil)
+        }
     }
     
     override func didReceiveMemoryWarning() {

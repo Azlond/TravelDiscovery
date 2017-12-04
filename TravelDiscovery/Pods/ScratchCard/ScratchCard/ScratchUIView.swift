@@ -36,6 +36,7 @@ open class ScratchUIView: UIView, ScratchViewDelegate {
     }
     
     open func autoScratch() {
+        scratchView.isUserInteractionEnabled = false
         let viewSize = couponImage.bounds
         let screenWidth = Int(viewSize.width)
         let screenHeight = Int(viewSize.height)
@@ -47,13 +48,13 @@ open class ScratchUIView: UIView, ScratchViewDelegate {
         
         scratchView.overrideLineCap(lineWidth: lineWidth)
         
-        for i in 1 ... 2 {
-            for x in 0 ..< screenHeight / Int(lineWidth) {
-                for y in 0 ..< screenWidth / Int(lineWidth) {
-                    xyArray.append((x * Int(lineWidth), y * Int(lineWidth) * i))
+   //     for i in 1 ... 1 {
+            for x in 0 ..< (screenWidth / Int(lineWidth)) + Int(lineWidth) {
+                for y in 0 ..< (screenHeight / Int(lineWidth)) {
+                    xyArray.append((x * Int(lineWidth), y * Int(lineWidth)))
                 }
             }
-        }
+    //    }
         
         DispatchQueue.global(qos: .background).async {
             while (xyArray.count > 0 && self.getScratchPercent() < 1) {
@@ -69,7 +70,10 @@ open class ScratchUIView: UIView, ScratchViewDelegate {
                 
                 /*send render command to AsyncQueue*/
                 DispatchQueue.main.async {
-                    self.scratchView.renderLineFromPoint(startPoint, end: endPoint)
+	                    if (self.getScratchPercent() < 1) {
+                        self.scratchView.renderLineFromPoint(startPoint, end: endPoint)
+                        NotificationCenter.default.post(name: Notification.Name("dismissScratch"), object: nil)
+                    }
                 }
                 /*remove chosen index from array*/
                 xyArray.remove(at: randomXY)
