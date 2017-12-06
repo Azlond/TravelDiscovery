@@ -13,7 +13,6 @@ class ScratchcardViewController: UIViewController, ScratchUIViewDelegate {
     
     var scratchCard: ScratchUIView!
     var country: String!
-    var countryCode: String!
     var parentVC: MapViewController!
     
     @IBOutlet var scratchView: UIView!
@@ -29,10 +28,10 @@ class ScratchcardViewController: UIViewController, ScratchUIViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         print("Country: " + country)
-        //print(UIScreen.main.nativeBounds.width)
+        print(UIScreen.main.nativeBounds.width)
         
         //TODO: change hardcoded coupon "USA" to country variable once dataset for map is implemented
-        scratchCard  = ScratchUIView(frame: CGRect(x:5, y:navigationBar.bounds.height+5, width:scratchView.bounds.width-10, height:scratchView.bounds.height-navigationBar.bounds.height-10),Coupon: countryCode, MaskImage: "mask.png", ScratchWidth: CGFloat(40))
+        scratchCard  = ScratchUIView(frame: CGRect(x:5, y:navigationBar.bounds.height+5, width:scratchView.bounds.width-10, height:scratchView.bounds.height-navigationBar.bounds.height-10),Coupon: "USA", MaskImage: "mask.png", ScratchWidth: CGFloat(40))
         scratchCard.delegate = self
         self.view.addSubview(scratchCard)
     }

@@ -57,11 +57,12 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
         // Get the CGPoint where the user tapped.
         let spot = gesture.location(in: mapView)
         // Access the features at that point within the state layer.
+        //let features = mapView.visibleFeatures(at: spot, styleLayerIdentifiers: Set(["state-layer"]))
         let features = mapView.visibleFeatures(at: spot, styleLayerIdentifiers: Set(["countries copy"]))
         
         // Get the name of the selected state.
-        if let feature = features.first, let country = feature.attribute(forKey: "name") as? String{
-            loadScratchcard(name: country)
+        if let feature = features.first, let state = feature.attribute(forKey: "name") as? String{
+            loadScratchcard(name: state)
         }
     }
 
@@ -102,8 +103,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
         let storyBoard: UIStoryboard = UIStoryboard(name: "Scratchcard", bundle: nil)
         let scratchVC = storyBoard.instantiateViewController(withIdentifier: "ScratchcardVC") as! ScratchcardViewController
         scratchVC.parentVC = self
-        scratchVC.country = name
-        scratchVC.countryCode = countryDict[name] 
+        scratchVC.country = countryDict[name] // country identifier from dictionary
         self.present(scratchVC, animated: true, completion: nil)
     }
     
