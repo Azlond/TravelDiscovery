@@ -137,7 +137,7 @@ PODS:
   - nanopb/decode (0.3.8)
   - nanopb/encode (0.3.8)
   - Protobuf (3.5.0)
-  - ScratchCard (1.1.2)
+  - ScratchCard (1.1.3)
   - SDWebImage (4.2.2):
     - SDWebImage/Core (= 4.2.2)
   - SDWebImage/Core (4.2.2)
@@ -151,7 +151,7 @@ DEPENDENCIES:
   - Firebase/Database
   - FirebaseUI
   - Mapbox-iOS-SDK (~> 3.7)
-  - ScratchCard (~> 1.1.2)
+  - ScratchCard (~> 1.1.3)
 
 SPEC CHECKSUMS:
   Bolts: 8a7995239dbe724f9cba2248b766d48b7ebdd322
@@ -179,11 +179,11 @@ SPEC CHECKSUMS:
   Mapbox-iOS-SDK: 699818d30e1ed4985d3efc6a06c40b90907c586d
   nanopb: 5601e6bca2dbf1ed831b519092ec110f66982ca3
   Protobuf: 8a9838fba8dae3389230e1b7f8c104aa32389c03
-  ScratchCard: edc98ec5d96136fa4522e91ec34755d760548576
+  ScratchCard: e5b9f8b9c5f9c197128fc6540cd829473e284fd3
   SDWebImage: 89a9d32cd520bbb46eb14e541d5109b3564af198
   TwitterCore: 549c74ed5f3d6134392dc944c6d215e233e50ad8
   TwitterKit: b9feccfc70bef86fe389c06a63a72fed9f020b9c
 
-PODFILE CHECKSUM: 6c8a6ded3d3b146dee8b1b9d934e819c9034580a
+PODFILE CHECKSUM: df619d89b5f5457b633dbeaad18b5bedf252abc8
 
 COCOAPODS: 1.3.1
