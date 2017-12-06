@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Google
+ * Copyright (C) 2017 Twitter, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,18 +12,14 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ *
  */
 
-#ifndef FIR_SWIFT_NAME
+#include "TWTRAuthConfigSessionsValidator.h"
 
-#import <Foundation/Foundation.h>
+@interface TWTRAuthConfigSessionsValidator ()
 
-// NS_SWIFT_NAME can only translate factory methods before the iOS 9.3 SDK.
-// Wrap it in our own macro if it's a non-compatible SDK.
-#ifdef __IPHONE_9_3
-#define FIR_SWIFT_NAME(X) NS_SWIFT_NAME(X)
-#else
-#define FIR_SWIFT_NAME(X)  // Intentionally blank.
-#endif                     // #ifdef __IPHONE_9_3
+- (BOOL)doesSessionStoreNeedPurge;
+- (void)purgeSessionsFromSessionStore;
 
-#endif  // FIR_SWIFT_NAME
+@end
