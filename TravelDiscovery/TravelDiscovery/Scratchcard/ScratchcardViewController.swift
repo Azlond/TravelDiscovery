@@ -13,6 +13,7 @@ class ScratchcardViewController: UIViewController, ScratchUIViewDelegate {
     
     var scratchCard: ScratchUIView!
     var country: String!
+    var countryCode: String!
     var parentVC: MapViewController!
     
     @IBOutlet var scratchView: UIView!
