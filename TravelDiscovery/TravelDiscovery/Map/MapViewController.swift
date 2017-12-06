@@ -9,9 +9,11 @@
 import UIKit
 import Mapbox
 
+
 class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecognizerDelegate {
 
     var mapView : MGLMapView!
+    var countryDict = [String:String]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,6 +37,19 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
         mapView.allowsRotating = false
         mapView.allowsTilting = false
         mapView.showsUserLocation = true
+        
+        //init countryDictionary
+        initCountryDict()
+    }
+    
+    func initCountryDict() {
+        let countryCodes = Locale.isoRegionCodes
+        for code in countryCodes {
+            let description = Locale.init(identifier: "en_US").localizedString(forRegionCode: code)
+            if description != nil {
+                countryDict[description!] = code
+            }
+        }
     }
     
     @objc func handleTap(_ gesture: UITapGestureRecognizer) {
@@ -88,9 +103,10 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
         let storyBoard: UIStoryboard = UIStoryboard(name: "Scratchcard", bundle: nil)
         let scratchVC = storyBoard.instantiateViewController(withIdentifier: "ScratchcardVC") as! ScratchcardViewController
         scratchVC.parentVC = self
-        scratchVC.country = name
+        scratchVC.country = countryDict[name] // country identifier from dictionary
         self.present(scratchVC, animated: true, completion: nil)
     }
+    
     
     /**
      * Parameter: countryname

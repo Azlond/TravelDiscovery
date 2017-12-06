@@ -55,20 +55,26 @@ class EmailSignUpViewController: UIViewController, UITextFieldDelegate {
             Auth.auth().currentUser?.sendEmailVerification(completion: { (error) in
                 if error != nil {
                     let emailNOTSendAlert = UIAlertController(title: "Email Verification", message: "Verification email failed to send: \(error?.localizedDescription ?? "Something went wrong. Sorry.")", preferredStyle: .alert)
-                    emailNOTSendAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                    emailNOTSendAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action: UIAlertAction!) in
+                        do {
+                            try Auth.auth().signOut()
+                        } catch {
+                            //Error handling
+                        }
+                    }))
                     self.present(emailNOTSendAlert, animated: true, completion: nil)
                 } else {
                     let emailSentAlert = UIAlertController(title: "Email Verification", message: "Verification email has been sent. Please tap on the link in the email to verify your account before you can use the features in the app.", preferredStyle: .alert)
-                    emailSentAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-                    self.present(emailSentAlert, animated: true, completion: {
+                    emailSentAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action: UIAlertAction!) in
+                        print("DISMISSING ALERT WINDOW")
+                        do {
+                            try Auth.auth().signOut()
+                        } catch {
+                            //Error handling
+                        }
                         self.dismiss(animated: true, completion: nil)
-                    })
-                }
-                
-                do {
-                    try Auth.auth().signOut()
-                } catch {
-                    //Error handling
+                    }))
+                    self.present(emailSentAlert, animated: true, completion: nil)
                 }
             })
         })
@@ -88,7 +94,6 @@ class EmailSignUpViewController: UIViewController, UITextFieldDelegate {
                     return
                 }
                 self.sendEmail()
-                self.dismiss(animated: true, completion: nil)
             })
         } else {
             let passwordNotMatchingAlert = UIAlertController(title: "Oops!", message: "Your passwords do not match. Please enter your password again.", preferredStyle: .alert)

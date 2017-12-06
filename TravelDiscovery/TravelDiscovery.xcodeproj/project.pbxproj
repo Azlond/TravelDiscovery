@@ -30,6 +30,10 @@
 		3D979C8D1FC9BCCC00350C9E /* ScratchcardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D979C8C1FC9BCCC00350C9E /* ScratchcardViewController.swift */; };
 		58F635D632DE69D8F79A6C71 /* Pods_TravelDiscoveryTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F68A9D7ED9532E30AFC203B8 /* Pods_TravelDiscoveryTests.framework */; };
 		81F7BF082CA64BC6DC302CF6 /* Pods_TravelDiscovery.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 59A094B9D15DD5382A747194 /* Pods_TravelDiscovery.framework */; };
+		84F5A7DD1FD5569900A885D0 /* CountriesDict.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F5A7DC1FD5569900A885D0 /* CountriesDict.swift */; };
+		C21DFF351FD4B62F00B85EAD /* Pin.swift in Sources */ = {isa = PBXBuildFile; fileRef = C21DFF341FD4B62F00B85EAD /* Pin.swift */; };
+		C21DFF371FD4BB2300B85EAD /* Travel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C21DFF361FD4BB2300B85EAD /* Travel.swift */; };
+		CE371C631FD420BB00C92FED /* TravelDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE371C611FD420BB00C92FED /* TravelDetailViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -72,7 +76,11 @@
 		4788F5809283A9294A57339F /* Pods-TravelDiscovery.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TravelDiscovery.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TravelDiscovery/Pods-TravelDiscovery.debug.xcconfig"; sourceTree = "<group>"; };
 		4BEB1DD982A34EBDA546EB93 /* Pods-TravelDiscoveryTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TravelDiscoveryTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TravelDiscoveryTests/Pods-TravelDiscoveryTests.release.xcconfig"; sourceTree = "<group>"; };
 		59A094B9D15DD5382A747194 /* Pods_TravelDiscovery.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TravelDiscovery.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		84F5A7DC1FD5569900A885D0 /* CountriesDict.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountriesDict.swift; sourceTree = "<group>"; };
 		BC819D78A77B0BE93C4145D9 /* Pods-TravelDiscoveryTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TravelDiscoveryTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TravelDiscoveryTests/Pods-TravelDiscoveryTests.debug.xcconfig"; sourceTree = "<group>"; };
+		C21DFF341FD4B62F00B85EAD /* Pin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pin.swift; sourceTree = "<group>"; };
+		C21DFF361FD4BB2300B85EAD /* Travel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Travel.swift; sourceTree = "<group>"; };
+		CE371C611FD420BB00C92FED /* TravelDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TravelDetailViewController.swift; sourceTree = "<group>"; };
 		F68A9D7ED9532E30AFC203B8 /* Pods_TravelDiscoveryTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TravelDiscoveryTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FC9C25524CA74ED489C2405E /* Pods-TravelDiscovery.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TravelDiscovery.release.xcconfig"; path = "Pods/Target Support Files/Pods-TravelDiscovery/Pods-TravelDiscovery.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -121,6 +129,7 @@
 		3D21C0741FC4EA6E00F4DFC3 /* TravelDiscovery */ = {
 			isa = PBXGroup;
 			children = (
+				C21DFF331FD4B60E00B85EAD /* DataModels */,
 				3D979C891FC9BC6A00350C9E /* Scratchcard */,
 				3D7831021FC8ED1600305D1D /* Navigation */,
 				3D7830EF1FC8E9C700305D1D /* Settings */,
@@ -170,6 +179,7 @@
 		3D7830ED1FC8E99A00305D1D /* Travels */ = {
 			isa = PBXGroup;
 			children = (
+				CE371C611FD420BB00C92FED /* TravelDetailViewController.swift */,
 				3D7830F21FC8E9FD00305D1D /* Travels.storyboard */,
 				3D7830FE1FC8EC5B00305D1D /* TravelsTableViewController.swift */,
 			);
@@ -219,6 +229,16 @@
 				F68A9D7ED9532E30AFC203B8 /* Pods_TravelDiscoveryTests.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		C21DFF331FD4B60E00B85EAD /* DataModels */ = {
+			isa = PBXGroup;
+			children = (
+				C21DFF341FD4B62F00B85EAD /* Pin.swift */,
+				84F5A7DC1FD5569900A885D0 /* CountriesDict.swift */,
+				C21DFF361FD4BB2300B85EAD /* Travel.swift */,
+			);
+			path = DataModels;
 			sourceTree = "<group>";
 		};
 		D57B6B57FCD317547B91EAFA /* Pods */ = {
@@ -501,13 +521,17 @@
 			buildActionMask = 2147483647;
 			files = (
 				3D6763021FC6163C00CFFF32 /* LoginViewController.swift in Sources */,
+				C21DFF351FD4B62F00B85EAD /* Pin.swift in Sources */,
 				3D6763091FC6292100CFFF32 /* EmailLoginViewController.swift in Sources */,
+				CE371C631FD420BB00C92FED /* TravelDetailViewController.swift in Sources */,
 				3D7830F91FC8EA5100305D1D /* SettingsViewController.swift in Sources */,
 				3D7830FD1FC8EC1900305D1D /* FeedTableViewController.swift in Sources */,
 				3D7830FF1FC8EC5B00305D1D /* TravelsTableViewController.swift in Sources */,
 				3D21C0761FC4EA6E00F4DFC3 /* AppDelegate.swift in Sources */,
 				3D979C8D1FC9BCCC00350C9E /* ScratchcardViewController.swift in Sources */,
+				C21DFF371FD4BB2300B85EAD /* Travel.swift in Sources */,
 				3D6763071FC628EF00CFFF32 /* EmailSignUpViewController.swift in Sources */,
+				84F5A7DD1FD5569900A885D0 /* CountriesDict.swift in Sources */,
 				3D979C881FC9B89E00350C9E /* MapViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
