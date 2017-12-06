@@ -241,7 +241,6 @@ open class ScratchView: UIView {
             return nil
         }
         context.draw(inputCGImage, in: CGRect(x: 0, y: 0, width: width, height: height))
-        
         guard let buffer = context.data else {
             return nil
         }
