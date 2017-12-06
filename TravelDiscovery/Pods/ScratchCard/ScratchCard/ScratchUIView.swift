@@ -22,39 +22,38 @@ open class ScratchUIView: UIView, ScratchViewDelegate {
     
     open weak var delegate: ScratchUIViewDelegate!
     public var scratchView: ScratchView!
-    open var interrupted: Bool!
-    var couponImage: UIImageView!
-    var coupon: String!
+    var maskImage: UIImageView!
+    var maskPath: String!
+    var coupponPath: String!
     open var scratchPosition: CGPoint!
+    open var interrupted: Bool!
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.Init()
     }
-    
-    open func getScratchPercent() -> Double {
-        return scratchView.getAlphaPixelPercent()
-    }
-    
-    open func autoScratch() {
+
+    open func autoScratch(sleepTime: UInt32) {
         scratchView.isUserInteractionEnabled = false
-        let viewSize = couponImage.bounds
+        let viewSize = scratchView.getContentLayer().bounds
         let screenWidth = Int(viewSize.width)
         let screenHeight = Int(viewSize.height)
-
         var xyArray = [(Int,Int)]()
         
         let lineWidth: CGFloat!
-        lineWidth = 40
+        lineWidth = 20
         
-        scratchView.overrideLineCap(lineWidth: lineWidth)
+        scratchView.overrideLineWidth(lineWidth: lineWidth)
         
-   //     for i in 1 ... 1 {
-            for x in 0 ..< (screenWidth / Int(lineWidth)) + Int(lineWidth) {
-                for y in 0 ..< (screenHeight / Int(lineWidth)) {
-                    xyArray.append((x * Int(lineWidth), y * Int(lineWidth)))
-                }
+        for x in 0 ..< (screenWidth / Int(lineWidth)) + 1  {
+            for y in 0 ..< (screenHeight / Int(lineWidth)) + 1 {
+                xyArray.append((x * Int(lineWidth), y * Int(lineWidth)))
             }
-    //    }
+        }
+        
+        print(xyArray.count)
+        print(xyArray)
+        print(screenWidth)
+        print(screenHeight)
         
         DispatchQueue.global(qos: .background).async {
             while (xyArray.count > 0 && self.getScratchPercent() < 1) {
@@ -70,24 +69,29 @@ open class ScratchUIView: UIView, ScratchViewDelegate {
                 
                 /*send render command to AsyncQueue*/
                 DispatchQueue.main.async {
-	                    if (self.getScratchPercent() < 1) {
+                    if (self.getScratchPercent() < 1) {
                         self.scratchView.renderLineFromPoint(startPoint, end: endPoint)
                         NotificationCenter.default.post(name: Notification.Name("dismissScratch"), object: nil)
                     }
                 }
                 /*remove chosen index from array*/
                 xyArray.remove(at: randomXY)
-                
-                usleep(500)
+                usleep(sleepTime)
             }
         }
     }
     
+    
+    open func getScratchPercent() -> Double {
+        return scratchView.getAlphaPixelPercent()
+    }
+    
     public init(frame: CGRect, Coupon: String, MaskImage: String, ScratchWidth: CGFloat) {
         super.init(frame: frame)
-        coupon = Coupon
-        maskImage = MaskImage
+        coupponPath = Coupon
+        maskPath = MaskImage
         uiScratchWidth = ScratchWidth
+        self.interrupted = false
         self.Init()
     }
     
@@ -97,14 +101,13 @@ open class ScratchUIView: UIView, ScratchViewDelegate {
     }
     
     fileprivate func Init() {
-        couponImage = UIImageView(image: UIImage(named: coupon))
-        scratchView = ScratchView(frame: self.frame, MaskImage: maskImage, ScratchWidth: uiScratchWidth)
+        maskImage = UIImageView(image: UIImage(named: maskPath))//UIImageView(image: processPixels(in: UIImage(named: maskPath)!))
+        scratchView = ScratchView(frame: self.frame, CouponImage: coupponPath, ScratchWidth: uiScratchWidth)
         
-        self.interrupted = false
-        couponImage.frame = CGRect(x: 0, y: 0, width: self.frame.width, height: self.frame.height)
+        maskImage.frame = CGRect(x: 0, y: 0, width: self.frame.width, height: self.frame.height)
         scratchView.frame = CGRect(x: 0, y: 0, width: self.frame.width, height: self.frame.height)
         scratchView.delegate = self
-        self.addSubview(couponImage)
+        self.addSubview(maskImage)
         self.addSubview(scratchView)
         self.bringSubview(toFront: scratchView)
         

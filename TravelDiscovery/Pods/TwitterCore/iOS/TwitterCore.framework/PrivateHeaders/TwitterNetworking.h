@@ -1,10 +1,19 @@
-//
-//  TWTRNetworking.h
-//  TWTRNetworking
-//
-//  Created by Mustafa Furniturewala on 4/7/14.
-//  Copyright (c) 2014 Twitter. All rights reserved.
-//
+/*
+ * Copyright (C) 2017 Twitter, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
 
 #import <Foundation/Foundation.h>
 @class TWTRAuthConfig;
@@ -21,12 +30,12 @@ typedef void (^TWTRTwitterNetworkCompletion)(NSURLResponse *response, NSData *da
 
 @property (nonatomic, readonly) TWTRAuthConfig *authConfig;
 
-- (instancetype)init __unavailable;
+- (instancetype)init NS_UNAVAILABLE;
 - (instancetype)initWithAuthConfig:(TWTRAuthConfig *)authConfig;
 
-- (NSURLRequest *)GET:(NSString *)URLString parameters:(NSDictionary *)parameters;
-- (NSURLRequest *)POST:(NSString *)URLString parameters:(NSDictionary *)parameters;
-- (NSURLRequest *)DELETE:(NSString *)URLString parameters:(NSDictionary *)parameters;
+- (NSURLRequest *)URLRequestForGETMethodWithURLString:(NSString *)URLString parameters:(NSDictionary *)params;
+- (NSURLRequest *)URLRequestForPOSTMethodWithURLString:(NSString *)URLString parameters:(NSDictionary *)params;
+- (NSURLRequest *)URLRequestForDELETEMethodWithURLString:(NSString *)URLString parameters:(NSDictionary *)params;
 
 - (NSURLRequest *)URLRequestWithMethod:(NSString *)method URL:(NSString *)URLString parameters:(NSDictionary *)parameters;
 
