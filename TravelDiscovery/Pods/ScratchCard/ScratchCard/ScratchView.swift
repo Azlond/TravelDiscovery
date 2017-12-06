@@ -39,6 +39,14 @@ open class ScratchView: UIView {
         self.Init()
     }
     
+    public func overrideLineWidth(lineWidth: CGFloat) {
+        scratchWidth = lineWidth * 2
+    }
+    
+    public func getContentLayer() -> CALayer {
+        return contentLayer
+    }
+    
     init(frame: CGRect, CouponImage: String, ScratchWidth: CGFloat) {
         super.init(frame: frame)
         couponImage = CouponImage
@@ -233,7 +241,6 @@ open class ScratchView: UIView {
             return nil
         }
         context.draw(inputCGImage, in: CGRect(x: 0, y: 0, width: width, height: height))
-        
         guard let buffer = context.data else {
             return nil
         }

@@ -26,10 +26,61 @@ open class ScratchUIView: UIView, ScratchViewDelegate {
     var maskPath: String!
     var coupponPath: String!
     open var scratchPosition: CGPoint!
+    open var interrupted: Bool!
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.Init()
     }
+
+    open func autoScratch(sleepTime: UInt32) {
+        scratchView.isUserInteractionEnabled = false
+        let viewSize = scratchView.getContentLayer().bounds
+        let screenWidth = Int(viewSize.width)
+        let screenHeight = Int(viewSize.height)
+        var xyArray = [(Int,Int)]()
+        
+        let lineWidth: CGFloat!
+        lineWidth = 20
+        
+        scratchView.overrideLineWidth(lineWidth: lineWidth)
+        
+        for x in 0 ..< (screenWidth / Int(lineWidth)) + 1  {
+            for y in 0 ..< (screenHeight / Int(lineWidth)) + 1 {
+                xyArray.append((x * Int(lineWidth), y * Int(lineWidth)))
+            }
+        }
+        
+        print(xyArray.count)
+        print(xyArray)
+        print(screenWidth)
+        print(screenHeight)
+        
+        DispatchQueue.global(qos: .background).async {
+            while (xyArray.count > 0 && self.getScratchPercent() < 1) {
+                /*If interrupted, stop scratching*/
+                if self.interrupted {
+                    return
+                }
+                /*Get random array index*/
+                let randomXY = Int(arc4random_uniform(UInt32(xyArray.count)))
+                
+                let startPoint = CGPoint(x: xyArray[randomXY].0, y: xyArray[randomXY].1)
+                let endPoint = startPoint
+                
+                /*send render command to AsyncQueue*/
+                DispatchQueue.main.async {
+                    if (self.getScratchPercent() < 1) {
+                        self.scratchView.renderLineFromPoint(startPoint, end: endPoint)
+                        NotificationCenter.default.post(name: Notification.Name("dismissScratch"), object: nil)
+                    }
+                }
+                /*remove chosen index from array*/
+                xyArray.remove(at: randomXY)
+                usleep(sleepTime)
+            }
+        }
+    }
+    
     
     open func getScratchPercent() -> Double {
         return scratchView.getAlphaPixelPercent()
@@ -40,6 +91,7 @@ open class ScratchUIView: UIView, ScratchViewDelegate {
         coupponPath = Coupon
         maskPath = MaskImage
         uiScratchWidth = ScratchWidth
+        self.interrupted = false
         self.Init()
     }
     

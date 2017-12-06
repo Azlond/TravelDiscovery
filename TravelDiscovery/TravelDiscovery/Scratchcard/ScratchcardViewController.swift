@@ -67,8 +67,11 @@ class ScratchcardViewController: UIViewController, ScratchUIViewDelegate {
      */
     func checkForCompletion() {
         let scratchPercent: Double = scratchCard.getScratchPercent()
-        if scratchPercent > 0.9 {
-            finishSuccess()
+        if scratchPercent > 0.90 {
+            //finishSuccess(sleepTime: 1)
+            scratchCard.scratchView.isHidden = true
+            self.parentVC.markCountry(name: self.country)
+            self.dismiss(animated: true, completion: nil)
         }
     }
     
@@ -76,22 +79,39 @@ class ScratchcardViewController: UIViewController, ScratchUIViewDelegate {
      * Cancel scratchcard without coloring the selected country
      */
     @IBAction func cancelButtonTapped(_ sender: UIBarButtonItem) {
+        scratchCard.interrupted = true
         self.dismiss(animated: true, completion: nil)
     }
     /**
      * automatically finish scratching for the user
      */
     @IBAction func autocompleteButtonTaped(_ sender: UIBarButtonItem) {
-        finishSuccess()
+        finishSuccess(sleepTime: 150)
+    }
+    
+    
+    /**
+     * finish the scratching
+     * receive notification from async thread to check if we can already dismiss the view
+     */
+    func finishSuccess(sleepTime: UInt32) {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(dismissToPrevious(notification:)),
+            name: Notification.Name("dismissScratch"),
+            object: nil)
+        scratchCard.autoScratch(sleepTime: sleepTime)
     }
     
     /**
      * Call function in parent to color the scratched country
      * Dismiss scratch view
      */
-    func finishSuccess() {
-        parentVC.markCountry(name: country)
-        self.dismiss(animated: true, completion: nil)
+    @objc func dismissToPrevious(notification: NSNotification) {
+        if (scratchCard.getScratchPercent() == 1) {
+            self.parentVC.markCountry(name: self.country)
+            self.dismiss(animated: true, completion: nil)
+        }
     }
     
     override func didReceiveMemoryWarning() {
