@@ -11,7 +11,7 @@ target 'TravelDiscovery' do
   pod 'Firebase/Auth'
   pod 'Firebase/Database'
   pod 'Mapbox-iOS-SDK', '~> 3.7'
-  pod 'ScratchCard', '~> 1.0.15'
+  pod 'ScratchCard', '~> 1.1.2'
   
   target 'TravelDiscoveryTests' do
     inherit! :search_paths
