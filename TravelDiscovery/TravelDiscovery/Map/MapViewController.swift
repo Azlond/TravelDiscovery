@@ -43,9 +43,9 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
     }
     
     func initCountryDict() {
-        let countryCodes = Locale.isoRegionCodes
+        let countryCodes = NSLocale.isoCountryCodes
         for code in countryCodes {
-            let description = Locale.init(identifier: "en_US").localizedString(forRegionCode: code)
+            let description = Locale.init(identifier: "en_UK").localizedString(forRegionCode: code)
             if description != nil {
                 countryDict[description!] = code
             }
@@ -105,7 +105,11 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
         scratchVC.parentVC = self
         scratchVC.country = name
         scratchVC.countryCode = countryDict[name] // country identifier from dictionary
-        self.present(scratchVC, animated: true, completion: nil)
+        print("Country: " + name)
+        countryDict.forEach { print("'\($0)': '\($1)',") }
+        if scratchVC.countryCode != nil{
+            self.present(scratchVC, animated: true, completion: nil)
+        }
     }
     
     
