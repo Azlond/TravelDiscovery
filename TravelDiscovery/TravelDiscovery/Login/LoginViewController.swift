@@ -24,8 +24,12 @@ class LoginViewController: UIViewController {
 
                 //User is already logged in, no need to show login storyboard
                 let storyBoard: UIStoryboard = UIStoryboard(name: "NavigationTabBar", bundle: nil)
-                let newViewController = storyBoard.instantiateViewController(withIdentifier: "NavigationTabBarController") as! UITabBarController
+               /* let newViewController = storyBoard.instantiateViewController(withIdentifier: "") as! UITabBarController
                 self.present(newViewController, animated: true, completion: nil)
+                */
+                let vc = storyBoard.instantiateViewController(withIdentifier: "NavigationTabBarController") as! UITabBarController
+                let navigationController = UINavigationController(rootViewController: vc)
+                self.present(navigationController, animated: true, completion: nil)
             }
         }
     }
