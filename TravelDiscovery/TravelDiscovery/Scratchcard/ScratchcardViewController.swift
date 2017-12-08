@@ -28,11 +28,45 @@ class ScratchcardViewController: UIViewController, ScratchUIViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("Country: " + country)
-        print(UIScreen.main.nativeBounds.width)
         
-        //TODO: change hardcoded coupon "USA" to country variable once dataset for map is implemented
-        scratchCard  = ScratchUIView(frame: CGRect(x:5, y:navigationBar.bounds.height+5, width:scratchView.bounds.width-10, height:scratchView.bounds.height-navigationBar.bounds.height-10),Coupon: "USA", MaskImage: "mask.png", ScratchWidth: CGFloat(40))
+        let cardWidth = scratchView.bounds.width-10
+        let cardHeight = scratchView.bounds.height-navigationBar.bounds.height-10
+        
+        //image to be scratched free is not distorted to fit the screen with this code
+      /*  let image = UIImage(named: countryCode)
+        
+        let cardWidth = scratchView.bounds.width
+        let cardHeight = scratchView.bounds.height-navigationBar.bounds.height-10
+        let imgWidth = image!.size.width
+        let imgHeight = image!.size.height
+        
+        if  (cardWidth / cardHeight) < (imgWidth / imgHeight) {
+            let scaleFactor = cardWidth / imgWidth
+            scratchCard  = ScratchUIView(frame: CGRect(x:5, y:navigationBar.bounds.height+5,
+                                                       width:cardWidth,
+                                                       height:imgHeight * scaleFactor),
+                                         Coupon: countryCode,
+                                         MaskImage: "mask.png",
+                                         ScratchWidth: CGFloat(40))
+        }
+        else {
+            let scaleFactor = cardHeight / imgHeight
+            scratchCard  = ScratchUIView(frame: CGRect(x:5, y:navigationBar.bounds.height+5,
+                                                       width:imgWidth * scaleFactor,
+                                                       height:cardHeight),
+                                         Coupon: countryCode,
+                                         MaskImage: "mask.png",
+                                         ScratchWidth: CGFloat(40))
+    
+        }
+         **/
+        
+        scratchCard  = ScratchUIView(frame: CGRect(x:5, y:navigationBar.bounds.height+5,
+                                                   width:cardWidth,
+                                                   height:cardHeight),
+                                     Coupon: countryCode,
+                                     MaskImage: "mask.png",
+                                     ScratchWidth: CGFloat(40))
         scratchCard.delegate = self
         self.view.addSubview(scratchCard)
     }

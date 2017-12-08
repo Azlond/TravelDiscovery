@@ -19,7 +19,8 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
         super.viewDidLoad()
 
         // Create a new map view using the Mapbox Light style.
-        mapView = MGLMapView(frame: view.bounds, styleURL: MGLStyle.lightStyleURL())
+        let styleURL = URL(string: "mapbox://styles/iostravelcrew/cjamqrp7r1cg92rphoiyqqhmm")
+        mapView = MGLMapView(frame: view.bounds, styleURL: styleURL)
         mapView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         mapView.tintColor = .darkGray
         
@@ -42,9 +43,9 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
     }
     
     func initCountryDict() {
-        let countryCodes = Locale.isoRegionCodes
+        let countryCodes = NSLocale.isoCountryCodes
         for code in countryCodes {
-            let description = Locale.init(identifier: "en_US").localizedString(forRegionCode: code)
+            let description = Locale.init(identifier: "en_UK").localizedString(forRegionCode: code)
             if description != nil {
                 countryDict[description!] = code
             }
@@ -56,11 +57,12 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
         // Get the CGPoint where the user tapped.
         let spot = gesture.location(in: mapView)
         // Access the features at that point within the state layer.
-        let features = mapView.visibleFeatures(at: spot, styleLayerIdentifiers: Set(["state-layer"]))
+        //let features = mapView.visibleFeatures(at: spot, styleLayerIdentifiers: Set(["state-layer"]))
+        let features = mapView.visibleFeatures(at: spot, styleLayerIdentifiers: Set(["countries copy"]))
         
         // Get the name of the selected state.
-        if let feature = features.first, let state = feature.attribute(forKey: "name") as? String{
-            loadScratchcard(name: state)
+        if let feature = features.first, let country = feature.attribute(forKey: "name") as? String{
+            loadScratchcard(name: country)
         }
     }
 
@@ -68,27 +70,27 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
     // TODO: use correct data sources and variables for the world, instead of the US
     // TODO: load already scratched countries in their respective colors
     func mapView(_ mapView: MGLMapView, didFinishLoading style: MGLStyle) {
-        let url = URL(string: "mapbox://examples.69ytlgls")!
-        let source = MGLVectorSource(identifier: "state-source", configurationURL: url)
-        style.addSource(source)
-        
-        //---
-        let layer = MGLFillStyleLayer(identifier: "state-layer", source: source)
-        
-        // Access the tileset layer.
-        layer.sourceLayerIdentifier = "stateData_2-dx853g"
-        
-        // Create a stops dictionary. This defines the relationship between population density and a UIColor.
-        let stops = [0: MGLStyleValue(rawValue: UIColor.yellow),
-                     600: MGLStyleValue(rawValue: UIColor.red),
-                     1200: MGLStyleValue(rawValue: UIColor.blue)]
-        
-        // Style the fill color using the stops dictionary, exponential interpolation mode, and the feature attribute name.
-        layer.fillColor = MGLStyleValue(interpolationMode: .exponential, sourceStops: stops, attributeName: "density", options: [.defaultValue: MGLStyleValue(rawValue: UIColor.white)])
-        
-        // Insert the new layer below the Mapbox Streets layer that contains state border lines. See the layer reference for more information about layer names: https://www.mapbox.com/vector-tiles/mapbox-streets-v7/
-        let symbolLayer = style.layer(withIdentifier: "admin-3-4-boundaries")
-        style.insertLayer(layer, below: symbolLayer!)
+//        let url = URL(string: "mapbox://examples.69ytlgls")!
+//        let source = MGLVectorSource(identifier: "state-source", configurationURL: url)
+//        style.addSource(source)
+//
+//        //---
+//        let layer = MGLFillStyleLayer(identifier: "state-layer", source: source)
+//
+//        // Access the tileset layer.
+//        layer.sourceLayerIdentifier = "stateData_2-dx853g"
+//
+//        // Create a stops dictionary. This defines the relationship between population density and a UIColor.
+//        let stops = [0: MGLStyleValue(rawValue: UIColor.yellow),
+//                     600: MGLStyleValue(rawValue: UIColor.red),
+//                     1200: MGLStyleValue(rawValue: UIColor.blue)]
+//
+//        // Style the fill color using the stops dictionary, exponential interpolation mode, and the feature attribute name.
+//        layer.fillColor = MGLStyleValue(interpolationMode: .exponential, sourceStops: stops, attributeName: "density", options: [.defaultValue: MGLStyleValue(rawValue: UIColor.white)])
+//
+//        // Insert the new layer below the Mapbox Streets layer that contains state border lines. See the layer reference for more information about layer names: https://www.mapbox.com/vector-tiles/mapbox-streets-v7/
+//        let symbolLayer = style.layer(withIdentifier: "hillshade_highlight_bright")
+//        style.insertLayer(layer, below: symbolLayer!)
         //----
     }
     
@@ -101,9 +103,13 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
         let storyBoard: UIStoryboard = UIStoryboard(name: "Scratchcard", bundle: nil)
         let scratchVC = storyBoard.instantiateViewController(withIdentifier: "ScratchcardVC") as! ScratchcardViewController
         scratchVC.parentVC = self
-        scratchVC.country = name// country identifier from dictionary
-        scratchVC.countryCode = countryDict[name] 
-        self.present(scratchVC, animated: true, completion: nil)
+        scratchVC.country = name
+        scratchVC.countryCode = CountriesDict.Countries[name]
+        print("Country: " + name)
+        
+        if scratchVC.countryCode != nil{
+            self.present(scratchVC, animated: true, completion: nil)
+        }
     }
     
     
@@ -114,7 +120,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
      * TODO: save colored countries on disk/to firebase after edit
      */
     @objc public func markCountry(name: String) {
-        let layer = mapView.style?.layer(withIdentifier: "state-layer") as! MGLFillStyleLayer
+        let layer = mapView.style?.layer(withIdentifier: "countries copy") as! MGLFillStyleLayer
         if name.count > 0 {
             layer.fillOpacity = MGLStyleValue(interpolationMode: .categorical, sourceStops: [name: MGLStyleValue<NSNumber>(rawValue: 1)], attributeName: "name", options: [.defaultValue: MGLStyleValue<NSNumber>(rawValue: 0)])
         } else {
