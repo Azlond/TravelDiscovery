@@ -268,8 +268,7 @@ class CountriesDict {
         "Faroe Islands": "FO"
         
     ]
-    public static var visitedCountries : Dictionary<String, Bool> = [:]
-
+  
 }
 
 

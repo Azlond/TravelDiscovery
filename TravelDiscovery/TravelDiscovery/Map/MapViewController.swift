@@ -8,20 +8,15 @@
 
 import UIKit
 import Mapbox
-import FirebaseDatabase
 
 class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecognizerDelegate {
 
     var mapView : MGLMapView!
     var countryDict = [String:String]()
-    var ref: DatabaseReference!
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // initialize database
-        ref = Database.database().reference()
-        
         // Create a new map view using the Mapbox Light style.
         let styleURL = URL(string: "mapbox://styles/iostravelcrew/cjamqrp7r1cg92rphoiyqqhmm")
         mapView = MGLMapView(frame: view.bounds, styleURL: styleURL)
@@ -44,6 +39,12 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
         
         //init countryDictionary
         initCountryDict()
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(updateMap),
+            name: Notification.Name("updateMap"),
+            object: nil)
     }
     
     func initCountryDict() {
@@ -66,10 +67,11 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
         
         // Get the name of the selected state.
         if let feature = features.first, let country = feature.attribute(forKey: "name") as? String{
-            if (CountriesDict.visitedCountries[country] == true) {
+            if (FirebaseData.visitedCountries[country] == true) {
                 //TODO: needs more user interaction/confirmation
-                CountriesDict.visitedCountries.removeValue(forKey: country)
+                FirebaseData.visitedCountries.removeValue(forKey: country)
                 updateMap()
+                FirebaseController.saveToFirebase()
             } else {
                 loadScratchcard(name: country)
             }
@@ -131,26 +133,31 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
      */
     @objc public func markCountry(name: String) {
         if name.count > 0 {
-            CountriesDict.visitedCountries[name] = true
+            FirebaseData.visitedCountries[name] = true
             updateMap()
+            FirebaseController.saveToFirebase()
         }
     }
     /**
      * Iterate through all visited countries, mark them on map
      */
-    func updateMap() {
-        let layer = mapView.style?.layer(withIdentifier: "countries copy") as! MGLFillStyleLayer
-        var sourceStops : Dictionary<String, MGLStyleValue<NSNumber>> = [:]
-        for country in CountriesDict.visitedCountries {
-            sourceStops[country.key] = MGLStyleValue<NSNumber>(rawValue: 1)
+    @objc func updateMap() {
+        if let layer = mapView.style?.layer(withIdentifier: "countries copy") as! MGLFillStyleLayer? {
+            var sourceStops : Dictionary<String, MGLStyleValue<NSNumber>> = [:]
+            for country in FirebaseData.visitedCountries {
+                sourceStops[country.key] = MGLStyleValue<NSNumber>(rawValue: 1)
+            }
+            
+            if (sourceStops.count > 0) {
+                layer.fillOpacity = MGLStyleValue(interpolationMode: .categorical, sourceStops: sourceStops, attributeName: "name", options: [.defaultValue: MGLStyleValue<NSNumber>(rawValue: 0)])
+            } else {
+                //if no countries have been scratched free yet, we need to pass an empty string as sourceStop to stop the app from crashing
+                layer.fillOpacity = MGLStyleValue(interpolationMode: .categorical, sourceStops: ["": MGLStyleValue<NSNumber>(rawValue: 1)], attributeName: "name", options: [.defaultValue: MGLStyleValue<NSNumber>(rawValue: 0)])
+            }
+        } else {
+            return
         }
         
-        if (sourceStops.count > 0) {
-            layer.fillOpacity = MGLStyleValue(interpolationMode: .categorical, sourceStops: sourceStops, attributeName: "name", options: [.defaultValue: MGLStyleValue<NSNumber>(rawValue: 0)])
-        } else {
-            //if no countries have been scratched free yet, we need to pass an empty string as sourceStop to stop the app from crashing
-            layer.fillOpacity = MGLStyleValue(interpolationMode: .categorical, sourceStops: ["": MGLStyleValue<NSNumber>(rawValue: 1)], attributeName: "name", options: [.defaultValue: MGLStyleValue<NSNumber>(rawValue: 0)])
-        }
     }
     
     override func didReceiveMemoryWarning() {

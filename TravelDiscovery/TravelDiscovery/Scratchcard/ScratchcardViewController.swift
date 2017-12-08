@@ -135,7 +135,7 @@ class ScratchcardViewController: UIViewController, ScratchUIViewDelegate {
     func finishSuccess(sleepTime: UInt32) {
         NotificationCenter.default.addObserver(
             self,
-            selector: #selector(dismissToPrevious(notification:)),
+            selector: #selector(dismissToPrevious),
             name: Notification.Name("dismissScratch"),
             object: nil)
         scratchCard.autoScratch(sleepTime: sleepTime)
@@ -145,7 +145,7 @@ class ScratchcardViewController: UIViewController, ScratchUIViewDelegate {
      * Call function in parent to color the scratched country
      * Dismiss scratch view
      */
-    @objc func dismissToPrevious(notification: NSNotification) {
+    @objc func dismissToPrevious() {
         if (scratchCard.getScratchPercent() == 1) {
             self.parentVC.markCountry(name: self.country)
             self.dismiss(animated: true, completion: nil)
