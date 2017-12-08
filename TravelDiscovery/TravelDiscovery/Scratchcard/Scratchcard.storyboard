@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="uDC-fA-YMa">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="uDC-fA-YMa">
     <device id="retina4_0" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -41,6 +41,8 @@
                         <viewLayoutGuide key="safeArea" id="TcC-Nb-3DP"/>
                     </view>
                     <connections>
+                        <outlet property="autoCompleteButton" destination="vhK-WP-UNP" id="iTQ-v4-iSt"/>
+                        <outlet property="cancelButton" destination="OAF-HI-SQN" id="f8H-nm-gZ4"/>
                         <outlet property="navigationBar" destination="rlL-ld-Zsh" id="fZ4-95-jGv"/>
                         <outlet property="scratchView" destination="imy-Aq-6Us" id="h0F-sP-2Oy"/>
                     </connections>

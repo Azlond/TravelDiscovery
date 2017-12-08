@@ -49,12 +49,7 @@ open class ScratchUIView: UIView, ScratchViewDelegate {
                 xyArray.append((x * Int(lineWidth), y * Int(lineWidth)))
             }
         }
-        
-        print(xyArray.count)
-        print(xyArray)
-        print(screenWidth)
-        print(screenHeight)
-        
+                
         DispatchQueue.global(qos: .background).async {
             while (xyArray.count > 0 && self.getScratchPercent() < 1) {
                 /*If interrupted, stop scratching*/

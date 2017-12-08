@@ -18,6 +18,8 @@ class ScratchcardViewController: UIViewController, ScratchUIViewDelegate {
     
     @IBOutlet var scratchView: UIView!
     @IBOutlet weak var navigationBar: UINavigationBar!
+    @IBOutlet weak var autoCompleteButton: UIBarButtonItem!
+    @IBOutlet weak var cancelButton: UIBarButtonItem!
     
     /*
      * Hide the status bar during scratchview
@@ -120,6 +122,8 @@ class ScratchcardViewController: UIViewController, ScratchUIViewDelegate {
      * automatically finish scratching for the user
      */
     @IBAction func autocompleteButtonTaped(_ sender: UIBarButtonItem) {
+        autoCompleteButton.isEnabled = false
+        cancelButton.isEnabled = false
         finishSuccess(sleepTime: 150)
     }
     

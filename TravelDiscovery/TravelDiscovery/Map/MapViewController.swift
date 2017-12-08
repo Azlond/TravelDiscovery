@@ -8,16 +8,20 @@
 
 import UIKit
 import Mapbox
-
+import FirebaseDatabase
 
 class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecognizerDelegate {
 
     var mapView : MGLMapView!
     var countryDict = [String:String]()
-    
+    var ref: DatabaseReference!
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        // initialize database
+        ref = Database.database().reference()
+        
         // Create a new map view using the Mapbox Light style.
         let styleURL = URL(string: "mapbox://styles/iostravelcrew/cjamqrp7r1cg92rphoiyqqhmm")
         mapView = MGLMapView(frame: view.bounds, styleURL: styleURL)
@@ -62,7 +66,11 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
         
         // Get the name of the selected state.
         if let feature = features.first, let country = feature.attribute(forKey: "name") as? String{
-            loadScratchcard(name: country)
+            if (CountriesDict.visitedCountries[country] == true) {
+                print("we've been here already!")
+            } else {
+                loadScratchcard(name: country)
+            }
         }
     }
 
@@ -116,18 +124,24 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
     /**
      * Parameter: countryname
      * Mark a country in a color
-     * TODO: color selection based on surrounding countries (no two countries with same color next to each other)
-     * TODO: save colored countries on disk/to firebase after edit
+     * TODO: save colored countries to firebase after edit
      */
     @objc public func markCountry(name: String) {
-        let layer = mapView.style?.layer(withIdentifier: "countries copy") as! MGLFillStyleLayer
         if name.count > 0 {
-            layer.fillOpacity = MGLStyleValue(interpolationMode: .categorical, sourceStops: [name: MGLStyleValue<NSNumber>(rawValue: 1)], attributeName: "name", options: [.defaultValue: MGLStyleValue<NSNumber>(rawValue: 0)])
-        } else {
-            // Reset the opacity for all states if the user did not tap on a state.
-            layer.fillOpacity = MGLStyleValue(rawValue: 1)
+            CountriesDict.visitedCountries[name] = true
+            updateMap()
         }
-        
+    }
+    /**
+     * Iterate through all visited countries, mark them on map
+     */
+    func updateMap() {
+        let layer = mapView.style?.layer(withIdentifier: "countries copy") as! MGLFillStyleLayer
+        var sourceStops : Dictionary<String, MGLStyleValue<NSNumber>> = [:]
+        for country in CountriesDict.visitedCountries {
+            sourceStops[country.key] = MGLStyleValue<NSNumber>(rawValue: 1)
+        }
+        layer.fillOpacity = MGLStyleValue(interpolationMode: .categorical, sourceStops: sourceStops, attributeName: "name", options: [.defaultValue: MGLStyleValue<NSNumber>(rawValue: 0)])
     }
     
     override func didReceiveMemoryWarning() {
