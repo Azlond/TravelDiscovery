@@ -67,7 +67,9 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
         // Get the name of the selected state.
         if let feature = features.first, let country = feature.attribute(forKey: "name") as? String{
             if (CountriesDict.visitedCountries[country] == true) {
-                print("we've been here already!")
+                //TODO: needs more user interaction/confirmation
+                CountriesDict.visitedCountries.removeValue(forKey: country)
+                updateMap()
             } else {
                 loadScratchcard(name: country)
             }
@@ -100,6 +102,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
 //        let symbolLayer = style.layer(withIdentifier: "hillshade_highlight_bright")
 //        style.insertLayer(layer, below: symbolLayer!)
         //----
+        updateMap()
     }
     
     /**
@@ -141,7 +144,13 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
         for country in CountriesDict.visitedCountries {
             sourceStops[country.key] = MGLStyleValue<NSNumber>(rawValue: 1)
         }
-        layer.fillOpacity = MGLStyleValue(interpolationMode: .categorical, sourceStops: sourceStops, attributeName: "name", options: [.defaultValue: MGLStyleValue<NSNumber>(rawValue: 0)])
+        
+        if (sourceStops.count > 0) {
+            layer.fillOpacity = MGLStyleValue(interpolationMode: .categorical, sourceStops: sourceStops, attributeName: "name", options: [.defaultValue: MGLStyleValue<NSNumber>(rawValue: 0)])
+        } else {
+            //if no countries have been scratched free yet, we need to pass an empty string as sourceStop to stop the app from crashing
+            layer.fillOpacity = MGLStyleValue(interpolationMode: .categorical, sourceStops: ["": MGLStyleValue<NSNumber>(rawValue: 1)], attributeName: "name", options: [.defaultValue: MGLStyleValue<NSNumber>(rawValue: 0)])
+        }
     }
     
     override func didReceiveMemoryWarning() {
