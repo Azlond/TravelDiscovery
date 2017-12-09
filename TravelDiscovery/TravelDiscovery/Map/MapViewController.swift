@@ -12,8 +12,7 @@ import Mapbox
 class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecognizerDelegate {
 
     var mapView : MGLMapView!
-    var countryDict = [String:String]()
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -37,9 +36,6 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
         mapView.allowsTilting = false
         mapView.showsUserLocation = true
         
-        //init countryDictionary
-        initCountryDict()
-        
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(updateMap),
@@ -47,22 +43,12 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
             object: nil)
     }
     
-    func initCountryDict() {
-        let countryCodes = NSLocale.isoCountryCodes
-        for code in countryCodes {
-            let description = Locale.init(identifier: "en_UK").localizedString(forRegionCode: code)
-            if description != nil {
-                countryDict[description!] = code
-            }
-        }
-    }
     
     @objc func handleTap(_ gesture: UITapGestureRecognizer) {
         
         // Get the CGPoint where the user tapped.
         let spot = gesture.location(in: mapView)
-        // Access the features at that point within the state layer.
-        //let features = mapView.visibleFeatures(at: spot, styleLayerIdentifiers: Set(["state-layer"]))
+        // Access the features at that point within the country layer.
         let features = mapView.visibleFeatures(at: spot, styleLayerIdentifiers: Set(["countries copy"]))
         
         // Get the name of the selected state.
@@ -79,31 +65,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
     }
 
     // Wait until the style is loaded before modifying the map style.
-    // TODO: use correct data sources and variables for the world, instead of the US
-    // TODO: load already scratched countries in their respective colors
     func mapView(_ mapView: MGLMapView, didFinishLoading style: MGLStyle) {
-//        let url = URL(string: "mapbox://examples.69ytlgls")!
-//        let source = MGLVectorSource(identifier: "state-source", configurationURL: url)
-//        style.addSource(source)
-//
-//        //---
-//        let layer = MGLFillStyleLayer(identifier: "state-layer", source: source)
-//
-//        // Access the tileset layer.
-//        layer.sourceLayerIdentifier = "stateData_2-dx853g"
-//
-//        // Create a stops dictionary. This defines the relationship between population density and a UIColor.
-//        let stops = [0: MGLStyleValue(rawValue: UIColor.yellow),
-//                     600: MGLStyleValue(rawValue: UIColor.red),
-//                     1200: MGLStyleValue(rawValue: UIColor.blue)]
-//
-//        // Style the fill color using the stops dictionary, exponential interpolation mode, and the feature attribute name.
-//        layer.fillColor = MGLStyleValue(interpolationMode: .exponential, sourceStops: stops, attributeName: "density", options: [.defaultValue: MGLStyleValue(rawValue: UIColor.white)])
-//
-//        // Insert the new layer below the Mapbox Streets layer that contains state border lines. See the layer reference for more information about layer names: https://www.mapbox.com/vector-tiles/mapbox-streets-v7/
-//        let symbolLayer = style.layer(withIdentifier: "hillshade_highlight_bright")
-//        style.insertLayer(layer, below: symbolLayer!)
-        //----
         updateMap()
     }
     
@@ -120,7 +82,8 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
         scratchVC.countryCode = CountriesDict.Countries[name]
         print("Country: " + name)
         
-        if scratchVC.countryCode != nil{
+        //only load scratchCard if there is a valid country code, and the country's image asset exists
+        if scratchVC.countryCode != nil, let _ = UIImage(named: scratchVC.countryCode) {
             self.present(scratchVC, animated: true, completion: nil)
         }
     }
