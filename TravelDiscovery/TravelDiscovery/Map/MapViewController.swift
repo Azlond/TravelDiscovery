@@ -12,7 +12,6 @@ import Mapbox
 class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecognizerDelegate {
 
     var mapView : MGLMapView!
-    @IBOutlet weak var navigationBar: UINavigationBar!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,7 +42,6 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
             name: Notification.Name("updateMap"),
             object: nil)
         
-        self.view.addSubview(navigationBar)
     }
     
     
@@ -141,6 +139,11 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
     }
     
      */
+    
+    @IBAction func addMarker(_ sender: UIBarButtonItem) {
+        print("add marker here")
+    }
+    
     
     
 }
