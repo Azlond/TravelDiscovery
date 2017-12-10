@@ -18,11 +18,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <navigationBar contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ak4-6G-xe4">
+                            <navigationBar contentMode="scaleToFill" fixedFrame="YES" largeTitles="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ak4-6G-xe4">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                 <items>
-                                    <navigationItem title="Title" id="PZj-8V-JeQ">
+                                    <navigationItem title="World Map" id="PZj-8V-JeQ">
                                         <barButtonItem key="rightBarButtonItem" title="📍" id="fN2-Rz-M2o"/>
                                     </navigationItem>
                                 </items>
@@ -33,6 +33,9 @@
                     </view>
                     <tabBarItem key="tabBarItem" title="Map" id="l5b-af-jjL"/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <outlet property="navigationBar" destination="ak4-6G-xe4" id="QLb-Dx-W0A"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6Wt-rf-Mvj" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
