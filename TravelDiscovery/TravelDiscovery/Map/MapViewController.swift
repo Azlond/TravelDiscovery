@@ -18,7 +18,9 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
 
         // Create a new map view using the Mapbox Light style.
         let styleURL = URL(string: "mapbox://styles/iostravelcrew/cjamqrp7r1cg92rphoiyqqhmm")
-        mapView = MGLMapView(frame: view.bounds, styleURL: styleURL)
+        let navigationBarHeight: CGFloat = self.navigationController!.navigationBar.frame.height
+        let mapFrame = CGRect(x: 0, y: navigationBarHeight, width: view.bounds.width, height: view.bounds.height-navigationBarHeight)
+        mapView = MGLMapView(frame: mapFrame, styleURL: styleURL)
         mapView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         mapView.tintColor = .darkGray
         
