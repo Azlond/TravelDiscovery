@@ -13,10 +13,11 @@ class TravelDetailViewController: UIViewController {
     var setCountryName = ""
     var countryFlag: UIImage?
     var flagName = ""
+    var departureDate = ""
     
     @IBOutlet weak var countryNameLabel: UILabel!
-    
     @IBOutlet weak var countryFlagImageView: UIImageView!
+    @IBOutlet weak var departureDateLabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,6 +26,7 @@ class TravelDetailViewController: UIViewController {
         
        // countryFlagImageView.image = UIImage(named: "\(String(describing: countryNameLabel.text))")
         countryFlagImageView.image = UIImage(named: "\(setCountryName)")
+        departureDateLabel.text = departureDate
     }
 
     override func didReceiveMemoryWarning() {
@@ -35,7 +37,9 @@ class TravelDetailViewController: UIViewController {
         setCountryName = country
     }
     
-
+    func setDepartureDate (_ date: String){
+        departureDate = date
+    }
 
    
     /*

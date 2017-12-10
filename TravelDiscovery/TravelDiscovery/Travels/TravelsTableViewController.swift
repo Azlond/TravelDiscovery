@@ -8,18 +8,19 @@
 
 import UIKit
 
+var countries = [String]()
+// var countryImages = [UIImage]()
+var dateInfos = [String]()
+
 class TravelsTableViewController: UITableViewController, UISearchBarDelegate {
 
     @IBOutlet var travelsTableView: UITableView!
    
-    var countries = [String]()
-   // var countryImages = [UIImage]()
-    
     override func viewDidLoad() {
+        
         super.viewDidLoad()
         self.navigationItem.leftBarButtonItem = self.editButtonItem
-
-    
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -29,6 +30,7 @@ class TravelsTableViewController: UITableViewController, UISearchBarDelegate {
     
     // MARK: - Table view data source
 
+  
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
@@ -42,7 +44,7 @@ class TravelsTableViewController: UITableViewController, UISearchBarDelegate {
         let row = indexPath.row
         let cell =
           //  UITableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: nil )
-           tableView.dequeueReusableCell(withIdentifier: "countryCell", for: indexPath)
+        tableView.dequeueReusableCell(withIdentifier: "countryCell", for: indexPath)
         cell.textLabel!.text = countries[row]
        // cell.imageView!.image = countryImages[row]
         // Configure the cell...
@@ -51,6 +53,7 @@ class TravelsTableViewController: UITableViewController, UISearchBarDelegate {
     }
     
 
+    /*
     
     @IBAction func countryAddTapped() {
         let alert = UIAlertController(title: "Add Country", message: nil, preferredStyle: .alert)
@@ -65,6 +68,8 @@ class TravelsTableViewController: UITableViewController, UISearchBarDelegate {
         alert.addAction(action)
         present(alert, animated: true)
     }
+ */
+    
     /*
     // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
@@ -102,7 +107,10 @@ class TravelsTableViewController: UITableViewController, UISearchBarDelegate {
         return true
     }
     */
-
+   
+    override func viewDidAppear(_ animated: Bool) {
+        travelsTableView.reloadData()
+    }
     
     // MARK: - Navigation
 
@@ -116,6 +124,7 @@ class TravelsTableViewController: UITableViewController, UISearchBarDelegate {
             let indexPath = self.travelsTableView.indexPath(for: cell)
             let countryDetailView = segue.destination as! TravelDetailViewController
             countryDetailView.setCountryName(countries[((indexPath as NSIndexPath?)?.row)!])
+    
         }
 
     }
