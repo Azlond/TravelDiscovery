@@ -26,7 +26,6 @@ class TravelsAddViewController: UIViewController {
         returnDateLabel.isHidden = true
         returnDateButton.isHidden = true
         selectDatePicker.isHidden = true
-
        
     }
 

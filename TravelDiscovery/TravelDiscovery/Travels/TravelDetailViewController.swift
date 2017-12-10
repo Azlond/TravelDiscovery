@@ -23,10 +23,10 @@ class TravelDetailViewController: UIViewController {
         super.viewDidLoad()
 
         countryNameLabel.text = setCountryName
-        
        // countryFlagImageView.image = UIImage(named: "\(String(describing: countryNameLabel.text))")
         countryFlagImageView.image = UIImage(named: "\(setCountryName)")
         departureDateLabel.text = departureDate
+        
     }
 
     override func didReceiveMemoryWarning() {

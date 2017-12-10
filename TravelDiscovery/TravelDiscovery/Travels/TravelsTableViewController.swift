@@ -85,7 +85,6 @@ class TravelsTableViewController: UITableViewController, UISearchBarDelegate {
             // Delete the row from the data source
             //tableView.deleteRows(at: [indexPath], with: .fade)
             countries.remove(at: indexPath.row)
-        
             tableView.deleteRows(at: [indexPath], with: .automatic)
         }    
 
