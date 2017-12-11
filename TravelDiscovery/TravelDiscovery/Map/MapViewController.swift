@@ -60,7 +60,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
                 //TODO: needs more user interaction/confirmation
                 FirebaseData.visitedCountries.removeValue(forKey: country)
                 updateMap()
-                FirebaseController.saveToFirebase()
+                FirebaseController.saveCountriesToFirebase()
             } else {
                 loadScratchcard(name: country)
             }
@@ -101,7 +101,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
         if name.count > 0 {
             FirebaseData.visitedCountries[name] = true
             updateMap()
-            FirebaseController.saveToFirebase()
+            FirebaseController.saveCountriesToFirebase()
         }
     }
     /**

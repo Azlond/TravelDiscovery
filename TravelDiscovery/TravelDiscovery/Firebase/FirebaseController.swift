@@ -12,7 +12,7 @@ import FirebaseDatabase
 
 class FirebaseController {
     
-    public static func saveToFirebase() {
+    public static func saveCountriesToFirebase() {
         if let user = Auth.auth().currentUser {
             if (FirebaseData.ref == nil) {
                 // initialize database
@@ -28,13 +28,13 @@ class FirebaseController {
         }
     }
     
-    public static func retrieveFromFirebase() {
+    public static func retrieveCountriesFromFirebase() {
         if let user = Auth.auth().currentUser {
             if (FirebaseData.ref == nil) {
                 // initialize database
                 FirebaseData.ref = Database.database().reference()
             }
-            FirebaseData.ref.child("users").child(user.uid).observeSingleEvent(of: .value, with: { (snapshot) in
+            FirebaseData.ref.child("users").child(user.uid).observe(.value, with: { (snapshot) in
                 let value = snapshot.value as? NSDictionary
                 var vC : Dictionary<String, Bool> = [:]
                 let fbD = value?["visitedCountries"] as? Dictionary<String, Bool> ?? [:]
