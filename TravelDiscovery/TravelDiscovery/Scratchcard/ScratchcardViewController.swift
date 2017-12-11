@@ -104,7 +104,7 @@ class ScratchcardViewController: UIViewController, ScratchUIViewDelegate {
     func checkForCompletion() {
         let scratchPercent: Double = scratchCard.getScratchPercent()
         if scratchPercent > 0.90 {
-            //finishSuccess(sleepTime: 1)
+            //finishSuccess(sleepTime: 0.001)
             scratchCard.scratchView.isHidden = true
             self.parentVC.markCountry(name: self.country)
             self.dismiss(animated: true, completion: nil)
@@ -124,7 +124,7 @@ class ScratchcardViewController: UIViewController, ScratchUIViewDelegate {
     @IBAction func autocompleteButtonTaped(_ sender: UIBarButtonItem) {
         autoCompleteButton.isEnabled = false
         cancelButton.isEnabled = false
-        finishSuccess(sleepTime: 150)
+        finishSuccess(sleepTime: 0.006)
     }
     
     
@@ -132,7 +132,7 @@ class ScratchcardViewController: UIViewController, ScratchUIViewDelegate {
      * finish the scratching
      * receive notification from async thread to check if we can already dismiss the view
      */
-    func finishSuccess(sleepTime: UInt32) {
+    func finishSuccess(sleepTime: Double) {
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(dismissToPrevious),

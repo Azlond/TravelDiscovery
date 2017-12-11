@@ -24,7 +24,6 @@ class FirebaseController {
                 let key = regex.stringByReplacingMatches(in: country.key, options: [], range: NSRange(0..<country.key.utf16.count), withTemplate: "DOT")
                 vC[key] = true
             }
-            print(vC)
             FirebaseData.ref.child("users").child(user.uid).setValue(["visitedCountries": vC])
         }
     }

@@ -32,7 +32,7 @@ open class ScratchUIView: UIView, ScratchViewDelegate {
         self.Init()
     }
 
-    open func autoScratch(sleepTime: UInt32) {
+    open func autoScratch(sleepTime: Double) {
         scratchView.isUserInteractionEnabled = false
         let viewSize = scratchView.getContentLayer().bounds
         let screenWidth = Int(viewSize.width)
@@ -49,30 +49,29 @@ open class ScratchUIView: UIView, ScratchViewDelegate {
                 xyArray.append((x * Int(lineWidth), y * Int(lineWidth)))
             }
         }
-                
-        DispatchQueue.global(qos: .background).async {
-            while (xyArray.count > 0 && self.getScratchPercent() < 1) {
-                /*If interrupted, stop scratching*/
-                if self.interrupted {
-                    return
-                }
-                /*Get random array index*/
-                let randomXY = Int(arc4random_uniform(UInt32(xyArray.count)))
-                
-                let startPoint = CGPoint(x: xyArray[randomXY].0, y: xyArray[randomXY].1)
-                let endPoint = startPoint
-                
-                /*send render command to AsyncQueue*/
-                DispatchQueue.main.async {
-                    if (self.getScratchPercent() < 1) {
-                        self.scratchView.renderLineFromPoint(startPoint, end: endPoint)
-                        NotificationCenter.default.post(name: Notification.Name("dismissScratch"), object: nil)
-                    }
-                }
-                /*remove chosen index from array*/
-                xyArray.remove(at: randomXY)
-                usleep(sleepTime)
+                    
+        for index in 0 ..< xyArray.count {
+            if self.interrupted {
+                return
             }
+            /*Get random array index*/
+            let randomXY = Int(arc4random_uniform(UInt32(xyArray.count)))
+            
+            let startPoint = CGPoint(x: xyArray[randomXY].0, y: xyArray[randomXY].1)
+
+            /*send render command to timer*/
+            Timer.scheduledTimer(timeInterval: Double(index)*sleepTime, target: self, selector: #selector(self.delegateScratch), userInfo: startPoint, repeats: false)
+            
+            /*remove chosen index from array*/
+            xyArray.remove(at: randomXY)
+        }
+    }
+    
+    @objc func delegateScratch(_ timer: Timer) {
+        if (self.getScratchPercent() < 1) {
+            let startPoint = timer.userInfo as! CGPoint
+            self.scratchView.renderLineFromPoint(startPoint, end: startPoint)
+            NotificationCenter.default.post(name: Notification.Name("dismissScratch"), object: nil)
         }
     }
     
