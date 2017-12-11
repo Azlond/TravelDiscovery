@@ -9,6 +9,7 @@
 import Foundation
 import FirebaseAuth
 import FirebaseDatabase
+import SwiftLocation
 
 class FirebaseController {
     
