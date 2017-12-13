@@ -72,6 +72,8 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Shows your travel route</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>Shows your travel route</string>
 </dict>
