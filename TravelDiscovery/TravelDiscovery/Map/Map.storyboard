@@ -28,6 +28,9 @@
                         </barButtonItem>
                     </navigationItem>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <outlet property="buttonAddPin" destination="fN2-Rz-M2o" id="dXw-iL-yVa"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6Wt-rf-Mvj" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
