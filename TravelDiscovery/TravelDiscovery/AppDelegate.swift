@@ -15,52 +15,23 @@ import UserNotifications
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-    let center = UNUserNotificationCenter.current()
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         FirebaseApp.configure()
         Database.database().isPersistenceEnabled = true
         let options: UNAuthorizationOptions = [.alert, .badge, .sound];
-        center.requestAuthorization(options: options) {
+        
+        /*TODO: move local push Authorization to better place, e.g. creating new travel*/
+        UNUserNotificationCenter.current().requestAuthorization(options: options) {
             (granted, error) in
             if !granted {
                 print("Something went wrong")
             }
         }
 
-        /* Locator.subscribeSignificantLocations(onUpdate: { (newLocation) -> (Void) in
-            print("ho")
-            print(newLocation)
-            Locator.location(fromCoordinates: newLocation.coordinate, onSuccess: { places in
-                    print(places)
-                }, onFail: { err in
-                    print("\(err)")
-                })
-            }, onFail: { (err, loc) -> (Void) in
-                print("Failed to get location: \(err)")
-            })*/
-        
-        Locator.subscribeSignificantLocations(onUpdate: { newLocation in
-            print("New location \(newLocation)")
-            Locator.location(fromCoordinates: newLocation.coordinate, onSuccess: { places in
-                print(places)
-                let content = UNMutableNotificationContent()
-                content.title = "New Location Update"
-                content.body = "You're somewhere new: \(places)"
-                content.sound = UNNotificationSound.default()
-                
-                let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 10, repeats: false)
-                let identifier = "UYLLocalNotification"
-                let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
-                self.center.add(request, withCompletionHandler: { (error) in
-                    if let error = error {
-                        print("\(error)")
-                    }
-                })
-            }, onFail: { err in
-                print("\(err)")
-            })
+        Locator.subscribeSignificantLocations(onUpdate: { location in
+            FirebaseController.handleBackgroundLocationData(location: location)
         }) { (err, lastLocation) -> (Void) in
             print("Failed with err: \(err)")
         }
