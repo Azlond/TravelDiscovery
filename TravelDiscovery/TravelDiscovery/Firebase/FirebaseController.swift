@@ -10,6 +10,8 @@ import Foundation
 import FirebaseAuth
 import FirebaseDatabase
 import SwiftLocation
+import CoreLocation
+import UserNotifications
 
 class FirebaseController {
     
@@ -49,6 +51,44 @@ class FirebaseController {
             }) { (error) in
                 print(error.localizedDescription)
             }
+        }
+    }
+    
+    public static func handleBackgroundLocationData(location: CLLocation) {
+        if let user = Auth.auth().currentUser {
+            if (FirebaseData.ref == nil) {
+                // initialize database
+                FirebaseData.ref = Database.database().reference()
+            }
+            
+            FirebaseData.locationData[FirebaseData.locationData.count] = location.coordinate
+            
+            for loc in FirebaseData.locationData {
+                let locDict : Dictionary<String, Double> = ["latitude":loc.value.latitude, "longitude":loc.value.longitude]
+                FirebaseData.ref.child("users").child(user.uid).child("activeTravelLocations").child(String(loc.key)).setValue(["coordinates": locDict])
+            }            
+            
+            /* Send push message with location name*/
+            Locator.location(fromCoordinates: location.coordinate, onSuccess: { places in
+                print(places)
+                let content = UNMutableNotificationContent()
+                content.title = "New Location Update"
+                content.body = "You're somewhere new: \(places)"
+                content.sound = UNNotificationSound.default()
+                
+                let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 10, repeats: false)
+                let identifier = "UYLLocalNotification"
+                let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
+                UNUserNotificationCenter.current().add(request, withCompletionHandler: { (error) in
+                    if let error = error {
+                        print("\(error)")
+                    }
+                })
+            }, onFail: { err in
+                print("\(err)")
+            })
+        } else {
+            print("oops")
         }
     }
 }
