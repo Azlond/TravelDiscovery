@@ -43,6 +43,11 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
             selector: #selector(updateMap),
             name: Notification.Name("updateMap"),
             object: nil)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(animateTravel),
+            name: Notification.Name("drawLine"),
+            object: nil)
         
     }
     
@@ -70,6 +75,8 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
     // Wait until the style is loaded before modifying the map style.
     func mapView(_ mapView: MGLMapView, didFinishLoading style: MGLStyle) {
         updateMap()
+        addLayer(to: style)
+        Timer.scheduledTimer(timeInterval: 10, target: self, selector: #selector(animateTravel), userInfo: nil, repeats: false)
     }
     
     /**
@@ -142,10 +149,61 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
     
      */
     
+    
+    var timer: Timer?
+    var polylineSource: MGLShapeSource?
+    var currentIndex = 1
+    
+    
+    func addLayer(to style: MGLStyle) {
+        // Add an empty MGLShapeSource, we’ll keep a reference to this and add points to this later.
+        let source = MGLShapeSource(identifier: "polyline", shape: nil, options: nil)
+        style.addSource(source)
+        polylineSource = source
+        
+        // Add a layer to style our polyline.
+        let layer = MGLLineStyleLayer(identifier: "polyline", source: source)
+        layer.lineJoin = MGLStyleValue(rawValue: NSValue(mglLineJoin: .round))
+        layer.lineCap = MGLStyleValue(rawValue: NSValue(mglLineCap: .round))
+        layer.lineColor = MGLStyleValue(rawValue: UIColor.red)
+        layer.lineWidth = MGLStyleFunction(interpolationMode: .exponential,
+                                           cameraStops: [14: MGLConstantStyleValue<NSNumber>(rawValue: 5),
+                                                         18: MGLConstantStyleValue<NSNumber>(rawValue: 20)],
+                                           options: [.defaultValue : MGLConstantStyleValue<NSNumber>(rawValue: 1.5)])
+        style.addLayer(layer)
+    }
+    
     @IBAction func addMarker(_ sender: UIBarButtonItem) {
         print("add marker here")
     }
     
+   @objc func animateTravel() {
+        currentIndex = 1
+        timer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(tick), userInfo: nil, repeats: true)
+    }
     
+    
+    @objc func tick() {
+        if currentIndex > FirebaseData.locationData.count {
+            timer?.invalidate()
+            timer = nil
+            return
+        }
+        var coordinates = Array(FirebaseData.locationData.values)
+        coordinates = Array(coordinates[0..<currentIndex])
+        // Update our MGLShapeSource with the current locations.
+        updatePolylineWithCoordinates(coordinates: coordinates)
+        
+        currentIndex += 1
+    }
+    
+    func updatePolylineWithCoordinates(coordinates: [CLLocationCoordinate2D]) {
+        var mutableCoordinates = coordinates
+        
+        let polyline = MGLPolylineFeature(coordinates: &mutableCoordinates, count: UInt(mutableCoordinates.count))
+        
+        // Updating the MGLShapeSource’s shape will have the map redraw our polyline with the current coordinates.
+        polylineSource?.shape = polyline
+    }
     
 }

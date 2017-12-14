@@ -38,6 +38,12 @@ class SettingsViewController: UIViewController {
         }
     }
     
+    
+    @IBAction func drawLineOnMap(_ sender: UIButton) {
+        NotificationCenter.default.post(name: Notification.Name("drawLine"), object: nil)        
+    }
+    
+    
     /*
     // MARK: - Navigation
 
