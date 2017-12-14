@@ -28,10 +28,11 @@ class FirebaseController {
         }
     }
     
-    public static func retrieveCountriesFromFirebase() {
+    public static func retrieveFromFirebase() {
         if let user = Auth.auth().currentUser {
             initDatabase()
             FirebaseData.ref.child("users").child(user.uid).observe(.value, with: { (snapshot) in
+                /*Countries*/
                 let value = snapshot.value as? NSDictionary
                 var vC : Dictionary<String, Bool> = [:]
                 let fbD = value?["visitedCountries"] as? Dictionary<String, Bool> ?? [:]
@@ -42,7 +43,6 @@ class FirebaseController {
                 }
                 FirebaseData.visitedCountries = vC
                 NotificationCenter.default.post(name: Notification.Name("updateMap"), object: nil)
-                
                 
                 /*settings*/
                 let userSettings = UserDefaults.standard
@@ -56,6 +56,28 @@ class FirebaseController {
                 let scratchPercentValue = loadedSettings["scratchPercent"] ?? FirebaseData.defaultSettings["scratchPercent"]
                 userSettings.set(scratchPercentValue, forKey: "scratchPercent")
                 Timer.scheduledTimer(timeInterval: 0.01, target: self, selector: #selector(self.sendSettingsNotification), userInfo: nil, repeats: false) //need to use a timer to avoid too many changes
+
+                /*locationData*/
+                var lD : Dictionary<Int, CLLocationCoordinate2D> = [:]
+                let fbLD = value?["activeTravelLocations"] as? NSArray ?? []
+                for element in fbLD {
+                    let x : Dictionary<String, Dictionary<String, Double>> = element as! Dictionary<String, Dictionary<String, Double>>
+                    var lat : Double = 0.0
+                    var long: Double = 0.0
+                    for val in x {
+                        let coordinates = val.value
+                        for coord in coordinates {
+                            if (coord.key == "latitude") {
+                                lat = coord.value
+                            } else if (coord.key == "longitude") {
+                                long = coord.value
+                            }
+                        }
+                    }
+                    let coordinate : CLLocationCoordinate2D = CLLocationCoordinate2D.init(latitude: lat, longitude: long)
+                    lD[lD.count] = coordinate
+                }
+                FirebaseData.locationData = lD
             }) { (error) in
                 print(error.localizedDescription)
             }

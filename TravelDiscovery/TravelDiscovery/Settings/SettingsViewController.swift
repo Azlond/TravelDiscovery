@@ -147,6 +147,12 @@ class SettingsViewController: FormViewController {
         self.present(deleteConfirmationAlert, animated: true, completion: nil)
     }
     
+    
+    @IBAction func drawLineOnMap(_ sender: UIButton) {
+        NotificationCenter.default.post(name: Notification.Name("drawLine"), object: nil)        
+    }
+    
+    
     /*
     // MARK: - Navigation
 
