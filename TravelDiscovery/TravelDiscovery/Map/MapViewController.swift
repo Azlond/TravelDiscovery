@@ -189,8 +189,10 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
             timer = nil
             return
         }
-        var coordinates = Array(FirebaseData.locationData.values)
-        coordinates = Array(coordinates[0..<currentIndex])
+        var coordinates = [CLLocationCoordinate2D]()
+        for index in 0..<currentIndex {
+            coordinates.append(FirebaseData.locationData[index]!)
+        }
         // Update our MGLShapeSource with the current locations.
         updatePolylineWithCoordinates(coordinates: coordinates)
         
