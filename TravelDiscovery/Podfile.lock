@@ -136,6 +136,7 @@ PODS:
     - nanopb/encode (= 0.3.8)
   - nanopb/decode (0.3.8)
   - nanopb/encode (0.3.8)
+  - NohanaImagePicker (0.9.0)
   - Protobuf (3.5.0)
   - ScratchCard (1.1.3)
   - SDWebImage (4.2.2):
@@ -151,6 +152,7 @@ DEPENDENCIES:
   - Firebase/Database
   - FirebaseUI
   - Mapbox-iOS-SDK (~> 3.7)
+  - NohanaImagePicker
   - ScratchCard (~> 1.1.3)
 
 SPEC CHECKSUMS:
@@ -178,12 +180,13 @@ SPEC CHECKSUMS:
   leveldb-library: 08cba283675b7ed2d99629a4bc5fd052cd2bb6a5
   Mapbox-iOS-SDK: 699818d30e1ed4985d3efc6a06c40b90907c586d
   nanopb: 5601e6bca2dbf1ed831b519092ec110f66982ca3
+  NohanaImagePicker: b39fa5623cabab69597ea6f6a2d6729b9895cd2b
   Protobuf: 8a9838fba8dae3389230e1b7f8c104aa32389c03
   ScratchCard: e5b9f8b9c5f9c197128fc6540cd829473e284fd3
   SDWebImage: 89a9d32cd520bbb46eb14e541d5109b3564af198
   TwitterCore: 549c74ed5f3d6134392dc944c6d215e233e50ad8
   TwitterKit: b9feccfc70bef86fe389c06a63a72fed9f020b9c
 
-PODFILE CHECKSUM: df619d89b5f5457b633dbeaad18b5bedf252abc8
+PODFILE CHECKSUM: 4b3d352fa9707ef8a45d4894573952e9b42b30af
 
 COCOAPODS: 1.3.1
