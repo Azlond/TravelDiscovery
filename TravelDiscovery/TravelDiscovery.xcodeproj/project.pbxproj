@@ -30,7 +30,6 @@
 		3D979C8D1FC9BCCC00350C9E /* ScratchcardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D979C8C1FC9BCCC00350C9E /* ScratchcardViewController.swift */; };
 		58F635D632DE69D8F79A6C71 /* Pods_TravelDiscoveryTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F68A9D7ED9532E30AFC203B8 /* Pods_TravelDiscoveryTests.framework */; };
 		81F7BF082CA64BC6DC302CF6 /* Pods_TravelDiscovery.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 59A094B9D15DD5382A747194 /* Pods_TravelDiscovery.framework */; };
-		8451573B1FE15E5B00691E4E /* DataHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8451573A1FE15E5B00691E4E /* DataHandler.swift */; };
 		845157431FE161A400691E4E /* PinViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845157421FE161A400691E4E /* PinViewController.swift */; };
 		84F5A7DD1FD5569900A885D0 /* CountriesDict.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F5A7DC1FD5569900A885D0 /* CountriesDict.swift */; };
 		C21DFF351FD4B62F00B85EAD /* Pin.swift in Sources */ = {isa = PBXBuildFile; fileRef = C21DFF341FD4B62F00B85EAD /* Pin.swift */; };
@@ -82,7 +81,6 @@
 		4788F5809283A9294A57339F /* Pods-TravelDiscovery.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TravelDiscovery.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TravelDiscovery/Pods-TravelDiscovery.debug.xcconfig"; sourceTree = "<group>"; };
 		4BEB1DD982A34EBDA546EB93 /* Pods-TravelDiscoveryTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TravelDiscoveryTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TravelDiscoveryTests/Pods-TravelDiscoveryTests.release.xcconfig"; sourceTree = "<group>"; };
 		59A094B9D15DD5382A747194 /* Pods_TravelDiscovery.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TravelDiscovery.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		8451573A1FE15E5B00691E4E /* DataHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataHandler.swift; sourceTree = "<group>"; };
 		845157421FE161A400691E4E /* PinViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinViewController.swift; sourceTree = "<group>"; };
 		84F5A7DC1FD5569900A885D0 /* CountriesDict.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountriesDict.swift; sourceTree = "<group>"; };
 		BC819D78A77B0BE93C4145D9 /* Pods-TravelDiscoveryTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TravelDiscoveryTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TravelDiscoveryTests/Pods-TravelDiscoveryTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -261,7 +259,6 @@
 				C21DFF341FD4B62F00B85EAD /* Pin.swift */,
 				84F5A7DC1FD5569900A885D0 /* CountriesDict.swift */,
 				C21DFF361FD4BB2300B85EAD /* Travel.swift */,
-				8451573A1FE15E5B00691E4E /* DataHandler.swift */,
 			);
 			path = DataModels;
 			sourceTree = "<group>";
@@ -418,6 +415,7 @@
 				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
 				"${PODS_ROOT}/Mapbox-iOS-SDK/dynamic/Mapbox.framework",
 				"${PODS_ROOT}/Mapbox-iOS-SDK/dynamic/Mapbox.framework.dSYM",
+				"${BUILT_PRODUCTS_DIR}/NohanaImagePicker/NohanaImagePicker.framework",
 				"${BUILT_PRODUCTS_DIR}/ScratchCard/ScratchCard.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftLocation/SwiftLocation.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
@@ -431,6 +429,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Mapbox.framework",
 				"${DWARF_DSYM_FOLDER_PATH}/Mapbox.framework.dSYM",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NohanaImagePicker.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ScratchCard.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftLocation.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
@@ -479,11 +478,11 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-TravelDiscovery/Pods-TravelDiscovery-resources.sh",
-				"$PODS_CONFIGURATION_BUILD_DIR/FirebaseUI/FirebaseAuthUI.bundle",
-				"$PODS_CONFIGURATION_BUILD_DIR/FirebaseUI/FirebaseFacebookAuthUI.bundle",
-				"$PODS_CONFIGURATION_BUILD_DIR/FirebaseUI/FirebaseGoogleAuthUI.bundle",
-				"$PODS_CONFIGURATION_BUILD_DIR/FirebaseUI/FirebasePhoneAuthUI.bundle",
-				"$PODS_CONFIGURATION_BUILD_DIR/FirebaseUI/FirebaseTwitterAuthUI.bundle",
+				$PODS_CONFIGURATION_BUILD_DIR/FirebaseUI/FirebaseAuthUI.bundle,
+				$PODS_CONFIGURATION_BUILD_DIR/FirebaseUI/FirebaseFacebookAuthUI.bundle,
+				$PODS_CONFIGURATION_BUILD_DIR/FirebaseUI/FirebaseGoogleAuthUI.bundle,
+				$PODS_CONFIGURATION_BUILD_DIR/FirebaseUI/FirebasePhoneAuthUI.bundle,
+				$PODS_CONFIGURATION_BUILD_DIR/FirebaseUI/FirebaseTwitterAuthUI.bundle,
 				"${PODS_ROOT}/GoogleSignIn/Resources/GoogleSignIn.bundle",
 				"${PODS_ROOT}/TwitterKit/iOS/TwitterKit.framework/TwitterKitResources.bundle",
 				"${PODS_ROOT}/TwitterKit/iOS/TwitterKit.framework/TwitterShareExtensionUIResources.bundle",
@@ -545,7 +544,6 @@
 				CE76A3161FDD995B00516E7F /* TravelsAddViewController.swift in Sources */,
 				3D6763021FC6163C00CFFF32 /* LoginViewController.swift in Sources */,
 				C21DFF351FD4B62F00B85EAD /* Pin.swift in Sources */,
-				8451573B1FE15E5B00691E4E /* DataHandler.swift in Sources */,
 				3D6763091FC6292100CFFF32 /* EmailLoginViewController.swift in Sources */,
 				CE371C631FD420BB00C92FED /* TravelDetailViewController.swift in Sources */,
 				3D7830F91FC8EA5100305D1D /* SettingsViewController.swift in Sources */,
@@ -714,7 +712,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = TravelDiscovery/TravelDiscovery.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 8ZSLR345X6;
+				DEVELOPMENT_TEAM = Q632JFQA88;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Pods/FirebaseAnalytics/Frameworks",
@@ -738,7 +736,7 @@
 				);
 				INFOPLIST_FILE = TravelDiscovery/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = iOSTravelCrew2.TravelDiscovery;
+				PRODUCT_BUNDLE_IDENTIFIER = iOSTravelCrew.TravelDiscovery;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -752,7 +750,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = TravelDiscovery/TravelDiscovery.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 8ZSLR345X6;
+				DEVELOPMENT_TEAM = Q632JFQA88;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Pods/FirebaseAnalytics/Frameworks",
@@ -776,7 +774,7 @@
 				);
 				INFOPLIST_FILE = TravelDiscovery/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = iOSTravelCrew2.TravelDiscovery;
+				PRODUCT_BUNDLE_IDENTIFIER = iOSTravelCrew.TravelDiscovery;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = 1;
