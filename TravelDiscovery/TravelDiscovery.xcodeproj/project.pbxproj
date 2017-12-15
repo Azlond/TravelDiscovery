@@ -30,6 +30,8 @@
 		3D979C8D1FC9BCCC00350C9E /* ScratchcardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D979C8C1FC9BCCC00350C9E /* ScratchcardViewController.swift */; };
 		58F635D632DE69D8F79A6C71 /* Pods_TravelDiscoveryTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F68A9D7ED9532E30AFC203B8 /* Pods_TravelDiscoveryTests.framework */; };
 		81F7BF082CA64BC6DC302CF6 /* Pods_TravelDiscovery.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 59A094B9D15DD5382A747194 /* Pods_TravelDiscovery.framework */; };
+		8451573B1FE15E5B00691E4E /* DataHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8451573A1FE15E5B00691E4E /* DataHandler.swift */; };
+		845157431FE161A400691E4E /* PinViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845157421FE161A400691E4E /* PinViewController.swift */; };
 		84F5A7DD1FD5569900A885D0 /* CountriesDict.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F5A7DC1FD5569900A885D0 /* CountriesDict.swift */; };
 		C21DFF351FD4B62F00B85EAD /* Pin.swift in Sources */ = {isa = PBXBuildFile; fileRef = C21DFF341FD4B62F00B85EAD /* Pin.swift */; };
 		C21DFF371FD4BB2300B85EAD /* Travel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C21DFF361FD4BB2300B85EAD /* Travel.swift */; };
@@ -80,6 +82,8 @@
 		4788F5809283A9294A57339F /* Pods-TravelDiscovery.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TravelDiscovery.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TravelDiscovery/Pods-TravelDiscovery.debug.xcconfig"; sourceTree = "<group>"; };
 		4BEB1DD982A34EBDA546EB93 /* Pods-TravelDiscoveryTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TravelDiscoveryTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TravelDiscoveryTests/Pods-TravelDiscoveryTests.release.xcconfig"; sourceTree = "<group>"; };
 		59A094B9D15DD5382A747194 /* Pods_TravelDiscovery.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TravelDiscovery.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		8451573A1FE15E5B00691E4E /* DataHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataHandler.swift; sourceTree = "<group>"; };
+		845157421FE161A400691E4E /* PinViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinViewController.swift; sourceTree = "<group>"; };
 		84F5A7DC1FD5569900A885D0 /* CountriesDict.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountriesDict.swift; sourceTree = "<group>"; };
 		BC819D78A77B0BE93C4145D9 /* Pods-TravelDiscoveryTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TravelDiscoveryTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TravelDiscoveryTests/Pods-TravelDiscoveryTests.debug.xcconfig"; sourceTree = "<group>"; };
 		C21DFF341FD4B62F00B85EAD /* Pin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pin.swift; sourceTree = "<group>"; };
@@ -144,6 +148,7 @@
 				3D7830EF1FC8E9C700305D1D /* Settings */,
 				3D7830EE1FC8E9BF00305D1D /* Feed */,
 				3D7830ED1FC8E99A00305D1D /* Travels */,
+				8451573F1FE160EE00691E4E /* Pin */,
 				3D7830EC1FC8E98600305D1D /* Map */,
 				3D6762FE1FC6161900CFFF32 /* Login */,
 				3D21C0751FC4EA6E00F4DFC3 /* AppDelegate.swift */,
@@ -242,12 +247,21 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		8451573F1FE160EE00691E4E /* Pin */ = {
+			isa = PBXGroup;
+			children = (
+				845157421FE161A400691E4E /* PinViewController.swift */,
+			);
+			path = Pin;
+			sourceTree = "<group>";
+		};
 		C21DFF331FD4B60E00B85EAD /* DataModels */ = {
 			isa = PBXGroup;
 			children = (
 				C21DFF341FD4B62F00B85EAD /* Pin.swift */,
 				84F5A7DC1FD5569900A885D0 /* CountriesDict.swift */,
 				C21DFF361FD4BB2300B85EAD /* Travel.swift */,
+				8451573A1FE15E5B00691E4E /* DataHandler.swift */,
 			);
 			path = DataModels;
 			sourceTree = "<group>";
@@ -531,9 +545,11 @@
 				CE76A3161FDD995B00516E7F /* TravelsAddViewController.swift in Sources */,
 				3D6763021FC6163C00CFFF32 /* LoginViewController.swift in Sources */,
 				C21DFF351FD4B62F00B85EAD /* Pin.swift in Sources */,
+				8451573B1FE15E5B00691E4E /* DataHandler.swift in Sources */,
 				3D6763091FC6292100CFFF32 /* EmailLoginViewController.swift in Sources */,
 				CE371C631FD420BB00C92FED /* TravelDetailViewController.swift in Sources */,
 				3D7830F91FC8EA5100305D1D /* SettingsViewController.swift in Sources */,
+				845157431FE161A400691E4E /* PinViewController.swift in Sources */,
 				3D7830FD1FC8EC1900305D1D /* FeedTableViewController.swift in Sources */,
 				3D7830FF1FC8EC5B00305D1D /* TravelsTableViewController.swift in Sources */,
 				3D21C0761FC4EA6E00F4DFC3 /* AppDelegate.swift in Sources */,
