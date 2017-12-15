@@ -76,5 +76,7 @@
 	<string>Shows your travel route</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>Shows your travel route</string>
+	<key>NSHealthShareUsageDescription</key>
+	<string>Allows you to view total amount of steps during a journey</string>
 </dict>
 </plist>
