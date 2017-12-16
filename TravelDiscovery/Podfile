@@ -6,10 +6,13 @@ target 'TravelDiscovery' do
   use_frameworks!
 
   # Pods for TravelDiscovery
+  pod 'FirebaseUI/Database'
+  pod 'Firebase/Storage'
+  
   pod 'Firebase/Core'
-  pod 'FirebaseUI'
-  pod 'Firebase/Auth'
   pod 'Firebase/Database'
+  pod 'Firebase/Auth'
+  
   pod 'Mapbox-iOS-SDK', '~> 3.7'
   pod 'ScratchCard', '~> 1.1.3'
   
