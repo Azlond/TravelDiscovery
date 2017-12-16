@@ -66,7 +66,6 @@ class EmailSignUpViewController: UIViewController, UITextFieldDelegate {
                 } else {
                     let emailSentAlert = UIAlertController(title: "Email Verification", message: "Verification email has been sent. Please tap on the link in the email to verify your account before you can use the features in the app.", preferredStyle: .alert)
                     emailSentAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action: UIAlertAction!) in
-                        print("DISMISSING ALERT WINDOW")
                         do {
                             try Auth.auth().signOut()
                         } catch {

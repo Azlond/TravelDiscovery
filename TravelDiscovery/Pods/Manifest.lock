@@ -1,4 +1,5 @@
 PODS:
+  - Eureka (4.0.1)
   - Firebase/Auth (4.7.0):
     - Firebase/Core
     - FirebaseAuth (= 4.4.0)
@@ -54,6 +55,7 @@ PODS:
   - ScratchCard (1.1.3)
 
 DEPENDENCIES:
+  - Eureka
   - Firebase/Auth
   - Firebase/Core
   - Firebase/Database
@@ -63,6 +65,7 @@ DEPENDENCIES:
   - ScratchCard (~> 1.1.3)
 
 SPEC CHECKSUMS:
+  Eureka: c8bd5cc07143b6f66268c208d28a246c99b41955
   Firebase: dbfb98ccec2dcfcd21ab9cc1b4981a3f3c8c5e26
   FirebaseAnalytics: 5b02a63ead2c3f0259cfc7f15e053e440587ecf8
   FirebaseAuth: cdeee95b528958dbb7dcf220ad0fb804d3a284b0
@@ -78,6 +81,6 @@ SPEC CHECKSUMS:
   nanopb: 5601e6bca2dbf1ed831b519092ec110f66982ca3
   ScratchCard: e5b9f8b9c5f9c197128fc6540cd829473e284fd3
 
-PODFILE CHECKSUM: 370d2b4dfa009841cf0e2079ff46947044979253
+PODFILE CHECKSUM: 57236cdee1761202891f298b6de5d6cd1950dab9
 
 COCOAPODS: 1.3.1
