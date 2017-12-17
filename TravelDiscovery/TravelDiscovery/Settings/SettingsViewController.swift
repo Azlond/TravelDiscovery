@@ -43,8 +43,8 @@ class SettingsViewController: FormViewController {
                 row.steps = UInt(row.maximumValue - row.minimumValue)
                 row.value = userSettings.float(forKey: "scratchPercent") != 0 ? userSettings.float(forKey: "scratchPercent") : 90.0
                 row.onChange({row in
+                    Timer.scheduledTimer(timeInterval: 0.5, target: FirebaseController.self, selector: #selector(FirebaseController.saveSettingsToFirebase), userInfo: ["key": "scratchPercent"], repeats: false) //need to use a timer to avoid too many changes
                     userSettings.set(row.value, forKey: "scratchPercent")
-                    FirebaseController.saveSettingsToFirebase(key: "scratchPercent")
                 })
             }
         +++ Section("Feed Settings")
@@ -53,8 +53,9 @@ class SettingsViewController: FormViewController {
                 row.placeholder = "John Doe"
                 row.value = userSettings.string(forKey: "username")
                 row.onChange({row in
+                    Timer.scheduledTimer(timeInterval: 0.5, target: FirebaseController.self, selector: #selector(FirebaseController.saveSettingsToFirebase), userInfo: ["key": "username"], repeats: false) //need to use a timer to avoid too many changes
                     userSettings.set(row.value, forKey: "username")
-                    FirebaseController.saveSettingsToFirebase(key: "username")
+                    
                 })
             }
             <<< SwitchRow("postVisibilityRow") { row in
@@ -63,8 +64,8 @@ class SettingsViewController: FormViewController {
                 row.onChange({row in
                     row.title = row.value! ? "Standard Visibility: Public" : "Standard Visibility: Private"
                     row.updateCell()
+                    Timer.scheduledTimer(timeInterval: 0.5, target: FirebaseController.self, selector: #selector(FirebaseController.saveSettingsToFirebase), userInfo: ["key": "visibility"], repeats: false) //need to use a timer to avoid too many changes
                     userSettings.set(row.value, forKey: "visibility")
-                    FirebaseController.saveSettingsToFirebase(key: "visibility")
                 })
             }
             <<< SliderRow("feedRangeRow") { row in
@@ -75,7 +76,7 @@ class SettingsViewController: FormViewController {
                 row.value = userSettings.float(forKey: "feedRange") != 0 ? userSettings.float(forKey: "feedRange") : 1.0
                 row.onChange({row in
                     userSettings.set(row.value, forKey: "feedRange")
-                    FirebaseController.saveSettingsToFirebase(key: "feedRange")
+                    Timer.scheduledTimer(timeInterval: 0.5, target: FirebaseController.self, selector: #selector(FirebaseController.saveSettingsToFirebase), userInfo: ["key": "feedRange"], repeats: false) //need to use a timer to avoid too many changes
                 })
             }
         

@@ -78,10 +78,12 @@ class FirebaseController {
         NotificationCenter.default.post(name: Notification.Name("updateSettings"), object: nil)
     }
     
-    public static func saveSettingsToFirebase(key: String) {
+    @objc public static func saveSettingsToFirebase(timer:Timer) {
         if let user = Auth.auth().currentUser {
             initDatabase()
             let userSettings = UserDefaults.standard
+            let userInfo = timer.userInfo as! Dictionary<String, String>
+            let key : String = userInfo["key"]!
             FirebaseData.ref.child("users").child(user.uid).child("settings").child(key).setValue(userSettings.string(forKey: key))
         }
     }
