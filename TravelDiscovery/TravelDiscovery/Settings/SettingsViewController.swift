@@ -21,7 +21,7 @@ class SettingsViewController: FormViewController {
                 row.title = "E-Mail Address"
                 row.disabled = true
                 row.placeholder = "traveldiscovery@example.com"
-                row.value = "test@example.com"
+                row.value = FirebaseController.getMailAdress()
             }
             <<< ButtonRow(){ row in
                 row.title = "Logout"
@@ -33,44 +33,62 @@ class SettingsViewController: FormViewController {
             }
             
         +++ Section("Feed Settings")
-            <<< NameRow(){ row in
+            <<< NameRow("feedNameRow"){ row in
                 row.title = "Your Name"
                 row.placeholder = "John Doe"
                 row.value = userSettings.string(forKey: "username")
                 row.onChange({row in
-                  /*  guard let value = row.value else {
-                        return
-                    }*/
                     userSettings.set(row.value, forKey: "username")
-                    FirebaseController.saveSettingsOnline(key: "username")
+                    FirebaseController.saveSettingsToFirebase(key: "username")
                 })
             }
-            <<< SwitchRow { row in
+            <<< SwitchRow("postVisibilityRow") { row in
                 row.value = userSettings.bool(forKey: "visibility") /*If not existing, returns false*/
                 row.title = row.value! ? "Standard Visibility: Public" : "Standard Visibility: Private"
                 row.onChange({row in
                     row.title = row.value! ? "Standard Visibility: Public" : "Standard Visibility: Private"
                     row.updateCell()
                     userSettings.set(row.value, forKey: "visibility")
-                    FirebaseController.saveSettingsOnline(key: "visibility")
+                    FirebaseController.saveSettingsToFirebase(key: "visibility")
                 })
             }
-            <<< SliderRow { row in
+            <<< SliderRow("feedRangeRow") { row in
                 row.title = "Feed Range (km)"
                 row.minimumValue = 1
                 row.maximumValue = 50
                 row.steps = UInt(row.maximumValue - row.minimumValue)
-                row.value = userSettings.integer(forKey: "feedRange") != 0 ? userSettings.float(forKey: "feedRange") : 1.0
+                row.value = userSettings.float(forKey: "feedRange") != 0 ? userSettings.float(forKey: "feedRange") : 1.0
                 row.onChange({row in
                     userSettings.set(row.value, forKey: "feedRange")
-                    FirebaseController.saveSettingsOnline(key: "feedRange")
+                    FirebaseController.saveSettingsToFirebase(key: "feedRange")
                 })
-        }
+            }
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(updateSettings),
+            name: Notification.Name("updateSettings"),
+            object: nil)
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    @objc func updateSettings() {
+        let userSettings = UserDefaults.standard
+        
+        let feedNameRow: NameRow? = form.rowBy(tag: "feedNameRow")
+        feedNameRow?.value = userSettings.string(forKey: "username")
+        feedNameRow?.updateCell()
+        let postVisibilityRow: SwitchRow? = form.rowBy(tag: "postVisibilityRow")
+        postVisibilityRow?.value = userSettings.bool(forKey: "visibility")
+        postVisibilityRow?.updateCell()
+        let feedRangeRow: SliderRow? = form.rowBy(tag: "feedRangeRow")
+        feedRangeRow?.value = userSettings.float(forKey: "feedRange") != 0 ? userSettings.float(forKey: "feedRange") : 1.0
+        feedRangeRow?.updateCell()
+
     }
     
     /**
@@ -80,6 +98,9 @@ class SettingsViewController: FormViewController {
         FirebaseController.removeObservers()
         do {
             try Auth.auth().signOut()
+            if let bundleID = Bundle.main.bundleIdentifier {
+                UserDefaults.standard.removePersistentDomain(forName: bundleID)
+            }
         } catch {
             //error handling logout error
         }

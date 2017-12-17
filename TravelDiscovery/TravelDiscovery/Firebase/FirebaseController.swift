@@ -39,18 +39,41 @@ class FirebaseController {
                 }
                 FirebaseData.visitedCountries = vC
                 NotificationCenter.default.post(name: Notification.Name("updateMap"), object: nil)
+                
+                
+                /*settings*/
+                let userSettings = UserDefaults.standard
+                let loadedSettings = value?["settings"] as? Dictionary<String, String> ?? FirebaseData.defaultSettings
+                let feedRangeValue = loadedSettings["feedRange"] ?? FirebaseData.defaultSettings["feedRange"]
+                userSettings.set(feedRangeValue, forKey: "feedRange")
+                let usernameValue = loadedSettings["username"] ?? FirebaseData.defaultSettings["username"]
+                userSettings.set(usernameValue, forKey: "username")
+                let postVisibilityValue = loadedSettings["visibility"] ?? FirebaseData.defaultSettings["visibility"]
+                userSettings.set(postVisibilityValue, forKey: "visibility")
+                Timer.scheduledTimer(timeInterval: 0.05, target: self, selector: #selector(self.sendSettingsNotification), userInfo: nil, repeats: false) //need to use a timer to avoid too many changed
             }) { (error) in
                 print(error.localizedDescription)
             }
         }
     }
     
-    public static func saveSettingsOnline(key: String) {
+    @objc private static func sendSettingsNotification() {
+        NotificationCenter.default.post(name: Notification.Name("updateSettings"), object: nil)
+    }
+    
+    public static func saveSettingsToFirebase(key: String) {
         if let user = Auth.auth().currentUser {
             initDatabase()
             let userSettings = UserDefaults.standard
             FirebaseData.ref.child("users").child(user.uid).child("settings").child(key).setValue(userSettings.string(forKey: key))
         }
+    }
+    
+    public static func getMailAdress() -> String {
+        if let user = Auth.auth().currentUser {
+            return user.email ?? "traveldiscovery@example.com"
+        }
+        return "traveldiscovery@example.com"
     }
     
     private static func initDatabase() {
@@ -68,6 +91,9 @@ class FirebaseController {
     public static func removeUserData() {
         if let user = Auth.auth().currentUser {
             FirebaseData.ref.child("users").child(user.uid).removeValue()
+            if let bundleID = Bundle.main.bundleIdentifier {
+                UserDefaults.standard.removePersistentDomain(forName: bundleID)
+            }
         }
     }
 }
