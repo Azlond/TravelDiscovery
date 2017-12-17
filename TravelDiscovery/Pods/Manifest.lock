@@ -53,6 +53,9 @@ PODS:
   - nanopb/decode (0.3.8)
   - nanopb/encode (0.3.8)
   - ScratchCard (1.1.3)
+  - SwiftLocation (3.1.0):
+    - SwiftyJSON (~> 4.0.0-alpha.1)
+  - SwiftyJSON (4.0.0)
 
 DEPENDENCIES:
   - Eureka
@@ -63,6 +66,7 @@ DEPENDENCIES:
   - FirebaseUI/Database
   - Mapbox-iOS-SDK (~> 3.7)
   - ScratchCard (~> 1.1.3)
+  - SwiftLocation (~> 3.1.0)
 
 SPEC CHECKSUMS:
   Eureka: c8bd5cc07143b6f66268c208d28a246c99b41955
@@ -80,7 +84,9 @@ SPEC CHECKSUMS:
   Mapbox-iOS-SDK: 34c96bec48a1122ead238e7e886cd9d613e6280c
   nanopb: 5601e6bca2dbf1ed831b519092ec110f66982ca3
   ScratchCard: e5b9f8b9c5f9c197128fc6540cd829473e284fd3
+  SwiftLocation: 8f5ef4f510a45e43239de57a3145b3669301e898
+  SwiftyJSON: 070dabdcb1beb81b247c65ffa3a79dbbfb3b48aa
 
-PODFILE CHECKSUM: 57236cdee1761202891f298b6de5d6cd1950dab9
+PODFILE CHECKSUM: d35a28e893be1c36ae8c895d5a99d3e42c6ed46f
 
 COCOAPODS: 1.3.1

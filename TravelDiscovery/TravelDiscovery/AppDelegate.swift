@@ -23,19 +23,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let options: UNAuthorizationOptions = [.alert, .badge, .sound];
         
         /*TODO: move local push Authorization to better place, e.g. creating new travel*/
+        let userSettings = UserDefaults.standard
+        
         UNUserNotificationCenter.current().requestAuthorization(options: options) {
             (granted, error) in
             if !granted {
                 print("Something went wrong")
             }
         }
-
-        Locator.subscribeSignificantLocations(onUpdate: { location in
-            FirebaseController.handleBackgroundLocationData(location: location)
-        }) { (err, lastLocation) -> (Void) in
-            print("Failed with err: \(err)")
+        let enableBackgroundLocationUpdates = userSettings.bool(forKey: "backgroundLocationUpdates")
+        if (enableBackgroundLocationUpdates) {
+            Locator.subscribeSignificantLocations(onUpdate: { location in
+                FirebaseController.handleBackgroundLocationData(location: location)
+            }) { (err, lastLocation) -> (Void) in
+                print("Failed with err: \(err)")
+            }
         }
-        
         return true
     }
     

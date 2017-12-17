@@ -10,6 +10,7 @@ import UIKit
 import FirebaseAuth
 import Eureka
 import HealthKit
+import SwiftLocation
 
 class SettingsViewController: FormViewController {
 
@@ -78,16 +79,75 @@ class SettingsViewController: FormViewController {
                 })
             }
         
+        +++ Section("Developers Corner")
+            <<< SwitchRow("backgroundLocationRow"){ row in
+                row.title = "Background Location Updates"
+                row.value = false
+                row.onChange({row in
+                    self.backgroundLocationUpdates(enabled: row.value!)
+                })
+            }
+            <<< ButtonRow(){ row in
+                row.title = "Draw Route on Map"
+                row.onCellSelection(self.drawLineOnMap)
+            }
+            <<< SwitchRow("devStepData"){ row in
+                row.title = "Show Steps (req. Health Permission)"
+                row.value = false
+                row.hidden = Condition.function(["devStepData"], { form in
+                    return row.value!
+                })
+            }
+            <<< LabelRow("devStepDataLabel"){ row in
+                row.hidden = Condition.function(["devStepData"], { form in
+                    
+                    let showData = (form.rowBy(tag: "devStepData") as? SwitchRow)?.value!
+                    if (showData!) {
+                        self.stepCounter()
+                    }
+                    return !showData!
+                })
+                
+
+                row.title = "Steps today:"
+        }
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(updateSettings),
             name: Notification.Name("updateSettings"),
             object: nil)
         // Do any additional setup after loading the view.
-        stepCounter()
+    }
+    
+    func backgroundLocationUpdates(enabled: Bool) {
+        let userSettings = UserDefaults.standard
+        userSettings.set(enabled, forKey: "backgroundLocationUpdates")
+        if (enabled) {
+            if Locator.authorizationStatus != .authorizedAlways {
+                let locationInfoAlert = UIAlertController(title: "LocationService", message: "You do not have background location enabled for TravelDiscovery. Please do so in the settings app to use background location updates.", preferredStyle: .alert)
+                locationInfoAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action: UIAlertAction!) in
+                    DispatchQueue.main.async(execute: {
+                        let backgroundLocationRow: SwitchRow? = self.form.rowBy(tag: "backgroundLocationRow")
+                        backgroundLocationRow?.value = false
+                        backgroundLocationRow?.updateCell()
+                    })
+                }))
+                self.present(locationInfoAlert, animated: true, completion: nil)
+                return
+            }
+            
+            Locator.subscribeSignificantLocations(onUpdate: { location in
+                FirebaseController.handleBackgroundLocationData(location: location)
+            }) { (err, lastLocation) -> (Void) in
+                print("Failed with err: \(err)")
+            }
+        } else {
+            Locator.completeAllLocationRequests()
+        }
     }
     
     func stepCounter() {
+        
         guard let healthStore: HKHealthStore? = {
             if HKHealthStore.isHealthDataAvailable() {
                 return HKHealthStore()
@@ -105,33 +165,38 @@ class SettingsViewController: FormViewController {
         healthStore?.requestAuthorization(toShare: nil, read: dataTypesToRead) { (success, error) in
             if let error = error {
                 print("Failed authorization = \(error.localizedDescription)")
+                DispatchQueue.main.async(execute: {
+                    let stepDataLabelRow: LabelRow? = self.form.rowBy(tag: "devStepDataLabel")
+                    stepDataLabelRow?.value = "Error getting health data."
+                    stepDataLabelRow?.updateCell()
+                })
+            }
+            if (success) {
+                let now = Date()
+                let startOfDay = Calendar.current.startOfDay(for: now)
+                let predicate = HKQuery.predicateForSamples(withStart: startOfDay, end: now, options: .strictStartDate)
+                
+                let stepsSampleQuery = HKStatisticsQuery(quantityType: stepsCount!, quantitySamplePredicate: predicate, options: .cumulativeSum) { (_, result, error) in
+                    var resultCount = 0.0
+                    
+                    guard let result = result else {
+                        print("Failed to fetch steps = \(error?.localizedDescription ?? "N/A")")
+                        return
+                    }
+                    
+                    if let sum = result.sumQuantity() {
+                        resultCount = sum.doubleValue(for: HKUnit.count())
+                    }
+                    DispatchQueue.main.async(execute: {
+                        let stepDataLabelRow: LabelRow? = self.form.rowBy(tag: "devStepDataLabel")
+                        stepDataLabelRow?.value = String(resultCount)
+                        stepDataLabelRow?.updateCell()
+                    })
+                }
+                // Don't forget to execute the Query!
+                healthStore?.execute(stepsSampleQuery)
             }
         }
-        
-        let now = Date()
-        let startOfDay = Calendar.current.startOfDay(for: now)
-        let predicate = HKQuery.predicateForSamples(withStart: startOfDay, end: now, options: .strictStartDate)
-
-        
-        let stepsSampleQuery = HKStatisticsQuery(quantityType: stepsCount!, quantitySamplePredicate: predicate, options: .cumulativeSum) { (_, result, error) in
-            var resultCount = 0.0
-            
-            guard let result = result else {
-                print("Failed to fetch steps = \(error?.localizedDescription ?? "N/A")")
-                return
-            }
-            
-            if let sum = result.sumQuantity() {
-                resultCount = sum.doubleValue(for: HKUnit.count())
-            }
-            print(resultCount)
-            /*DispatchQueue.main.async(execute: {
-                self.stepLabel.text = String(Int(resultCount))
-            })*/
-        }
-        
-        // Don't forget to execute the Query!
-        healthStore?.execute(stepsSampleQuery)
     }
     
 
@@ -202,7 +267,7 @@ class SettingsViewController: FormViewController {
     }
     
     
-    @IBAction func drawLineOnMap(_ sender: UIButton) {
+    func drawLineOnMap(cell: ButtonCellOf<String>, row: ButtonRow) {
         NotificationCenter.default.post(name: Notification.Name("drawLine"), object: nil)        
     }
     
