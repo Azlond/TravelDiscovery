@@ -9,6 +9,9 @@
 import Foundation
 import FirebaseAuth
 import FirebaseDatabase
+import SwiftLocation
+import CoreLocation
+import UserNotifications
 
 class FirebaseController {
     
@@ -25,10 +28,11 @@ class FirebaseController {
         }
     }
     
-    public static func retrieveCountriesFromFirebase() {
+    public static func retrieveFromFirebase() {
         if let user = Auth.auth().currentUser {
             initDatabase()
             FirebaseData.ref.child("users").child(user.uid).observe(.value, with: { (snapshot) in
+                /*Countries*/
                 let value = snapshot.value as? NSDictionary
                 var vC : Dictionary<String, Bool> = [:]
                 let fbD = value?["visitedCountries"] as? Dictionary<String, Bool> ?? [:]
@@ -39,7 +43,6 @@ class FirebaseController {
                 }
                 FirebaseData.visitedCountries = vC
                 NotificationCenter.default.post(name: Notification.Name("updateMap"), object: nil)
-                
                 
                 /*settings*/
                 let userSettings = UserDefaults.standard
@@ -53,6 +56,18 @@ class FirebaseController {
                 let scratchPercentValue = loadedSettings["scratchPercent"] ?? FirebaseData.defaultSettings["scratchPercent"]
                 userSettings.set(scratchPercentValue, forKey: "scratchPercent")
                 Timer.scheduledTimer(timeInterval: 0.01, target: self, selector: #selector(self.sendSettingsNotification), userInfo: nil, repeats: false) //need to use a timer to avoid too many changes
+
+                /*locationData*/
+                var lD : Dictionary<Int, CLLocationCoordinate2D> = [:]
+                let fbLD = value?["activeTravelLocations"] as? NSArray ?? []
+                for element in fbLD {
+                    let coordinates : Dictionary<String, Dictionary<String, Double>> = element as! Dictionary<String, Dictionary<String, Double>>
+                    let lat : Double = coordinates["coordinates"]!["latitude"]!
+                    let long: Double = coordinates["coordinates"]!["longitude"]!
+                    let coordinate : CLLocationCoordinate2D = CLLocationCoordinate2D.init(latitude: lat, longitude: long)
+                    lD[lD.count] = coordinate
+                }
+                FirebaseData.locationData = lD
             }) { (error) in
                 print(error.localizedDescription)
             }
@@ -63,10 +78,12 @@ class FirebaseController {
         NotificationCenter.default.post(name: Notification.Name("updateSettings"), object: nil)
     }
     
-    public static func saveSettingsToFirebase(key: String) {
+    @objc public static func saveSettingsToFirebase(timer:Timer) {
         if let user = Auth.auth().currentUser {
             initDatabase()
             let userSettings = UserDefaults.standard
+            let userInfo = timer.userInfo as! Dictionary<String, String>
+            let key : String = userInfo["key"]!
             FirebaseData.ref.child("users").child(user.uid).child("settings").child(key).setValue(userSettings.string(forKey: key))
         }
     }
@@ -98,4 +115,43 @@ class FirebaseController {
             }
         }
     }
+
+    public static func handleBackgroundLocationData(location: CLLocation) {
+        if let user = Auth.auth().currentUser {
+            if (FirebaseData.ref == nil) {
+                // initialize database
+                FirebaseData.ref = Database.database().reference()
+            }
+            
+            FirebaseData.locationData[FirebaseData.locationData.count] = location.coordinate
+            
+            for loc in FirebaseData.locationData {
+                let locDict : Dictionary<String, Double> = ["latitude":loc.value.latitude, "longitude":loc.value.longitude]
+                FirebaseData.ref.child("users").child(user.uid).child("activeTravelLocations").child(String(loc.key)).setValue(["coordinates": locDict])
+            }            
+            
+            /* Send push message with location name*/
+            Locator.location(fromCoordinates: location.coordinate, onSuccess: { places in
+                print(places)
+                let content = UNMutableNotificationContent()
+                content.title = "New Location Update"
+                content.body = "You're somewhere new: \(places)"
+                content.sound = UNNotificationSound.default()
+                
+                let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 10, repeats: false)
+                let identifier = "UYLLocalNotification"
+                let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
+                UNUserNotificationCenter.current().add(request, withCompletionHandler: { (error) in
+                    if let error = error {
+                        print("\(error)")
+                    }
+                })
+            }, onFail: { err in
+                print("\(err)")
+            })
+        } else {
+            print("oops")
+        }
+    }
+
 }

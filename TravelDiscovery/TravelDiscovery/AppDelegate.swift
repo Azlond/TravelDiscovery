@@ -8,21 +8,40 @@
 
 import UIKit
 import Firebase
+import SwiftLocation
+import UserNotifications
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         FirebaseApp.configure()
         Database.database().isPersistenceEnabled = true
-    
+        let options: UNAuthorizationOptions = [.alert, .badge, .sound];
+        
+        /*TODO: move local push Authorization to better place, e.g. creating new travel*/
+        let userSettings = UserDefaults.standard
+        
+        UNUserNotificationCenter.current().requestAuthorization(options: options) {
+            (granted, error) in
+            if !granted {
+                print("Something went wrong")
+            }
+        }
+        let enableBackgroundLocationUpdates = userSettings.bool(forKey: "backgroundLocationUpdates")
+        if (enableBackgroundLocationUpdates) {
+            Locator.subscribeSignificantLocations(onUpdate: { location in
+                FirebaseController.handleBackgroundLocationData(location: location)
+            }) { (err, lastLocation) -> (Void) in
+                print("Failed with err: \(err)")
+            }
+        }
         return true
     }
-
+    
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.

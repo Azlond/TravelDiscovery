@@ -9,9 +9,13 @@
 import UIKit
 import FirebaseAuth
 import Eureka
+import HealthKit
+import SwiftLocation
 
 class SettingsViewController: FormViewController {
 
+    @IBOutlet weak var stepLabel: UILabel!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         let userSettings = UserDefaults.standard
@@ -39,8 +43,8 @@ class SettingsViewController: FormViewController {
                 row.steps = UInt(row.maximumValue - row.minimumValue)
                 row.value = userSettings.float(forKey: "scratchPercent") != 0 ? userSettings.float(forKey: "scratchPercent") : 90.0
                 row.onChange({row in
+                    Timer.scheduledTimer(timeInterval: 0.5, target: FirebaseController.self, selector: #selector(FirebaseController.saveSettingsToFirebase), userInfo: ["key": "scratchPercent"], repeats: false) //need to use a timer to avoid too many changes
                     userSettings.set(row.value, forKey: "scratchPercent")
-                    FirebaseController.saveSettingsToFirebase(key: "scratchPercent")
                 })
             }
         +++ Section("Feed Settings")
@@ -49,8 +53,9 @@ class SettingsViewController: FormViewController {
                 row.placeholder = "John Doe"
                 row.value = userSettings.string(forKey: "username")
                 row.onChange({row in
+                    Timer.scheduledTimer(timeInterval: 0.5, target: FirebaseController.self, selector: #selector(FirebaseController.saveSettingsToFirebase), userInfo: ["key": "username"], repeats: false) //need to use a timer to avoid too many changes
                     userSettings.set(row.value, forKey: "username")
-                    FirebaseController.saveSettingsToFirebase(key: "username")
+                    
                 })
             }
             <<< SwitchRow("postVisibilityRow") { row in
@@ -59,8 +64,8 @@ class SettingsViewController: FormViewController {
                 row.onChange({row in
                     row.title = row.value! ? "Standard Visibility: Public" : "Standard Visibility: Private"
                     row.updateCell()
+                    Timer.scheduledTimer(timeInterval: 0.5, target: FirebaseController.self, selector: #selector(FirebaseController.saveSettingsToFirebase), userInfo: ["key": "visibility"], repeats: false) //need to use a timer to avoid too many changes
                     userSettings.set(row.value, forKey: "visibility")
-                    FirebaseController.saveSettingsToFirebase(key: "visibility")
                 })
             }
             <<< SliderRow("feedRangeRow") { row in
@@ -71,16 +76,131 @@ class SettingsViewController: FormViewController {
                 row.value = userSettings.float(forKey: "feedRange") != 0 ? userSettings.float(forKey: "feedRange") : 1.0
                 row.onChange({row in
                     userSettings.set(row.value, forKey: "feedRange")
-                    FirebaseController.saveSettingsToFirebase(key: "feedRange")
+                    Timer.scheduledTimer(timeInterval: 0.5, target: FirebaseController.self, selector: #selector(FirebaseController.saveSettingsToFirebase), userInfo: ["key": "feedRange"], repeats: false) //need to use a timer to avoid too many changes
                 })
             }
         
+        +++ Section("Developers Corner")
+            <<< SwitchRow("backgroundLocationRow"){ row in
+                row.title = "Background Location Updates"
+                row.value = false
+                row.onChange({row in
+                    self.backgroundLocationUpdates(enabled: row.value!)
+                })
+            }
+            <<< ButtonRow(){ row in
+                row.title = "Draw Route on Map"
+                row.onCellSelection(self.drawLineOnMap)
+            }
+            <<< SwitchRow("devStepData"){ row in
+                row.title = "Show Steps (req. Health Permission)"
+                row.value = false
+                row.hidden = Condition.function(["devStepData"], { form in
+                    return row.value!
+                })
+            }
+            <<< LabelRow("devStepDataLabel"){ row in
+                row.hidden = Condition.function(["devStepData"], { form in
+                    
+                    let showData = (form.rowBy(tag: "devStepData") as? SwitchRow)?.value!
+                    if (showData!) {
+                        self.stepCounter()
+                    }
+                    return !showData!
+                })
+                
+
+                row.title = "Steps today:"
+        }
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(updateSettings),
             name: Notification.Name("updateSettings"),
             object: nil)
+        // Do any additional setup after loading the view.
     }
+    
+    func backgroundLocationUpdates(enabled: Bool) {
+        let userSettings = UserDefaults.standard
+        userSettings.set(enabled, forKey: "backgroundLocationUpdates")
+        if (enabled) {
+            if Locator.authorizationStatus != .authorizedAlways {
+                let locationInfoAlert = UIAlertController(title: "LocationService", message: "You do not have background location enabled for TravelDiscovery. Please do so in the settings app to use background location updates.", preferredStyle: .alert)
+                locationInfoAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action: UIAlertAction!) in
+                    DispatchQueue.main.async(execute: {
+                        let backgroundLocationRow: SwitchRow? = self.form.rowBy(tag: "backgroundLocationRow")
+                        backgroundLocationRow?.value = false
+                        backgroundLocationRow?.updateCell()
+                    })
+                }))
+                self.present(locationInfoAlert, animated: true, completion: nil)
+                return
+            }
+            
+            Locator.subscribeSignificantLocations(onUpdate: { location in
+                FirebaseController.handleBackgroundLocationData(location: location)
+            }) { (err, lastLocation) -> (Void) in
+                print("Failed with err: \(err)")
+            }
+        } else {
+            Locator.completeAllLocationRequests()
+        }
+    }
+    
+    func stepCounter() {
+        
+        guard let healthStore: HKHealthStore? = {
+            if HKHealthStore.isHealthDataAvailable() {
+                return HKHealthStore()
+            } else {
+                return nil
+            }
+            }() else {
+                return
+        }
+        
+        let stepsCount = HKQuantityType.quantityType(forIdentifier: .stepCount)
+        
+        let dataTypesToRead : Set<HKObjectType> = [stepsCount!]
+        
+        healthStore?.requestAuthorization(toShare: nil, read: dataTypesToRead) { (success, error) in
+            if let error = error {
+                print("Failed authorization = \(error.localizedDescription)")
+                DispatchQueue.main.async(execute: {
+                    let stepDataLabelRow: LabelRow? = self.form.rowBy(tag: "devStepDataLabel")
+                    stepDataLabelRow?.value = "Error getting health data."
+                    stepDataLabelRow?.updateCell()
+                })
+            }
+            if (success) {
+                let now = Date()
+                let startOfDay = Calendar.current.startOfDay(for: now)
+                let predicate = HKQuery.predicateForSamples(withStart: startOfDay, end: now, options: .strictStartDate)
+                
+                let stepsSampleQuery = HKStatisticsQuery(quantityType: stepsCount!, quantitySamplePredicate: predicate, options: .cumulativeSum) { (_, result, error) in
+                    var resultCount = 0.0
+                    
+                    guard let result = result else {
+                        print("Failed to fetch steps = \(error?.localizedDescription ?? "N/A")")
+                        return
+                    }
+                    
+                    if let sum = result.sumQuantity() {
+                        resultCount = sum.doubleValue(for: HKUnit.count())
+                    }
+                    DispatchQueue.main.async(execute: {
+                        let stepDataLabelRow: LabelRow? = self.form.rowBy(tag: "devStepDataLabel")
+                        stepDataLabelRow?.value = String(resultCount)
+                        stepDataLabelRow?.updateCell()
+                    })
+                }
+                // Don't forget to execute the Query!
+                healthStore?.execute(stepsSampleQuery)
+            }
+        }
+    }
+    
+
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -146,6 +266,12 @@ class SettingsViewController: FormViewController {
         deleteConfirmationAlert.view.tintColor = UIColor.red
         self.present(deleteConfirmationAlert, animated: true, completion: nil)
     }
+    
+    
+    func drawLineOnMap(cell: ButtonCellOf<String>, row: ButtonRow) {
+        NotificationCenter.default.post(name: Notification.Name("drawLine"), object: nil)        
+    }
+    
     
     /*
     // MARK: - Navigation
