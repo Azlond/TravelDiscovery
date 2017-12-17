@@ -38,10 +38,11 @@ class SettingsViewController: FormViewController {
                 row.placeholder = "John Doe"
                 row.value = userSettings.string(forKey: "username")
                 row.onChange({row in
-                    guard let value = row.value else {
+                  /*  guard let value = row.value else {
                         return
-                    }
-                    userSettings.set(value, forKey: "username")
+                    }*/
+                    userSettings.set(row.value, forKey: "username")
+                    FirebaseController.saveSettingsOnline(key: "username")
                 })
             }
             <<< SwitchRow { row in
@@ -51,6 +52,7 @@ class SettingsViewController: FormViewController {
                     row.title = row.value! ? "Standard Visibility: Public" : "Standard Visibility: Private"
                     row.updateCell()
                     userSettings.set(row.value, forKey: "visibility")
+                    FirebaseController.saveSettingsOnline(key: "visibility")
                 })
             }
             <<< SliderRow { row in
@@ -61,6 +63,7 @@ class SettingsViewController: FormViewController {
                 row.value = userSettings.integer(forKey: "feedRange") != 0 ? userSettings.float(forKey: "feedRange") : 1.0
                 row.onChange({row in
                     userSettings.set(row.value, forKey: "feedRange")
+                    FirebaseController.saveSettingsOnline(key: "feedRange")
                 })
         }
     }

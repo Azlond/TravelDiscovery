@@ -45,6 +45,14 @@ class FirebaseController {
         }
     }
     
+    public static func saveSettingsOnline(key: String) {
+        if let user = Auth.auth().currentUser {
+            initDatabase()
+            let userSettings = UserDefaults.standard
+            FirebaseData.ref.child("users").child(user.uid).child("settings").child(key).setValue(userSettings.string(forKey: key))
+        }
+    }
+    
     private static func initDatabase() {
         if (FirebaseData.ref == nil) {
             // initialize database
