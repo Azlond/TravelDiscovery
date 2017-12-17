@@ -15,6 +15,7 @@ class ScratchcardViewController: UIViewController, ScratchUIViewDelegate {
     var country: String!
     var countryCode: String!
     var parentVC: MapViewController!
+    var userScratchPercent : Double!
     
     @IBOutlet var scratchView: UIView!
     @IBOutlet weak var navigationBar: UINavigationBar!
@@ -71,6 +72,9 @@ class ScratchcardViewController: UIViewController, ScratchUIViewDelegate {
                                      ScratchWidth: CGFloat(40))
         scratchCard.delegate = self
         self.view.addSubview(scratchCard)
+        
+        let userSettings = UserDefaults.standard
+        userScratchPercent = userSettings.double(forKey: "scratchPercent")
     }
     
     /*
@@ -99,11 +103,10 @@ class ScratchcardViewController: UIViewController, ScratchUIViewDelegate {
     
     /**
      * function that checks how much of the scratchcard the user has already cleared.
-     * TODO: change hardcoded value to user defined setting
      */
     func checkForCompletion() {
         let scratchPercent: Double = scratchCard.getScratchPercent()
-        if scratchPercent > 0.90 {
+        if scratchPercent > (userScratchPercent / 100) {
             //finishSuccess(sleepTime: 0.001)
             scratchCard.scratchView.isHidden = true
             self.parentVC.markCountry(name: self.country)

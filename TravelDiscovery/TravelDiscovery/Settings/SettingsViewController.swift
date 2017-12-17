@@ -16,7 +16,7 @@ class SettingsViewController: FormViewController {
         super.viewDidLoad()
         let userSettings = UserDefaults.standard
 
-        form +++ Section("Accounts Details")
+        form +++ Section("Account Details")
             <<< EmailRow(){ row in
                 row.title = "E-Mail Address"
                 row.disabled = true
@@ -31,7 +31,18 @@ class SettingsViewController: FormViewController {
                 row.title = "Delete Account"
                 row.onCellSelection(self.deleteAccount)
             }
-            
+        +++ Section("Scratch Settings")
+            <<< SliderRow("scratchPercentRow") { row in
+                row.title = "ScratchPercent-Finish"
+                row.minimumValue = 1
+                row.maximumValue = 99
+                row.steps = UInt(row.maximumValue - row.minimumValue)
+                row.value = userSettings.float(forKey: "scratchPercent") != 0 ? userSettings.float(forKey: "scratchPercent") : 90.0
+                row.onChange({row in
+                    userSettings.set(row.value, forKey: "scratchPercent")
+                    FirebaseController.saveSettingsToFirebase(key: "scratchPercent")
+                })
+            }
         +++ Section("Feed Settings")
             <<< NameRow("feedNameRow"){ row in
                 row.title = "Your Name"
@@ -88,7 +99,9 @@ class SettingsViewController: FormViewController {
         let feedRangeRow: SliderRow? = form.rowBy(tag: "feedRangeRow")
         feedRangeRow?.value = userSettings.float(forKey: "feedRange") != 0 ? userSettings.float(forKey: "feedRange") : 1.0
         feedRangeRow?.updateCell()
-
+        let scratchPercentRow: SliderRow? = form.rowBy(tag: "scratchPercentRow")
+        scratchPercentRow?.value = userSettings.float(forKey: "scratchPercent") != 0 ? userSettings.float(forKey: "scratchPercent") : 90.0
+        scratchPercentRow?.updateCell()
     }
     
     /**

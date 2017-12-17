@@ -21,7 +21,7 @@ class FirebaseController {
                 let key = regex.stringByReplacingMatches(in: country.key, options: [], range: NSRange(0..<country.key.utf16.count), withTemplate: "DOT")
                 vC[key] = true
             }
-            FirebaseData.ref.child("users").child(user.uid).setValue(["visitedCountries": vC])
+            FirebaseData.ref.child("users").child(user.uid).child("visitedCountries").setValue(vC)
         }
     }
     
@@ -50,7 +50,9 @@ class FirebaseController {
                 userSettings.set(usernameValue, forKey: "username")
                 let postVisibilityValue = loadedSettings["visibility"] ?? FirebaseData.defaultSettings["visibility"]
                 userSettings.set(postVisibilityValue, forKey: "visibility")
-                Timer.scheduledTimer(timeInterval: 0.05, target: self, selector: #selector(self.sendSettingsNotification), userInfo: nil, repeats: false) //need to use a timer to avoid too many changed
+                let scratchPercentValue = loadedSettings["scratchPercent"] ?? FirebaseData.defaultSettings["scratchPercent"]
+                userSettings.set(scratchPercentValue, forKey: "scratchPercent")
+                Timer.scheduledTimer(timeInterval: 0.01, target: self, selector: #selector(self.sendSettingsNotification), userInfo: nil, repeats: false) //need to use a timer to avoid too many changes
             }) { (error) in
                 print(error.localizedDescription)
             }
