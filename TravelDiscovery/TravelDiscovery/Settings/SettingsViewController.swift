@@ -11,6 +11,7 @@ import FirebaseAuth
 import Eureka
 import HealthKit
 import SwiftLocation
+import UserNotifications
 
 class SettingsViewController: FormViewController {
 
@@ -86,6 +87,22 @@ class SettingsViewController: FormViewController {
                 row.value = false
                 row.onChange({row in
                     self.backgroundLocationUpdates(enabled: row.value!)
+                })
+            }
+            <<< SwitchRow("backgroundLocationNotificationRow"){ row in
+                row.title = "Location Notifications"
+                row.value = false
+                row.onChange({row in
+                    if(row.value!) {
+                        let options: UNAuthorizationOptions = [.alert, .badge, .sound];
+                        UNUserNotificationCenter.current().requestAuthorization(options: options) {
+                            (granted, error) in
+                            if !granted {
+                                print("Something went wrong")
+                            }
+                        }
+                    }
+                    userSettings.set(row.value, forKey: "locationNotification")
                 })
             }
             <<< ButtonRow(){ row in

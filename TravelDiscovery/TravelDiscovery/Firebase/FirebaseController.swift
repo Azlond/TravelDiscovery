@@ -28,25 +28,30 @@ class FirebaseController {
         }
     }
     
+    /**
+     * Retrieves user values from Firebase and activates listener for changes
+     */
     public static func retrieveFromFirebase() {
         if let user = Auth.auth().currentUser {
             initDatabase()
-            FirebaseData.ref.child("users").child(user.uid).observe(.value, with: { (snapshot) in
-                /*Countries*/
-                let value = snapshot.value as? NSDictionary
+            
+            /*Countries*/
+            FirebaseData.ref.child("users").child(user.uid).child("visitedCountries").observe(.value, with: { (snapshot) in
+                let value = snapshot.value as? Dictionary<String, Bool> ?? [:]
                 var vC : Dictionary<String, Bool> = [:]
-                let fbD = value?["visitedCountries"] as? Dictionary<String, Bool> ?? [:]
                 let regex = try! NSRegularExpression(pattern: "DOT")
-                for country in fbD {
+                for country in value {
                     let key = regex.stringByReplacingMatches(in: country.key, options: [], range: NSRange(0..<country.key.utf16.count), withTemplate: ".")
                     vC[key] = true
                 }
                 FirebaseData.visitedCountries = vC
                 NotificationCenter.default.post(name: Notification.Name("updateMap"), object: nil)
-                
-                /*settings*/
+            })
+            
+            /*settings*/
+            FirebaseData.ref.child("users").child(user.uid).child("settings").observe(.value, with: { (snapshot) in
                 let userSettings = UserDefaults.standard
-                let loadedSettings = value?["settings"] as? Dictionary<String, String> ?? FirebaseData.defaultSettings
+                let loadedSettings = snapshot.value as? Dictionary<String, String> ?? FirebaseData.defaultSettings
                 let feedRangeValue = loadedSettings["feedRange"] ?? FirebaseData.defaultSettings["feedRange"]
                 userSettings.set(feedRangeValue, forKey: "feedRange")
                 let usernameValue = loadedSettings["username"] ?? FirebaseData.defaultSettings["username"]
@@ -56,11 +61,13 @@ class FirebaseController {
                 let scratchPercentValue = loadedSettings["scratchPercent"] ?? FirebaseData.defaultSettings["scratchPercent"]
                 userSettings.set(scratchPercentValue, forKey: "scratchPercent")
                 Timer.scheduledTimer(timeInterval: 0.01, target: self, selector: #selector(self.sendSettingsNotification), userInfo: nil, repeats: false) //need to use a timer to avoid too many changes
-
-                /*locationData*/
+            })
+            
+            /*locationData*/
+            FirebaseData.ref.child("users").child(user.uid).child("activeTravelLocations").observe(.value, with: { (snapshot) in
                 var lD : Dictionary<Int, CLLocationCoordinate2D> = [:]
-                let fbLD = value?["activeTravelLocations"] as? NSArray ?? []
-                for element in fbLD {
+                let value = snapshot.value as? NSArray ?? []
+                for element in value {
                     let coordinates : Dictionary<String, Dictionary<String, Double>> = element as! Dictionary<String, Dictionary<String, Double>>
                     let lat : Double = coordinates["coordinates"]!["latitude"]!
                     let long: Double = coordinates["coordinates"]!["longitude"]!
@@ -68,9 +75,7 @@ class FirebaseController {
                     lD[lD.count] = coordinate
                 }
                 FirebaseData.locationData = lD
-            }) { (error) in
-                print(error.localizedDescription)
-            }
+            })
         }
     }
     
@@ -131,24 +136,27 @@ class FirebaseController {
             }            
             
             /* Send push message with location name*/
-            Locator.location(fromCoordinates: location.coordinate, onSuccess: { places in
-                print(places)
-                let content = UNMutableNotificationContent()
-                content.title = "New Location Update"
-                content.body = "You're somewhere new: \(places)"
-                content.sound = UNNotificationSound.default()
-                
-                let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 10, repeats: false)
-                let identifier = "UYLLocalNotification"
-                let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
-                UNUserNotificationCenter.current().add(request, withCompletionHandler: { (error) in
-                    if let error = error {
-                        print("\(error)")
-                    }
+            let userSettings = UserDefaults.standard
+            if (userSettings.bool(forKey: "locationNotification")) {
+                Locator.location(fromCoordinates: location.coordinate, onSuccess: { places in
+                    print(places)
+                    let content = UNMutableNotificationContent()
+                    content.title = "New Location Update"
+                    content.body = "You're somewhere new: \(places)"
+                    content.sound = UNNotificationSound.default()
+                    
+                    let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 10, repeats: false)
+                    let identifier = "UYLLocalNotification"
+                    let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
+                    UNUserNotificationCenter.current().add(request, withCompletionHandler: { (error) in
+                        if let error = error {
+                            print("\(error)")
+                        }
+                    })
+                }, onFail: { err in
+                    print("\(err)")
                 })
-            }, onFail: { err in
-                print("\(err)")
-            })
+            }
         } else {
             print("oops")
         }

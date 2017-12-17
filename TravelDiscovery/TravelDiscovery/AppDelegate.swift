@@ -9,7 +9,6 @@
 import UIKit
 import Firebase
 import SwiftLocation
-import UserNotifications
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -20,17 +19,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         FirebaseApp.configure()
         Database.database().isPersistenceEnabled = true
-        let options: UNAuthorizationOptions = [.alert, .badge, .sound];
         
-        /*TODO: move local push Authorization to better place, e.g. creating new travel*/
         let userSettings = UserDefaults.standard
-        
-        UNUserNotificationCenter.current().requestAuthorization(options: options) {
-            (granted, error) in
-            if !granted {
-                print("Something went wrong")
-            }
-        }
         let enableBackgroundLocationUpdates = userSettings.bool(forKey: "backgroundLocationUpdates")
         if (enableBackgroundLocationUpdates) {
             Locator.subscribeSignificantLocations(onUpdate: { location in
