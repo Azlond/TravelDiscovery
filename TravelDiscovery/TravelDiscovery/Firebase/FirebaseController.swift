@@ -54,19 +54,9 @@ class FirebaseController {
                 var lD : Dictionary<Int, CLLocationCoordinate2D> = [:]
                 let fbLD = value?["activeTravelLocations"] as? NSArray ?? []
                 for element in fbLD {
-                    let x : Dictionary<String, Dictionary<String, Double>> = element as! Dictionary<String, Dictionary<String, Double>>
-                    var lat : Double = 0.0
-                    var long: Double = 0.0
-                    for val in x {
-                        let coordinates = val.value
-                        for coord in coordinates {
-                            if (coord.key == "latitude") {
-                                lat = coord.value
-                            } else if (coord.key == "longitude") {
-                                long = coord.value
-                            }
-                        }
-                    }
+                    let coordinates : Dictionary<String, Dictionary<String, Double>> = element as! Dictionary<String, Dictionary<String, Double>>
+                    let lat : Double = coordinates["coordinates"]!["latitude"]!
+                    let long: Double = coordinates["coordinates"]!["longitude"]!
                     let coordinate : CLLocationCoordinate2D = CLLocationCoordinate2D.init(latitude: lat, longitude: long)
                     lD[lD.count] = coordinate
                 }
