@@ -88,7 +88,7 @@ class FirebaseController {
                                     //TODO fehlermanagement
                                 }
                                 
-                                //SUCCESS
+                                //UPLOAD SUCCESS
                                 //retrieve URL of uploaded image
                                 if let imageURL = metadata?.downloadURL()?.absoluteString {
                                     pin.imageURLs?.append(imageURL)
