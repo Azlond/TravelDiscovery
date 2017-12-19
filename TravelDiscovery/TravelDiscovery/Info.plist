@@ -45,6 +45,8 @@
 	<string>Shows your travel route</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Shows your location on the map and helps improve OpenStreetMap.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Enables you to save and upload your vacation images to your pins</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>location</string>

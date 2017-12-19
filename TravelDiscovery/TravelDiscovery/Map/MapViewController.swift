@@ -12,9 +12,17 @@ import Mapbox
 class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecognizerDelegate {
 
     var mapView : MGLMapView!
+    //TODO: implement properly
+    var activeTrip : Bool! = true
+    
+    @IBOutlet weak var buttonAddPin: UIBarButtonItem!
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // set Navigation Bar Button item
+        buttonAddPin!.title = activeTrip ? "📍" : "New Trip"
 
         // Create a new map view using the Mapbox Light style.
         let styleURL = URL(string: "mapbox://styles/iostravelcrew/cjamqrp7r1cg92rphoiyqqhmm")
@@ -71,6 +79,8 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
             }
         }
     }
+    
+    //TODO long press remove country + pop up with confirmation
 
     // Wait until the style is loaded before modifying the map style.
     func mapView(_ mapView: MGLMapView, didFinishLoading style: MGLStyle) {
@@ -174,7 +184,15 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
     }
     
     @IBAction func addMarker(_ sender: UIBarButtonItem) {
-        print("add marker here")
+        if activeTrip {
+//            let storyBoard: UIStoryboard = UIStoryboard(name: "PinView", bundle: nil)
+//            let pinVC = storyBoard.instantiateViewController(withIdentifier: "PinVC") as! PinViewController
+//            self.present(pinVC, animated: true, completion: nil)
+            performSegue(withIdentifier: "addPin", sender: nil)
+        }
+        else {
+            //openAddTravelView()
+        }
     }
     
    @objc func animateTravel() {
