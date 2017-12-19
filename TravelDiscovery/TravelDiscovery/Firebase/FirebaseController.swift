@@ -96,7 +96,7 @@ class FirebaseController {
                                     //save pin after last image was uploaded
                                     if index == (pin.photos!.count-1) {
                                         let fbDict = pin.prepareDictForFirebase()
-                                        FirebaseData.ref.child("users").child(user.uid).setValue([pin.id: fbDict])
+                                        FirebaseData.ref.child("users").child(user.uid).child("pins").setValue([pin.id: fbDict])
                                     }
                                 }
                             })
