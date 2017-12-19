@@ -17,5 +17,5 @@ class FirebaseData {
     public static var ref: DatabaseReference!
     public static let defaultSettings: Dictionary<String, String> = ["feedRange":"1","username":"","visibility":"0","scratchPercent":"90"]
     public static var locationData : Dictionary<Int, CLLocationCoordinate2D> = [:]  
-    
+    public static var pins: Dictionary<String, Pin> = [:]
 }
