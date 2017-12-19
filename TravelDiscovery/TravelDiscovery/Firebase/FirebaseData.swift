@@ -14,7 +14,7 @@ class FirebaseData {
     public static var visitedCountries : Dictionary<String, Bool> = [:]
     public static var user : User?
     public static var ref: DatabaseReference!
-
+    public static var pins: Dictionary<String, Pin> = [:]
     
     
     

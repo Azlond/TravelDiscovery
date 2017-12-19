@@ -23,7 +23,7 @@ class PinViewController: UITableViewController, UICollectionViewDataSource, UICo
     //variables for image display
     var picker = NohanaImagePickerController()
     var selectedPhotos = [UIImage]()
-
+    var thumbnails = [UIImage]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -52,7 +52,7 @@ class PinViewController: UITableViewController, UICollectionViewDataSource, UICo
         let today = formatter.string(from: date)
         dateTextField.text = today
         
-        //Share visibility from user settings -> TODO
+        //get Share-visibility from user settings -> TODO
     }
     
     
@@ -63,17 +63,38 @@ class PinViewController: UITableViewController, UICollectionViewDataSource, UICo
         commentsTextView.layer.cornerRadius = 5.0
     }
     
-    
+    //creates a thumbnail for chosen image assets to display them
     func getAssetThumbnail(asset: PHAsset) -> UIImage {
+        let retinaSquare = CGSize(width: 80.0, height: 80.0)
+        let cropSizeLength = min(asset.pixelWidth, asset.pixelHeight)
+        let square = CGRect(x:0, y: 0,width: CGFloat(cropSizeLength),height: CGFloat(cropSizeLength))
+        let cropRect = square.applying(CGAffineTransform(scaleX: 1.0/CGFloat(asset.pixelWidth), y: 1.0/CGFloat(asset.pixelHeight)))
+
         let manager = PHImageManager.default()
         let option = PHImageRequestOptions()
         var thumbnail = UIImage()
         option.isSynchronous = true
         option.version = .original
-        manager.requestImage(for: asset, targetSize: CGSize(width: 100, height: 100), contentMode: .aspectFit, options: option, resultHandler: {(result, info)->Void in
+        option.deliveryMode = .highQualityFormat
+        option.resizeMode = .exact
+        option.normalizedCropRect = cropRect
+            
+        manager.requestImage(for: asset, targetSize: retinaSquare, contentMode: .aspectFit, options: option, resultHandler: {(result, info)->Void in
             thumbnail = result!
         })
         return thumbnail
+    }
+    
+    // creates UIImage in original size from chosen photo assets
+    func getUIImageFromAsset(asset: PHAsset) -> UIImage {
+        let manager = PHImageManager.default()
+        let option = PHImageRequestOptions()
+        var image = UIImage()
+        
+        option.version = .original
+        option.isSynchronous = true
+        manager.requestImage(for: asset, targetSize: CGSize(width: asset.pixelWidth, height: asset.pixelHeight), contentMode: .aspectFit, options: option, resultHandler: {(result, info)->Void in image = result! })
+        return image
     }
     
 //    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -86,12 +107,13 @@ class PinViewController: UITableViewController, UICollectionViewDataSource, UICo
     
     //MARK: Image display in CollectionView
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return selectedPhotos.count
+        return thumbnails.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath as IndexPath)
-        let imageView = UIImageView(image: selectedPhotos[indexPath.row])
+        let imageView = UIImageView(image: thumbnails[indexPath.row])
+        imageView.sizeToFit()
         cell.contentView.addSubview(imageView)
         return cell
     }
@@ -118,10 +140,18 @@ class PinViewController: UITableViewController, UICollectionViewDataSource, UICo
         let visibility = publicSwitch.isOn
         let text = commentsTextView.text
         
-        let pin : Pin = Pin.init(name: name!, longitude: longitude, latitude: latitude,
+        let id = UUID().uuidString
+        
+        let pin : Pin = Pin.init(id: id, name: name!, longitude: longitude, latitude: latitude,
                            visibilityPublic: visibility, date: date!,
-                           photos: [], text: text!)!
+                           photos: selectedPhotos, text: text!)!
         savePin(pin: pin)
+        
+        if let nav = self.navigationController {
+            nav.popViewController(animated: true)
+        } else {
+            self.dismiss(animated: true, completion: nil)
+        }
         
     }
     
@@ -131,7 +161,8 @@ class PinViewController: UITableViewController, UICollectionViewDataSource, UICo
     }
     
     func savePin(pin: Pin) {
-        //do
+        FirebaseData.pins[pin.id] = pin
+        FirebaseController.savePinsToFirebase()
     }
     
     
@@ -143,20 +174,21 @@ class PinViewController: UITableViewController, UICollectionViewDataSource, UICo
 extension PinViewController: NohanaImagePickerControllerDelegate {
     
     func nohanaImagePickerDidCancel(_ picker: NohanaImagePickerController) {
-        print("🐷Canceled🙅")
         picker.dismiss(animated: true, completion: nil)
     }
     
     func nohanaImagePicker(_ picker: NohanaImagePickerController, didFinishPickingPhotoKitAssets pickedAssts :[PHAsset]) {
-        print("🐷Completed🙆\n\tpickedAssets = \(pickedAssts)")
+        //print("🐷Completed🙆\n\tpickedAssets = \(pickedAssts)")
         picker.dismiss(animated: true, completion: nil)
         
+        thumbnails = [UIImage]()
+        selectedPhotos = [UIImage]()
         
         for asset in pickedAssts {
-            self.selectedPhotos.append(self.getAssetThumbnail(asset: asset))
+            thumbnails.append(getAssetThumbnail(asset: asset))
+            selectedPhotos.append(getUIImageFromAsset(asset: asset))
         }
-        
-        self.collectionView.reloadData()
+        collectionView.reloadData()
         
     }
 }

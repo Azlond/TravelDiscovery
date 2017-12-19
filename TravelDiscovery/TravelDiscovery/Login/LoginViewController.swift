@@ -21,6 +21,7 @@ class LoginViewController: UIViewController {
                 
                 // if available, get user data from server
                 FirebaseController.retrieveFromFirebase()
+                FirebaseController.retrievePinsFromFirebase()
 
                 //User is already logged in, no need to show login storyboard
                 let storyBoard: UIStoryboard = UIStoryboard(name: "NavigationTabBar", bundle: nil)
