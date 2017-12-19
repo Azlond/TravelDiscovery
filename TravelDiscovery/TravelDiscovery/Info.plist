@@ -37,6 +37,12 @@
 	<true/>
 	<key>MGLMapboxAccessToken</key>
 	<string>pk.eyJ1IjoiaW9zdHJhdmVsY3JldyIsImEiOiJjajl6aDhoZnEyZTNsMzJwY3g5bTljeW82In0.Ou-uRDG-Lz_wKWmx5Egc3w</string>
+	<key>NSHealthShareUsageDescription</key>
+	<string>Allows you to view total amount of steps during a journey</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Shows your travel route</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Shows your travel route</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Shows your location on the map and helps improve OpenStreetMap.</string>
 	<key>UIBackgroundModes</key>
@@ -72,11 +78,5 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>Shows your travel route</string>
-	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Shows your travel route</string>
-	<key>NSHealthShareUsageDescription</key>
-	<string>Allows you to view total amount of steps during a journey</string>
 </dict>
 </plist>
