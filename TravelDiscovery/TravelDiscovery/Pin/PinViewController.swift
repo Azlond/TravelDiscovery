@@ -140,7 +140,7 @@ class PinViewController: UITableViewController, UICollectionViewDataSource, UICo
         let visibility = publicSwitch.isOn
         let text = commentsTextView.text
         
-        let id = UUID().uuidString
+        let id = "Pin_" + UUID().uuidString
         
         let pin : Pin = Pin.init(id: id, name: name!, longitude: longitude, latitude: latitude,
                            visibilityPublic: visibility, date: date!,
