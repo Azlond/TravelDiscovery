@@ -52,7 +52,7 @@ class Pin {
     }
     
     //init Pin from FirebaseDictionary
-    init?(dict: Dictionary<String,Any>)  {
+    init?(dict: (Dictionary<String,Any>))  {
         self.id =  dict["id"] as! String
         self.name = dict["name"] as! String
         self.longitude = dict["long"] as! Double
@@ -64,6 +64,7 @@ class Pin {
             self.text = text
         }
         
+        // create imageURLs array from URLs in dict
         var count = 1
         while let imageURL = dict["imageURL" + String(count)] {
             self.imageURLs?.append(imageURL as! String)

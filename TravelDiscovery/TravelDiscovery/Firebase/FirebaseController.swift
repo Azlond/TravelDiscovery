@@ -205,7 +205,7 @@ class FirebaseController {
                                     //save pin after last image was uploaded
                                     if index == (pin.photos!.count-1) {
                                         let fbDict = pin.prepareDictForFirebase()
-                                        FirebaseData.ref.child("users").child(user.uid).child("pins").setValue([pin.id: fbDict])
+                                        FirebaseData.ref.child("users").child(user.uid).child("pins").child(pin.id).setValue(fbDict)
                                     }
                                 }
                             })
@@ -215,7 +215,7 @@ class FirebaseController {
                     // no images to upload: save pin to firebase immediately
                 else {
                     let fbDict = pin.prepareDictForFirebase()
-                    FirebaseData.ref.child("users").child(user.uid).setValue([pin.id: fbDict])
+                    FirebaseData.ref.child("users").child(user.uid).child("pins").child(pin.id).setValue(fbDict)
                 }
             }
         }
@@ -228,12 +228,19 @@ class FirebaseController {
                 FirebaseData.ref = Database.database().reference()
             }
 
-            FirebaseData.ref.child("users").child(user.uid).observeSingleEvent(of: .value, with: { (snapshot) in
-                let value = snapshot.value as? NSDictionary
-                let fbD = value?["pins"] as? Dictionary<String, Pin> ?? [:]
-                FirebaseData.pins = fbD
+            FirebaseData.ref.child("users").child(user.uid).child("pins").observeSingleEvent(of: .value, with: { (snapshot) in
+                let fbD = snapshot.value as? Dictionary<String, Any>
                 
-                NotificationCenter.default.post(name: Notification.Name("updatePins"), object: nil)
+                //create Pin Dictionary from firebase data
+                var pinsDict: Dictionary<String, Pin> = [:]
+                for pinEntry in fbD! {
+                    let value = pinEntry.value as! Dictionary<String, Any>
+                    let pin = Pin.init(dict: value)
+                    pinsDict[pinEntry.key] = pin
+                }
+                FirebaseData.pins = pinsDict
+                
+                //NotificationCenter.default.post(name: Notification.Name("updatePins"), object: nil)
             }) { (error) in
                 print(error.localizedDescription)
             }
