@@ -123,6 +123,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
             let marker = MGLPointAnnotation()
             marker.coordinate = CLLocationCoordinate2D(latitude: pin.latitude, longitude: pin.longitude)
             marker.title = pin.name
+            //onclick: kleines pop up name/bild? pfeil zu pin in Travels->Pins
             
             mapView.addAnnotation(marker)
         }
@@ -258,6 +259,8 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
         }
         // Update our MGLShapeSource with the current locations.
         updatePolylineWithCoordinates(coordinates: coordinates)
+        
+        //TODO: follow coordinates with camera
         
         currentIndex += 1
     }

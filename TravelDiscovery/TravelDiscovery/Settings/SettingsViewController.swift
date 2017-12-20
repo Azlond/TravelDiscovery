@@ -153,7 +153,6 @@ class SettingsViewController: FormViewController {
                 self.present(locationInfoAlert, animated: true, completion: nil)
                 return
             }
-            
             Locator.subscribeSignificantLocations(onUpdate: { location in
                 FirebaseController.handleBackgroundLocationData(location: location)
             }) { (err, lastLocation) -> (Void) in

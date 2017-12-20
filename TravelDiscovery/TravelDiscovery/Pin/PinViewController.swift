@@ -42,10 +42,14 @@ class PinViewController: UITableViewController, UICollectionViewDataSource, UICo
         collectionView.delegate = self
         collectionView.reloadData()
         
+        self.hideKeyboardWhenTappedAround()
+
     }
     
     func initSettings() {
         //Location
+        //TODO Locator.currentPosition(accuracy: <#T##Accuracy#>, onSuccess: <#T##LocationRequest.Success##LocationRequest.Success##(CLLocation) -> (Void)#>, onFail: <#T##LocationRequest.Failure##LocationRequest.Failure##(LocationError, CLLocation?) -> (Void)#>)
+
         latitude = UserDefaults.standard.double(forKey: "latitude")
         longitude =  UserDefaults.standard.double(forKey: "longitude")
 
@@ -135,8 +139,11 @@ class PinViewController: UITableViewController, UICollectionViewDataSource, UICo
     
     @IBAction func clickedSave(_ sender: UIBarButtonItem) {
         //required parameters
-        let name = locationTextField.text
-        let date = dateTextField.text
+        guard let name = locationTextField.text else {
+            //warning for user in field
+            return
+        }
+        let date = dateTextField.text!
         let longitude = self.longitude
         let latitude = self.latitude
         
@@ -147,10 +154,14 @@ class PinViewController: UITableViewController, UICollectionViewDataSource, UICo
         
         let id = "Pin_" + UUID().uuidString
         
-        let pin : Pin = Pin.init(id: id, name: name!, longitude: longitude, latitude: latitude,
-                           visibilityPublic: visibility, date: date!,
+        let pin : Pin = Pin.init(id: id, name: name, longitude: longitude, latitude: latitude,
+                           visibilityPublic: visibility, date: date,
                            photos: selectedPhotos, text: text!)!
         savePin(pin: pin)
+        
+        //TODO
+        //CLLocation from lat and lon
+        //FirebaseController.handleBackgroundLocationData(location: <#T##CLLocation#>)
         
         if let nav = self.navigationController {
             nav.popViewController(animated: true)
@@ -191,9 +202,28 @@ extension PinViewController: NohanaImagePickerControllerDelegate {
         
         for asset in pickedAssts {
             thumbnails.append(getAssetThumbnail(asset: asset))
+            //TODO: compress images
             selectedPhotos.append(getUIImageFromAsset(asset: asset))
         }
         collectionView.reloadData()
         
     }
 }
+
+
+extension UIViewController {
+    /**
+     * Hide keyboard when tapping in the view besides the textfields
+     */
+    func hideKeyboardWhenTappedAround() {
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UIViewController.dismissKeyboard))
+        tap.cancelsTouchesInView = false
+        view.addGestureRecognizer(tap)
+    }
+    
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
+    }
+}
+
+

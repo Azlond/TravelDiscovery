@@ -13,9 +13,9 @@ class Travel {
     //MARK: Properties
     
     /*required*/
-    // var id: Int do we really need this?
+    var id: Int? //TODO
     var name: String
-    var pins: [Pin]
+    var pins: Dictionary<String,Pin> = [:]
     var begin: String
     var active: Bool
     /*optionals*/
@@ -30,7 +30,7 @@ class Travel {
     
     //MARK: Initialization
     
-    init?(name: String, pins: [Pin], begin: String) {
+    init?(name: String, pin: Pin, begin: String) {
         // Initialization should fail if there is no name
         guard !name.isEmpty else {
             return nil
@@ -38,7 +38,7 @@ class Travel {
         
         // Initialize stored properties.
         self.name = name
-        self.pins = pins
+        self.pins[pin.id] = pin
         self.begin = begin
         self.active = true
     }

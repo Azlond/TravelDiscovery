@@ -15,6 +15,7 @@ class Pin {
     
     /*required*/
     var id: String
+    var number: Int
     var name: String
     var longitude: Double
     var latitude: Double
@@ -24,7 +25,8 @@ class Pin {
     var text: String?
     var photos: [UIImage]? = []
     var imageURLs: [String]? = []
-    
+    var username: String?
+
     /*TODO: Find out how videos are stored*/
     //var videos:
     
@@ -48,6 +50,8 @@ class Pin {
         self.date = date
         self.photos = photos
         self.text = text
+        self.number = 0
+        //self.username = ...
         
     }
     
@@ -59,6 +63,8 @@ class Pin {
         self.latitude = dict["lat"] as! Double
         self.visibilityPublic = dict["visibilityPublic"] as! Bool
         self.date = dict["date"] as! String
+        self.number = 0 //dict["number"] as! Int
+        //self.username = ...
         
         if let text = dict["text"] as? String {
             self.text = text
@@ -83,11 +89,15 @@ class Pin {
                     "long":self.longitude,
                     "lat":self.latitude,
                     "visibilityPublic":self.visibilityPublic,
-                    "date":self.date]
+                    "date":self.date,
+                    "number":self.number]
         
         //optionals
         if text != nil {
-            dict["text"] = self.text!
+            dict["text"] = self.text
+        }
+        if username != nil {
+            dict["username"] = self.username
         }
         if imageURLs != nil {
             var count = 1

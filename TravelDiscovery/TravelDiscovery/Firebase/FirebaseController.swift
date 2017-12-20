@@ -207,6 +207,9 @@ class FirebaseController {
                                         let fbDict = pin.prepareDictForFirebase()
                                         FirebaseData.ref.child("users").child(user.uid).child("pins").child(pin.id).setValue(fbDict)
                                         NotificationCenter.default.post(name: Notification.Name("updatePins"), object: nil)
+                                        if (pin.visibilityPublic) {
+                                            FirebaseData.ref.child("publicPins").child(pin.id).setValue(fbDict)
+                                        }
                                     }
                                 }
                             })
@@ -231,11 +234,11 @@ class FirebaseController {
             }
 
             FirebaseData.ref.child("users").child(user.uid).child("pins").observeSingleEvent(of: .value, with: { (snapshot) in
-                let fbD = snapshot.value as? Dictionary<String, Any>
+                let fbD = snapshot.value as? Dictionary<String, Any> ?? [:]
                 
                 //create Pin Dictionary from firebase data
                 var pinsDict: Dictionary<String, Pin> = [:]
-                for pinEntry in fbD! {
+                for pinEntry in fbD {
                     let value = pinEntry.value as! Dictionary<String, Any>
                     let pin = Pin.init(dict: value)
                     pinsDict[pinEntry.key] = pin
