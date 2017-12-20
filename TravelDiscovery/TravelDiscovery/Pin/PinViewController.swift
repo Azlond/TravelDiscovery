@@ -10,12 +10,14 @@ import Foundation
 import UIKit
 import Photos
 import NohanaImagePicker
+import SwiftLocation
 
 class PinViewController: UITableViewController, UICollectionViewDataSource, UICollectionViewDelegate {
     
     //MARK: UI controls
     @IBOutlet weak var locationTextField: UITextField!
-    @IBOutlet weak var dateTextField: UITextField!
+    @IBOutlet weak var dateText: UILabel!
+    @IBOutlet weak var locationText: UILabel!
     @IBOutlet weak var commentsTextView: UITextView!
     @IBOutlet weak var publicSwitch: UISwitch!
     @IBOutlet weak var collectionView: UICollectionView!
@@ -28,10 +30,37 @@ class PinViewController: UITableViewController, UICollectionViewDataSource, UICo
     var selectedPhotos = [UIImage]()
     var thumbnails = [UIImage]()
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        //check for current location
+        Locator.currentPosition(accuracy: .block, onSuccess: { location -> (Void) in
+            self.latitude = location.coordinate.latitude
+            self.longitude = location.coordinate.longitude
+            self.initSettings()
+            
+        }) { (error, loc) -> (Void) in
+            Locator.currentPosition(accuracy: .neighborhood, onSuccess: { location -> (Void) in
+                self.latitude = location.coordinate.latitude
+                self.longitude = location.coordinate.longitude
+                self.initSettings()
+                
+            }) { (error, loc) -> (Void) in
+                print(error)
+                let alert = UIAlertController(title: "Error",
+                                              message: "Unable to track location. Please try again another time.", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in
+                    self.returnToParentViewController()
+                }))
+                self.present(alert, animated: true, completion: nil)
+            }
+        }
+        
+    }
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        initSettings()
         
         addBorderToTextView()
         
@@ -42,23 +71,22 @@ class PinViewController: UITableViewController, UICollectionViewDataSource, UICo
         collectionView.delegate = self
         collectionView.reloadData()
         
-        self.hidePinKeyboardWhenTappedAround()
+        self.hideKeyboardWhenTappedAround()
 
     }
     
     func initSettings() {
-        //Location
-        //TODO Locator.currentPosition(accuracy: <#T##Accuracy#>, onSuccess: <#T##LocationRequest.Success##LocationRequest.Success##(CLLocation) -> (Void)#>, onFail: <#T##LocationRequest.Failure##LocationRequest.Failure##(LocationError, CLLocation?) -> (Void)#>)
-
-        latitude = UserDefaults.standard.double(forKey: "latitude")
-        longitude =  UserDefaults.standard.double(forKey: "longitude")
-
+        //Location: only display first 8 chars
+        let latString = String(latitude).prefix(8)
+        let lonString = String(longitude).prefix(8)
+        locationText.text = "lat: " + latString + ", lon: " + lonString
+        
         //Date
         let date = Date()
         let formatter = DateFormatter()
         formatter.dateFormat = "dd.MM.yyyy"
         let today = formatter.string(from: date)
-        dateTextField.text = today
+        dateText.text = today
         
         //get Share-visibility from user settings
         publicSwitch.setOn(UserDefaults.standard.bool(forKey: "visibility"), animated: false)
@@ -130,11 +158,7 @@ class PinViewController: UITableViewController, UICollectionViewDataSource, UICo
     //MARK: User Interaction
     
     @IBAction func clickedCancel(_ sender: UIBarButtonItem) {
-        if let nav = self.navigationController {
-            nav.popViewController(animated: true)
-        } else {
-            self.dismiss(animated: true, completion: nil)
-        }
+        returnToParentViewController()
     }
     
     @IBAction func clickedSave(_ sender: UIBarButtonItem) {
@@ -143,7 +167,7 @@ class PinViewController: UITableViewController, UICollectionViewDataSource, UICo
             //warning for user in field
             return
         }
-        let date = dateTextField.text!
+        let date = dateText.text!
         let longitude = self.longitude
         let latitude = self.latitude
         
@@ -159,15 +183,11 @@ class PinViewController: UITableViewController, UICollectionViewDataSource, UICo
                            photos: selectedPhotos, text: text!)!
         savePin(pin: pin)
         
-        //TODO
-        //CLLocation from lat and lon
-        //FirebaseController.handleBackgroundLocationData(location: <#T##CLLocation#>)
+        //save location to background data for route visualization
+        let location = CLLocation.init(latitude: latitude, longitude: longitude)
+        FirebaseController.handleBackgroundLocationData(location: location)
         
-        if let nav = self.navigationController {
-            nav.popViewController(animated: true)
-        } else {
-            self.dismiss(animated: true, completion: nil)
-        }
+        returnToParentViewController()
         
     }
     
@@ -179,6 +199,14 @@ class PinViewController: UITableViewController, UICollectionViewDataSource, UICo
     func savePin(pin: Pin) {
         FirebaseData.pins[pin.id] = pin
         FirebaseController.savePinsToFirebase()
+    }
+    
+    func returnToParentViewController() {
+        if let nav = self.navigationController {
+            nav.popViewController(animated: true)
+        } else {
+            self.dismiss(animated: true, completion: nil)
+        }
     }
     
     
@@ -211,19 +239,6 @@ extension PinViewController: NohanaImagePickerControllerDelegate {
 }
 
 
-extension UIViewController {
-    /**
-     * Hide keyboard when tapping in the view besides the textfields
-     */
-    func hidePinKeyboardWhenTappedAround() {
-        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UIViewController.dismissKeyboard))
-        tap.cancelsTouchesInView = false
-        view.addGestureRecognizer(tap)
-    }
-    
-    @objc func dismissPinKeyboard() {
-        view.endEditing(true)
-    }
-}
+
 
 

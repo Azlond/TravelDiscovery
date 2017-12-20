@@ -112,7 +112,6 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
         addLayer(to: style)
         Timer.scheduledTimer(timeInterval: 10, target: self, selector: #selector(animateTravel), userInfo: nil, repeats: false)
         
-        
     }
     
     func mapViewDidFinishLoadingMap(_ mapView: MGLMapView) {
@@ -147,8 +146,6 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
     }
     
     
-    
-  
     
     /**
      * load the Scratchcard with the selected country
