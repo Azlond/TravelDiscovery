@@ -38,7 +38,6 @@
 		C26B89FB1FDB259900549D7D /* FirebaseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C26B89FA1FDB259900549D7D /* FirebaseController.swift */; };
 		CE4356041FE9912B009E560C /* TravelDetailTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4356031FE9912B009E560C /* TravelDetailTableViewController.swift */; };
 		CE43560A1FE9A310009E560C /* TravelAddViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4356091FE9A310009E560C /* TravelAddViewController.swift */; };
-		CECF9BEC1FE9BBBC003794F6 /* TravelsDateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECF9BEB1FE9BBBC003794F6 /* TravelsDateViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -90,7 +89,6 @@
 		C26B89FA1FDB259900549D7D /* FirebaseController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseController.swift; sourceTree = "<group>"; };
 		CE4356031FE9912B009E560C /* TravelDetailTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TravelDetailTableViewController.swift; sourceTree = "<group>"; };
 		CE4356091FE9A310009E560C /* TravelAddViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TravelAddViewController.swift; sourceTree = "<group>"; };
-		CECF9BEB1FE9BBBC003794F6 /* TravelsDateViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TravelsDateViewController.swift; path = "../../../../untitled folder 2/TravelsDateViewController.swift"; sourceTree = "<group>"; };
 		F68A9D7ED9532E30AFC203B8 /* Pods_TravelDiscoveryTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TravelDiscoveryTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FC9C25524CA74ED489C2405E /* Pods-TravelDiscovery.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TravelDiscovery.release.xcconfig"; path = "Pods/Target Support Files/Pods-TravelDiscovery/Pods-TravelDiscovery.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -193,7 +191,6 @@
 			children = (
 				3D7830FE1FC8EC5B00305D1D /* TravelsTableViewController.swift */,
 				CE4356091FE9A310009E560C /* TravelAddViewController.swift */,
-				CECF9BEB1FE9BBBC003794F6 /* TravelsDateViewController.swift */,
 				CE4356031FE9912B009E560C /* TravelDetailTableViewController.swift */,
 				3D7830F21FC8E9FD00305D1D /* Travels.storyboard */,
 			);
@@ -539,7 +536,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CECF9BEC1FE9BBBC003794F6 /* TravelsDateViewController.swift in Sources */,
 				C26B89FB1FDB259900549D7D /* FirebaseController.swift in Sources */,
 				C26B89F81FDB236F00549D7D /* FirebaseData.swift in Sources */,
 				3D6763021FC6163C00CFFF32 /* LoginViewController.swift in Sources */,
@@ -712,7 +708,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = TravelDiscovery/TravelDiscovery.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 7JR5T96KSD;
+				DEVELOPMENT_TEAM = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Pods/FirebaseAnalytics/Frameworks",
@@ -750,7 +746,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = TravelDiscovery/TravelDiscovery.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 7JR5T96KSD;
+				DEVELOPMENT_TEAM = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Pods/FirebaseAnalytics/Frameworks",

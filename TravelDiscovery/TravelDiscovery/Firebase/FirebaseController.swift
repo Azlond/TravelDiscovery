@@ -206,6 +206,7 @@ class FirebaseController {
                                     if index == (pin.photos!.count-1) {
                                         let fbDict = pin.prepareDictForFirebase()
                                         FirebaseData.ref.child("users").child(user.uid).child("pins").child(pin.id).setValue(fbDict)
+                                        NotificationCenter.default.post(name: Notification.Name("updatePins"), object: nil)
                                     }
                                 }
                             })
@@ -216,6 +217,7 @@ class FirebaseController {
                 else {
                     let fbDict = pin.prepareDictForFirebase()
                     FirebaseData.ref.child("users").child(user.uid).child("pins").child(pin.id).setValue(fbDict)
+                    NotificationCenter.default.post(name: Notification.Name("updatePins"), object: nil)
                 }
             }
         }
@@ -240,7 +242,7 @@ class FirebaseController {
                 }
                 FirebaseData.pins = pinsDict
                 
-                //NotificationCenter.default.post(name: Notification.Name("updatePins"), object: nil)
+                NotificationCenter.default.post(name: Notification.Name("updatePins"), object: nil)
             }) { (error) in
                 print(error.localizedDescription)
             }

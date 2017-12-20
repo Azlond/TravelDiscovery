@@ -17,7 +17,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
     
     @IBOutlet weak var buttonAddPin: UIBarButtonItem!
     
-    
+   
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -33,7 +33,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
         mapView.tintColor = .darkGray
         
         // Set the map’s center coordinate and zoom level.
-        mapView.setCenter(CLLocationCoordinate2D(latitude:39.23225, longitude:-97.91015), animated: true)
+        mapView.setCenter(CLLocationCoordinate2D(latitude:39.23225, longitude:-97.91015), zoomLevel: 2, animated: true)
         
         view.addSubview(mapView)
         mapView.delegate = self
@@ -56,6 +56,13 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
             selector: #selector(animateTravel),
             name: Notification.Name("drawLine"),
             object: nil)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(displayPinsOnMap),
+            name:Notification.Name("updatePins"),
+            object: nil)
+        
+        FirebaseController.retrievePinsFromFirebase()
         
     }
     
@@ -87,7 +94,43 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
         updateMap()
         addLayer(to: style)
         Timer.scheduledTimer(timeInterval: 10, target: self, selector: #selector(animateTravel), userInfo: nil, repeats: false)
+        
+        
     }
+    
+    func mapViewDidFinishLoadingMap(_ mapView: MGLMapView) {
+        let userLocation: CLLocationCoordinate2D = (mapView.userLocation?.coordinate)!
+        
+        //animate camera to zoom and center to user location
+        let camera = MGLMapCamera(lookingAtCenter: userLocation, fromEyeCoordinate: mapView.centerCoordinate, eyeAltitude: 10000000)
+        mapView.setCamera(camera, withDuration: 2, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut))
+        
+        //save current location to user defaults
+        UserDefaults.standard.set(userLocation.longitude, forKey: "longitude")
+        UserDefaults.standard.set(userLocation.latitude, forKey: "latitude")
+    }
+    
+
+    
+    @objc func displayPinsOnMap() {
+        //remove pins before redrawing them
+        if let markers = mapView.annotations {
+            mapView.removeAnnotations(markers)
+        }
+        
+        for pinEntry in FirebaseData.pins{
+            let pin = pinEntry.value
+            let marker = MGLPointAnnotation()
+            marker.coordinate = CLLocationCoordinate2D(latitude: pin.latitude, longitude: pin.longitude)
+            marker.title = pin.name
+            
+            mapView.addAnnotation(marker)
+        }
+    }
+    
+    
+    
+  
     
     /**
      * load the Scratchcard with the selected country
@@ -185,9 +228,11 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
     
     @IBAction func addMarker(_ sender: UIBarButtonItem) {
         if activeTrip {
-//            let storyBoard: UIStoryboard = UIStoryboard(name: "PinView", bundle: nil)
-//            let pinVC = storyBoard.instantiateViewController(withIdentifier: "PinVC") as! PinViewController
-//            self.present(pinVC, animated: true, completion: nil)
+            //save current location in user defaults
+            let userLocation: CLLocationCoordinate2D = (mapView.userLocation?.coordinate)!
+            UserDefaults.standard.set(userLocation.longitude, forKey: "longitude")
+            UserDefaults.standard.set(userLocation.latitude, forKey: "latitude")
+            
             performSegue(withIdentifier: "addPin", sender: nil)
         }
         else {

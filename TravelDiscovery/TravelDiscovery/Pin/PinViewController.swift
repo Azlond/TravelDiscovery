@@ -20,6 +20,9 @@ class PinViewController: UITableViewController, UICollectionViewDataSource, UICo
     @IBOutlet weak var publicSwitch: UISwitch!
     @IBOutlet weak var collectionView: UICollectionView!
     
+    //variables
+    var latitude: Double = 0.0, longitude: Double = 0.0
+    
     //variables for image display
     var picker = NohanaImagePickerController()
     var selectedPhotos = [UIImage]()
@@ -43,8 +46,9 @@ class PinViewController: UITableViewController, UICollectionViewDataSource, UICo
     
     func initSettings() {
         //Location
-        // TODO: get current location
-        
+        latitude = UserDefaults.standard.double(forKey: "latitude")
+        longitude =  UserDefaults.standard.double(forKey: "longitude")
+
         //Date
         let date = Date()
         let formatter = DateFormatter()
@@ -52,7 +56,8 @@ class PinViewController: UITableViewController, UICollectionViewDataSource, UICo
         let today = formatter.string(from: date)
         dateTextField.text = today
         
-        //get Share-visibility from user settings -> TODO
+        //get Share-visibility from user settings
+        publicSwitch.setOn(UserDefaults.standard.bool(forKey: "visibility"), animated: false)
     }
     
     
@@ -132,8 +137,8 @@ class PinViewController: UITableViewController, UICollectionViewDataSource, UICo
         //required parameters
         let name = locationTextField.text
         let date = dateTextField.text
-        let longitude = 0.123
-        let latitude = 0.456
+        let longitude = self.longitude
+        let latitude = self.latitude
         
         //TODO: error handling: required fields not filled out
         
