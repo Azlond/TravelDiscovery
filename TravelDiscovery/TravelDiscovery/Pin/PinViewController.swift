@@ -42,7 +42,7 @@ class PinViewController: UITableViewController, UICollectionViewDataSource, UICo
         collectionView.delegate = self
         collectionView.reloadData()
         
-        self.hideKeyboardWhenTappedAround()
+        self.hidePinKeyboardWhenTappedAround()
 
     }
     
@@ -215,13 +215,13 @@ extension UIViewController {
     /**
      * Hide keyboard when tapping in the view besides the textfields
      */
-    func hideKeyboardWhenTappedAround() {
+    func hidePinKeyboardWhenTappedAround() {
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UIViewController.dismissKeyboard))
         tap.cancelsTouchesInView = false
         view.addGestureRecognizer(tap)
     }
     
-    @objc func dismissKeyboard() {
+    @objc func dismissPinKeyboard() {
         view.endEditing(true)
     }
 }

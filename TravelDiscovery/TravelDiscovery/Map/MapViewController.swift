@@ -41,7 +41,10 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
         // Add a tap gesture recognizer to the map view.
         let gesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
         gesture.delegate = self
+        let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress(_:)))
+        longPressGesture.delegate = self
         mapView.addGestureRecognizer(gesture)
+        mapView.addGestureRecognizer(longPressGesture)
         mapView.allowsRotating = false
         mapView.allowsTilting = false
         mapView.showsUserLocation = true
@@ -76,19 +79,33 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
         
         // Get the name of the selected state.
         if let feature = features.first, let country = feature.attribute(forKey: "name") as? String{
-            if (FirebaseData.visitedCountries[country] == true) {
-                //TODO: needs more user interaction/confirmation
-                FirebaseData.visitedCountries.removeValue(forKey: country)
-                updateMap()
-                FirebaseController.saveCountriesToFirebase()
-            } else {
+            if (FirebaseData.visitedCountries[country] != true) {
                 loadScratchcard(name: country)
             }
         }
     }
     
-    //TODO long press remove country + pop up with confirmation
-
+    @objc func handleLongPress(_ gesture: UILongPressGestureRecognizer) {
+        // Get the CGPoint where the user tapped.
+        let spot = gesture.location(in: mapView)
+        // Access the features at that point within the country layer.
+        let features = mapView.visibleFeatures(at: spot, styleLayerIdentifiers: Set(["countries copy"]))
+        
+        // Get the name of the selected state.
+        if let feature = features.first, let country = feature.attribute(forKey: "name") as? String{
+            if (FirebaseData.visitedCountries[country] == true) {
+                //TODO: needs more user interaction/confirmation
+                let alert = UIAlertController(title: "Remove Country", message: "Do you want to reset " + country + "?", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in
+                    FirebaseData.visitedCountries.removeValue(forKey: country)
+                    self.updateMap()
+                    FirebaseController.saveCountriesToFirebase()
+                }))
+                self.present(alert, animated: true, completion: nil)
+            }
+        }
+    }
     // Wait until the style is loaded before modifying the map style.
     func mapView(_ mapView: MGLMapView, didFinishLoading style: MGLStyle) {
         updateMap()

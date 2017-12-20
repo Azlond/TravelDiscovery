@@ -71,6 +71,7 @@ class ScratchcardViewController: UIViewController, ScratchUIViewDelegate {
                                      MaskImage: "mask.png",
                                      ScratchWidth: CGFloat(40))
         scratchCard.delegate = self
+        navigationBar.topItem?.title = country
         self.view.addSubview(scratchCard)
         
         let userSettings = UserDefaults.standard

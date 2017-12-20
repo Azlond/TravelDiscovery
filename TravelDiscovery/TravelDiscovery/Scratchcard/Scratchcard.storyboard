@@ -28,7 +28,7 @@
                                                 <action selector="cancelButtonTapped:" destination="uDC-fA-YMa" id="fi0-7q-7Fj"/>
                                             </connections>
                                         </barButtonItem>
-                                        <barButtonItem key="rightBarButtonItem" title="Autocomplete" id="vhK-WP-UNP">
+                                        <barButtonItem key="rightBarButtonItem" title="Auto" id="vhK-WP-UNP">
                                             <connections>
                                                 <action selector="autocompleteButtonTaped:" destination="uDC-fA-YMa" id="5j7-LG-9gf"/>
                                             </connections>
