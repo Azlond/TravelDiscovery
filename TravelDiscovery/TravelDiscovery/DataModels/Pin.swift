@@ -65,7 +65,7 @@ class Pin {
         self.visibilityPublic = dict["visibilityPublic"] as! Bool
         self.date = dict["date"] as! String
         self.number = 0 //dict["number"] as! Int
-        self.username = "Anonymous"//dict["username"] as! String 
+        self.username = dict["username"] as? String ?? "Anonymous"
         
         if let text = dict["text"] as? String {
             self.text = text

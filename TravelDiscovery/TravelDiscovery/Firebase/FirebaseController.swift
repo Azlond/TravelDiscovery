@@ -209,6 +209,7 @@ class FirebaseController {
                                         FirebaseData.ref.child("users").child(user.uid).child("pins").child(pin.id).setValue(fbDict)
                                         NotificationCenter.default.post(name: Notification.Name("updatePins"), object: nil)
                                         if (pin.visibilityPublic) {
+                                            print("uploading")
                                             FirebaseData.ref.child("publicPins").child(pin.id).setValue(fbDict)
                                         }
                                     }
@@ -247,6 +248,31 @@ class FirebaseController {
                 FirebaseData.pins = pinsDict
                 
                 NotificationCenter.default.post(name: Notification.Name("updatePins"), object: nil)
+            }) { (error) in
+                print(error.localizedDescription)
+            }
+        }
+    }
+    public static func retrievePublicPinsFromFirebase(){
+        if Auth.auth().currentUser != nil {
+            if (FirebaseData.ref == nil) {
+                // initialize database
+                FirebaseData.ref = Database.database().reference()
+            }
+            
+            FirebaseData.ref.child("publicPins").observeSingleEvent(of: .value, with: { (snapshot) in
+                let fbD = snapshot.value as? Dictionary<String, Any> ?? [:]
+                
+                //create Pin Dictionary from firebase data
+                var pinsArray = [Pin]()
+                for pinEntry in fbD {
+                    let value = pinEntry.value as! Dictionary<String, Any>
+                    let pin = Pin.init(dict: value)
+                    pinsArray.append(pin!)
+                }
+                FirebaseData.publicPins = pinsArray
+                print(FirebaseData.publicPins)
+                NotificationCenter.default.post(name: Notification.Name("updateFeed"), object: nil)
             }) { (error) in
                 print(error.localizedDescription)
             }
