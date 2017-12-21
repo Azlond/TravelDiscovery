@@ -22,7 +22,6 @@ class PinViewController: UITableViewController, UICollectionViewDataSource, UICo
     @IBOutlet weak var publicSwitch: UISwitch!
     @IBOutlet weak var collectionView: UICollectionView!
     
-    //variables
     var latitude: Double = 0.0, longitude: Double = 0.0
     
     //variables for image display
@@ -30,11 +29,12 @@ class PinViewController: UITableViewController, UICollectionViewDataSource, UICo
     var selectedPhotos = [UIImage]()
     var thumbnails = [UIImage]()
     
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         //check for current location
-        Locator.currentPosition(accuracy: .block, onSuccess: { location -> (Void) in
+        Locator.currentPosition(accuracy: .house, onSuccess: { location -> (Void) in
             self.latitude = location.coordinate.latitude
             self.longitude = location.coordinate.longitude
             self.initSettings()
@@ -129,22 +129,24 @@ class PinViewController: UITableViewController, UICollectionViewDataSource, UICo
     
     @IBAction func clickedSave(_ sender: UIBarButtonItem) {
         //required parameters
-        guard let name = locationTextField.text else {
-            //warning for user in field
+        let name = locationTextField.text
+        if name == "" {
+            //display warning
+            let alert = UIAlertController(title: "Missing Input", message: "Please enter a Pin Name", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in
+                return
+            }))
+            self.present(alert, animated: true, completion: nil)
             return
         }
         let date = dateText.text!
         let longitude = self.longitude
         let latitude = self.latitude
-        
-        //TODO: error handling: required fields not filled out
-        
         let visibility = publicSwitch.isOn
         let text = commentsTextView.text
-        
         let id = "Pin_" + UUID().uuidString
         
-        let pin : Pin = Pin.init(id: id, name: name, longitude: longitude, latitude: latitude,
+        let pin : Pin = Pin.init(id: id, name: name!, longitude: longitude, latitude: latitude,
                            visibilityPublic: visibility, date: date,
                            photos: selectedPhotos, text: text!)!
        
@@ -242,6 +244,7 @@ class PinViewController: UITableViewController, UICollectionViewDataSource, UICo
         }
         return imageData
     }
+    
     
     func returnToParentViewController() {
         if let nav = self.navigationController {

@@ -76,24 +76,26 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pin Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Q9-hh-YXE">
-                                                    <rect key="frame" x="16" y="11" width="73.5" height="21"/>
+                                                    <rect key="frame" x="16" y="11" width="74" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="w9e-tX-qFM">
-                                                    <rect key="frame" x="120.5" y="6" width="183.5" height="30"/>
+                                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="w9e-tX-qFM">
+                                                    <rect key="frame" x="133" y="6" width="171" height="30"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="171" id="nQN-T9-yVq"/>
+                                                    </constraints>
                                                     <nil key="textColor"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits" textContentType="location"/>
+                                                    <textInputTraits key="textInputTraits" textContentType="name"/>
                                                 </textField>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="w9e-tX-qFM" firstAttribute="centerY" secondItem="4Q9-hh-YXE" secondAttribute="centerY" id="9W3-XJ-RiH"/>
-                                                <constraint firstAttribute="trailing" secondItem="w9e-tX-qFM" secondAttribute="trailing" constant="16" id="CYb-lY-J5M"/>
-                                                <constraint firstItem="w9e-tX-qFM" firstAttribute="leading" secondItem="4Q9-hh-YXE" secondAttribute="trailing" constant="31" id="Jgq-Ya-Go4"/>
-                                                <constraint firstItem="4Q9-hh-YXE" firstAttribute="leading" secondItem="9nv-lj-KlY" secondAttribute="leadingMargin" id="RMI-I3-EvC"/>
-                                                <constraint firstItem="w9e-tX-qFM" firstAttribute="centerY" secondItem="9nv-lj-KlY" secondAttribute="centerY" id="w8o-gB-Lx0"/>
+                                                <constraint firstItem="w9e-tX-qFM" firstAttribute="centerY" secondItem="4Q9-hh-YXE" secondAttribute="centerY" id="8Na-WD-022"/>
+                                                <constraint firstItem="4Q9-hh-YXE" firstAttribute="leading" secondItem="9nv-lj-KlY" secondAttribute="leadingMargin" id="lPy-tw-w7T"/>
+                                                <constraint firstAttribute="trailing" secondItem="w9e-tX-qFM" secondAttribute="trailing" constant="16" id="vZk-XC-oLN"/>
+                                                <constraint firstItem="w9e-tX-qFM" firstAttribute="centerY" secondItem="9nv-lj-KlY" secondAttribute="centerY" id="ybG-2y-HeO"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>

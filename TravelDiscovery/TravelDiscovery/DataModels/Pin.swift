@@ -21,11 +21,12 @@ class Pin {
     var latitude: Double
     var visibilityPublic: Bool
     var date: String
+    var username: String
     /*optionals*/
     var text: String?
     var photos: [UIImage]? = []
     var imageURLs: [String]? = []
-    var username: String?
+    
 
     /*TODO: Find out how videos are stored*/
     //var videos:
@@ -50,8 +51,8 @@ class Pin {
         self.date = date
         self.photos = photos
         self.text = text
-        self.number = 0
-        //self.username = ...
+        self.number = 0 // TODO: init with number of pins in Travel list/dict
+        self.username = UserDefaults.standard.string(forKey: "username") ?? "Anonymous"
         
     }
     
@@ -64,7 +65,7 @@ class Pin {
         self.visibilityPublic = dict["visibilityPublic"] as! Bool
         self.date = dict["date"] as! String
         self.number = 0 //dict["number"] as! Int
-        //self.username = ...
+        self.username = "Anonymous"//dict["username"] as! String 
         
         if let text = dict["text"] as? String {
             self.text = text
@@ -90,14 +91,12 @@ class Pin {
                     "lat":self.latitude,
                     "visibilityPublic":self.visibilityPublic,
                     "date":self.date,
-                    "number":self.number]
+                    "number":self.number,
+                    "username":self.username]
         
         //optionals
         if text != nil {
             dict["text"] = self.text
-        }
-        if username != nil {
-            dict["username"] = self.username
         }
         if imageURLs != nil {
             var count = 1

@@ -12,8 +12,7 @@ import Mapbox
 class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecognizerDelegate {
 
     var mapView : MGLMapView!
-    //TODO: implement properly
-    var activeTrip : Bool! = true
+    var activeTrip : Bool! = true     //TODO: implement properly
     
     @IBOutlet weak var buttonAddPin: UIBarButtonItem!
     
@@ -31,6 +30,9 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
         mapView = MGLMapView(frame: mapFrame, styleURL: styleURL)
         mapView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         mapView.tintColor = .darkGray
+        mapView.allowsRotating = false
+        mapView.allowsTilting = false
+        mapView.showsUserLocation = true
         
         // Set the map’s center coordinate and zoom level.
         mapView.setCenter(CLLocationCoordinate2D(latitude:39.23225, longitude:-97.91015), zoomLevel: 2, animated: true)
@@ -45,9 +47,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
         longPressGesture.delegate = self
         mapView.addGestureRecognizer(gesture)
         mapView.addGestureRecognizer(longPressGesture)
-        mapView.allowsRotating = false
-        mapView.allowsTilting = false
-        mapView.showsUserLocation = true
+        
         
         NotificationCenter.default.addObserver(
             self,
@@ -91,10 +91,9 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
         // Access the features at that point within the country layer.
         let features = mapView.visibleFeatures(at: spot, styleLayerIdentifiers: Set(["countries copy"]))
         
-        // Get the name of the selected state.
+        // get the selected country name
         if let feature = features.first, let country = feature.attribute(forKey: "name") as? String{
             if (FirebaseData.visitedCountries[country] == true) {
-                //TODO: needs more user interaction/confirmation
                 let alert = UIAlertController(title: "Remove Country", message: "Do you want to reset " + country + "?", preferredStyle: .alert)
                 alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
                 alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in
@@ -121,9 +120,6 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
         let camera = MGLMapCamera(lookingAtCenter: userLocation, fromEyeCoordinate: mapView.centerCoordinate, eyeAltitude: 10000000)
         mapView.setCamera(camera, withDuration: 2, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut))
         
-        //save current location to user defaults
-        UserDefaults.standard.set(userLocation.longitude, forKey: "longitude")
-        UserDefaults.standard.set(userLocation.latitude, forKey: "latitude")
     }
     
 
@@ -170,7 +166,6 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
     /**
      * Parameter: countryname
      * Mark a country in a color
-     * TODO: save colored countries to firebase after edit
      */
     @objc public func markCountry(name: String) {
         if name.count > 0 {
@@ -274,13 +269,16 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
         // Update our MGLShapeSource with the current locations.
         updatePolylineWithCoordinates(coordinates: coordinates)
         
-        //TODO: follow coordinates with camera
+        // follow coordinates with camera
+        self.mapView.setCenter(coordinates[currentIndex-1], animated: true)
         
         currentIndex += 1
     }
     
     func updatePolylineWithCoordinates(coordinates: [CLLocationCoordinate2D]) {
         var mutableCoordinates = coordinates
+        
+        // TODO ? Only add coordinates if they differ from previous coordinates
         
         let polyline = MGLPolylineFeature(coordinates: &mutableCoordinates, count: UInt(mutableCoordinates.count))
         
