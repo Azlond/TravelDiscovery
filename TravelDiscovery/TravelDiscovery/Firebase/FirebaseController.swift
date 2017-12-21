@@ -184,11 +184,12 @@ class FirebaseController {
                     for (index,image) in pin.photos!.enumerated() {
                         
                         // name image after random name
-                        let imageName = UUID().uuidString + ".png"
+                        let imageName = UUID().uuidString + ".jpeg"
                         let storageRef = Storage.storage().reference().child("images").child(imageName)
                         
-                        if let uploadData = UIImagePNGRepresentation(image) {
+                        if let uploadData = UIImageJPEGRepresentation(image, 1) {
                             // upload image
+                            //TODO: start spinning animation
                             storageRef.putData(uploadData, metadata:nil, completion: {
                                 (metadata, error) in
                                 if error != nil {
