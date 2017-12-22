@@ -25,21 +25,26 @@ class FeedTableViewController: UITableViewController {
             selector: #selector(updateFeed),
             name: Notification.Name("updateFeed"),
             object: nil)
+        self.tableView.reloadData()
         
         handleRefresh()
     }
+    
     /**
      * reload data view, end refresh
      */
     @objc func updateFeed() {
+        if (self.refreshControl!.isRefreshing) {
+            self.refreshControl?.endRefreshing()
+        }
         self.tableView.reloadData()
-        self.refreshControl?.endRefreshing()
     }
     
     /**
     * refresh public pins, get new data from server
     */
     @objc func handleRefresh() {
+        self.tableView.reloadData()
         FirebaseController.retrievePublicPinsFromFirebase()
         //timeout in case no data can be retrieved
         Timer.scheduledTimer(timeInterval: 10, target: self, selector: #selector(updateFeed), userInfo: nil, repeats: false)
@@ -86,13 +91,12 @@ class FeedTableViewController: UITableViewController {
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "FeedTableViewCell", for: indexPath) as? FeedTableViewCell else {
             fatalError("The dequeued cell is not an instance of FeedTableViewCell.")
         }
         let pin = FirebaseData.publicPins[indexPath.row]
         
-        cell.usernameLabel.text = pin.username
+        cell.usernameLabel.text = pin.name
         
         var previewText : String = "No impression available."
         if let text = pin.text {
@@ -106,57 +110,13 @@ class FeedTableViewController: UITableViewController {
         cell.previewTextLabel.numberOfLines = 0
         
         if ((pin.imageURLs?.count ?? 0) > 0) {
-            if let url = URL(string: pin.imageURLs![0]) { //Int(arc4random_uniform(UInt32(pin.imageURLs!.count)))]) {
-                self.downloadImage(url: url, cell: cell)
-            }
+            cell.previewImage.image = UIImage(named: "default")
+            cell.previewImage.loadImageUsingCache(withUrl: pin.imageURLs![0]) //Int(arc4random_uniform(UInt32(pin.imageURLs!.count)))])
+        } else {
+            cell.previewImage.image = UIImage(named: "default")
         }
         
         return cell
-    }
-    
-    func getDataFromUrl(url: URL, completion: @escaping (Data?, URLResponse?, Error?) -> ()) {
-        URLSession.shared.dataTask(with: url) { data, response, error in
-            completion(data, response, error)
-            }.resume()
-    }
-    /**
-     * download image to display as previewImage
-     */
-    func downloadImage(url: URL, cell: FeedTableViewCell) {
-        getDataFromUrl(url: url) { data, response, error in
-            guard let data = data, error == nil else { return }
-            DispatchQueue.main.async() {
-                cell.previewImage.image = self.resizeImage(image: UIImage(data: data)!, targetSize: CGSize(width: 120, height: 120))
-            }
-        }
-    }
-    /**
-     * resize downloaded image to fit into the UIImageView
-     */
-    func resizeImage(image: UIImage, targetSize: CGSize) -> UIImage {
-        let size = image.size
-        
-        let widthRatio  = targetSize.width  / size.width
-        let heightRatio = targetSize.height / size.height
-        
-        // Figure out what our orientation is, and use that to form the rectangle
-        var newSize: CGSize
-        if(widthRatio > heightRatio) {
-            newSize = CGSize(width: size.width * heightRatio, height: size.height * heightRatio)
-        } else {
-            newSize = CGSize(width: size.width * widthRatio,  height: size.height * widthRatio)
-        }
-        
-        // This is the rect that we've calculated out and this is what is actually used below
-        let rect = CGRect(x: 0, y: 0, width: newSize.width, height: newSize.height)
-        
-        // Actually do the resizing to the rect using the ImageContext stuff
-        UIGraphicsBeginImageContextWithOptions(newSize, false, 1.0)
-        image.draw(in: rect)
-        let newImage = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        
-        return newImage!
     }
     
     /*
@@ -219,5 +179,66 @@ extension NSMutableAttributedString {
         append(normal)
         
         return self
+    }
+}
+
+let imageCache = NSCache<NSString, AnyObject>()
+
+extension UIImageView {
+    func loadImageUsingCache(withUrl urlString : String) {
+        let url = URL(string: urlString)
+        
+        // check cached image
+        if let cachedImage = imageCache.object(forKey: urlString as NSString) as? UIImage {
+            self.image = UIImage(named: "default")
+            self.image = self.resizeImage(image: cachedImage, targetSize: CGSize(width: 120, height: 120))
+            return
+        }
+        
+        // if not, download image from url
+        URLSession.shared.dataTask(with: url!, completionHandler: { (data, response, error) in
+            if error != nil {
+                print(error!)
+                return
+            }
+            
+            DispatchQueue.main.async {
+                if let image = UIImage(data: data!) {
+                    imageCache.setObject(image, forKey: urlString as NSString)
+                    self.image = UIImage(named: "default")
+                    self.image = self.resizeImage(image: image, targetSize: CGSize(width: 120, height: 120))
+                }
+            }
+            
+        }).resume()
+    }
+    
+    /**
+     * resize downloaded image to fit into the UIImageView
+     */
+    func resizeImage(image: UIImage, targetSize: CGSize) -> UIImage? {
+        let size = image.size
+        
+        let widthRatio  = targetSize.width  / size.width
+        let heightRatio = targetSize.height / size.height
+        
+        // Figure out what our orientation is, and use that to form the rectangle
+        var newSize: CGSize
+        if(widthRatio > heightRatio) {
+            newSize = CGSize(width: size.width * heightRatio, height: size.height * heightRatio)
+        } else {
+            newSize = CGSize(width: size.width * widthRatio,  height: size.height * widthRatio)
+        }
+        
+        // This is the rect that we've calculated out and this is what is actually used below
+        let rect = CGRect(x: 0, y: 0, width: newSize.width, height: newSize.height)
+        
+        // Actually do the resizing to the rect using the ImageContext stuff
+        UIGraphicsBeginImageContextWithOptions(newSize, false, 1.0)
+        image.draw(in: rect)
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        return newImage
     }
 }

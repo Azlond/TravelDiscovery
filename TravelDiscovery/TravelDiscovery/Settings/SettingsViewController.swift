@@ -245,6 +245,7 @@ class SettingsViewController: FormViewController {
      */
     func logOut(cell: ButtonCellOf<String>, row: ButtonRow) {
         FirebaseController.removeObservers()
+        self.clearLocalData()
         do {
             try Auth.auth().signOut()
             if let bundleID = Bundle.main.bundleIdentifier {
@@ -265,6 +266,7 @@ class SettingsViewController: FormViewController {
         deleteConfirmationAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action: UIAlertAction!) in
             FirebaseController.removeObservers()
             FirebaseController.removeUserData()
+            self.clearLocalData()
             Auth.auth().currentUser?.delete(completion: { (err) in
                 if let err = err {
                     print(err.localizedDescription)
@@ -286,6 +288,15 @@ class SettingsViewController: FormViewController {
     
     func drawLineOnMap(cell: ButtonCellOf<String>, row: ButtonRow) {
         NotificationCenter.default.post(name: Notification.Name("drawLine"), object: nil)        
+    }
+    
+    func clearLocalData() {
+        FirebaseData.visitedCountries.removeAll()
+        FirebaseData.locationData.removeAll()
+        FirebaseData.pins.removeAll()
+        FirebaseData.publicPins.removeAll()
+        FirebaseData.ref = nil
+        FirebaseData.user = nil
     }
     
     

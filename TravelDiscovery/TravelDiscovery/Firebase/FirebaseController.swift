@@ -105,6 +105,7 @@ class FirebaseController {
         if (FirebaseData.ref == nil) {
             // initialize database
             FirebaseData.ref = Database.database().reference()
+            FirebaseData.ref.keepSynced(true)
         }
     }
     
@@ -223,6 +224,10 @@ class FirebaseController {
                     let fbDict = pin.prepareDictForFirebase()
                     FirebaseData.ref.child("users").child(user.uid).child("pins").child(pin.id).setValue(fbDict)
                     NotificationCenter.default.post(name: Notification.Name("updatePins"), object: nil)
+                    if (pin.visibilityPublic) {
+                        print("uploading")
+                        FirebaseData.ref.child("publicPins").child(pin.id).setValue(fbDict)
+                    }
                 }
             }
         }
@@ -262,7 +267,6 @@ class FirebaseController {
             
             FirebaseData.ref.child("publicPins").observeSingleEvent(of: .value, with: { (snapshot) in
                 let fbD = snapshot.value as? Dictionary<String, Any> ?? [:]
-                
                 //create Pin Dictionary from firebase data
                 var pinsArray = [Pin]()
                 for pinEntry in fbD {
@@ -271,7 +275,6 @@ class FirebaseController {
                     pinsArray.append(pin!)
                 }
                 FirebaseData.publicPins = pinsArray
-                print(FirebaseData.publicPins)
                 NotificationCenter.default.post(name: Notification.Name("updateFeed"), object: nil)
             }) { (error) in
                 print(error.localizedDescription)
