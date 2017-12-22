@@ -7,11 +7,10 @@
 //
 
 import UIKit
+import Firebase
 
-var countries = [String]()
-// var countryImages = [UIImage]()
-
-class TravelsTableViewController: UITableViewController, UISearchBarDelegate {
+class TravelsTableViewController: UITableViewController {
+    var countries = [String]()
 
     @IBOutlet var travelsTableView: UITableView!
    
@@ -27,9 +26,8 @@ class TravelsTableViewController: UITableViewController, UISearchBarDelegate {
     }
 
     
-    // MARK: - Table view data source
+    // MARK: Tableview Datasource Methods
 
-  
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
@@ -41,33 +39,46 @@ class TravelsTableViewController: UITableViewController, UISearchBarDelegate {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let row = indexPath.row
-        let cell =
-          //  UITableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: nil )
-        tableView.dequeueReusableCell(withIdentifier: "countryCell", for: indexPath)
-        cell.textLabel!.text = countries[row]
+        let cell = tableView.dequeueReusableCell(withIdentifier: "travelCell", for: indexPath)
+        cell.textLabel?.text = countries[row]
        // cell.imageView!.image = countryImages[row]
-        // Configure the cell...
-
+        
         return cell
     }
     
 
-    /*
+    // MARK: Tableview Delegate Methods
     
-    @IBAction func countryAddTapped() {
-        let alert = UIAlertController(title: "Add Country", message: nil, preferredStyle: .alert)
-        alert.addTextField{(countryTF) in countryTF.placeholder = "Enter Country"
-        }
-        let action = UIAlertAction(title: "Add", style: .default) { (_) in
-            guard let country = alert.textFields?.first?.text else { return }
-            print(country)
-            self.countries.append(country)
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print(countries[indexPath.row])
+    }
+    
+    
+    // MAR: Add New Countries
+    
+    @IBAction func addButtonPressed() {
+        
+        var textField = UITextField()
+        
+        let alert = UIAlertController(title: "Add New Travels", message: "", preferredStyle: .alert)
+        
+        let action = UIAlertAction(title: "Add", style: .default) { (action) in
+            
+            self.countries.append(textField.text!)
             self.tableView.reloadData()
         }
+        
+        alert.addTextField { (alertTextField) in
+            alertTextField.placeholder = "Create new country"
+            textField = alertTextField
+            
+        }
+        
         alert.addAction(action)
-        present(alert, animated: true)
+        present(alert, animated: true, completion: nil)
+        
     }
- */
+ 
     
     /*
     // Override to support conditional editing of the table view.
