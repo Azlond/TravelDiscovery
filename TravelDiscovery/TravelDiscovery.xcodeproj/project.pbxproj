@@ -38,7 +38,7 @@
 		C26B89F81FDB236F00549D7D /* FirebaseData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C26B89F71FDB236F00549D7D /* FirebaseData.swift */; };
 		C26B89FB1FDB259900549D7D /* FirebaseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C26B89FA1FDB259900549D7D /* FirebaseController.swift */; };
 		CE4356041FE9912B009E560C /* TravelDetailTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4356031FE9912B009E560C /* TravelDetailTableViewController.swift */; };
-		CE43560A1FE9A310009E560C /* TravelAddViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4356091FE9A310009E560C /* TravelAddViewController.swift */; };
+		CED7169A1FED660D0039C0A0 /* TravelsDateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED716991FED660D0039C0A0 /* TravelsDateViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -90,7 +90,7 @@
 		C26B89F71FDB236F00549D7D /* FirebaseData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseData.swift; sourceTree = "<group>"; };
 		C26B89FA1FDB259900549D7D /* FirebaseController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseController.swift; sourceTree = "<group>"; };
 		CE4356031FE9912B009E560C /* TravelDetailTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TravelDetailTableViewController.swift; sourceTree = "<group>"; };
-		CE4356091FE9A310009E560C /* TravelAddViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TravelAddViewController.swift; sourceTree = "<group>"; };
+		CED716991FED660D0039C0A0 /* TravelsDateViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TravelsDateViewController.swift; sourceTree = "<group>"; };
 		F68A9D7ED9532E30AFC203B8 /* Pods_TravelDiscoveryTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TravelDiscoveryTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FC9C25524CA74ED489C2405E /* Pods-TravelDiscovery.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TravelDiscovery.release.xcconfig"; path = "Pods/Target Support Files/Pods-TravelDiscovery/Pods-TravelDiscovery.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -192,7 +192,7 @@
 			isa = PBXGroup;
 			children = (
 				3D7830FE1FC8EC5B00305D1D /* TravelsTableViewController.swift */,
-				CE4356091FE9A310009E560C /* TravelAddViewController.swift */,
+				CED716991FED660D0039C0A0 /* TravelsDateViewController.swift */,
 				CE4356031FE9912B009E560C /* TravelDetailTableViewController.swift */,
 				3D7830F21FC8E9FD00305D1D /* Travels.storyboard */,
 			);
@@ -556,7 +556,7 @@
 				84F5A7DD1FD5569900A885D0 /* CountriesDict.swift in Sources */,
 				3D979C881FC9B89E00350C9E /* MapViewController.swift in Sources */,
 				CE4356041FE9912B009E560C /* TravelDetailTableViewController.swift in Sources */,
-				CE43560A1FE9A310009E560C /* TravelAddViewController.swift in Sources */,
+				CED7169A1FED660D0039C0A0 /* TravelsDateViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -736,7 +736,7 @@
 				);
 				INFOPLIST_FILE = TravelDiscovery/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = iOSTravelCrew.TravelDiscovery;
+				PRODUCT_BUNDLE_IDENTIFIER = iOSTravelCrew3.TravelDiscovery;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -774,7 +774,7 @@
 				);
 				INFOPLIST_FILE = TravelDiscovery/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = iOSTravelCrew.TravelDiscovery;
+				PRODUCT_BUNDLE_IDENTIFIER = iOSTravelCrew3.TravelDiscovery;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = 1;
