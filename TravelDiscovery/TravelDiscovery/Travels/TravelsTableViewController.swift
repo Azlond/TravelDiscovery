@@ -10,17 +10,40 @@ import UIKit
 import Firebase
 
 class TravelsTableViewController: UITableViewController {
-    var countries = [String]()
-
     @IBOutlet var travelsTableView: UITableView!
    
     override func viewDidLoad() {
         
         super.viewDidLoad()
         self.navigationItem.leftBarButtonItem = self.editButtonItem
+        self.refreshControl?.addTarget(self, action: #selector(self.handleRefresh), for: UIControlEvents.valueChanged)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(updateTravels),
+            name: Notification.Name("updateTravels"),
+            object: nil)
+        self.tableView.reloadData()
         
+        handleRefresh()
     }
 
+    /**
+     * reload data view, end refresh
+     */
+    @objc func updateTravels() {
+        self.tableView.reloadData()
+    }
+    
+    /**
+     * refresh public pins, get new data from server
+     */
+    @objc func handleRefresh() {
+        self.tableView.reloadData()
+        FirebaseController.retrieveTravelsFromFirebase()
+        //timeout in case no data can be retrieved
+        Timer.scheduledTimer(timeInterval: 10, target: self, selector: #selector(updateTravels), userInfo: nil, repeats: false)
+        
+    }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
@@ -33,14 +56,19 @@ class TravelsTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return countries.count
+        return FirebaseData.travels.count
     }
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let row = indexPath.row
         let cell = tableView.dequeueReusableCell(withIdentifier: "travelCell", for: indexPath)
-        cell.textLabel?.text = countries[row]
+        
+        let k = Array(FirebaseData.travels.keys)[row]
+        let name = FirebaseData.travels[k]!.name
+        
+        cell.textLabel?.text = name
+        //cell.textLabel?.text = countries[row]
        // cell.imageView!.image = countryImages[row]
         
         return cell
@@ -50,7 +78,10 @@ class TravelsTableViewController: UITableViewController {
     // MARK: Tableview Delegate Methods
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print(countries[indexPath.row])
+        let row = indexPath.row
+        let k = Array(FirebaseData.travels.keys)[row]
+        let name = FirebaseData.travels[k]!.name
+        print(name)
     }
     
     
@@ -64,12 +95,22 @@ class TravelsTableViewController: UITableViewController {
         
         let action = UIAlertAction(title: "Add", style: .default) { (action) in
             
-            self.countries.append(textField.text!)
+            
+            let id = "Travel_" + UUID().uuidString
+            let name = textField.text!
+            let travel : Travel = Travel.init(id: id, name: name)!
+            
+            // save pin to firebase
+            FirebaseData.travels[travel.id] = travel
+            FirebaseController.saveTravelsToFirebase()
+            
+            
+            
             self.tableView.reloadData()
         }
         
         alert.addTextField { (alertTextField) in
-            alertTextField.placeholder = "Create new country"
+            alertTextField.placeholder = "Create new travel"
             textField = alertTextField
             
         }
@@ -94,8 +135,12 @@ class TravelsTableViewController: UITableViewController {
         guard editingStyle == .delete else { return }
             // Delete the row from the data source
             //tableView.deleteRows(at: [indexPath], with: .fade)
-            countries.remove(at: indexPath.row)
-            tableView.deleteRows(at: [indexPath], with: .automatic)
+        let row = indexPath.row
+        let k = Array(FirebaseData.travels.keys)[row]
+        FirebaseData.travels.removeValue(forKey: k)
+        FirebaseController.removeTravelFromFirebase(travelid: k)
+            //countries.remove(at: indexPath.row)
+        tableView.deleteRows(at: [indexPath], with: .automatic)
         }    
 
    
@@ -103,9 +148,10 @@ class TravelsTableViewController: UITableViewController {
     
     // Override to support rearranging the table view.
     override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-        let countryToMove = countries[(fromIndexPath as NSIndexPath).row]
-        countries.remove(at: (fromIndexPath as NSIndexPath).row)
-        countries.insert(countryToMove, at: (to as NSIndexPath).row)
+        //let countryToMove = countries[(fromIndexPath as NSIndexPath).row]
+        print("position ändern fehlt")
+        //countries.remove(at: (fromIndexPath as NSIndexPath).row)
+        //countries.insert(countryToMove, at: (to as NSIndexPath).row)
     }
     
 

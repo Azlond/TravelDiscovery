@@ -319,4 +319,56 @@ class FirebaseController {
             print(err)
         })
     }
+    
+    public static func saveTravelsToFirebase() {
+        if let user = Auth.auth().currentUser {
+            if (FirebaseData.ref == nil) {
+                // initialize database
+                FirebaseData.ref = Database.database().reference()
+            }
+            // loop over travels
+            let travelsCopy = FirebaseData.travels
+            for travelEntry in travelsCopy {
+                let travel = travelEntry.value
+                let fbDict = travel.prepareDictForFirebase()
+                FirebaseData.ref.child("users").child(user.uid).child("travels").child(travel.id).setValue(fbDict)
+                NotificationCenter.default.post(name: Notification.Name("updateTravels"), object: nil)
+            }
+        }
+    }
+    
+    public static func retrieveTravelsFromFirebase() {
+        if let user = Auth.auth().currentUser {
+            if (FirebaseData.ref == nil) {
+                // initialize database
+                FirebaseData.ref = Database.database().reference()
+            }
+            
+            FirebaseData.ref.child("users").child(user.uid).child("travels").observeSingleEvent(of: .value, with: { (snapshot) in
+                let fbD = snapshot.value as? Dictionary<String, Any> ?? [:]
+                
+                //create Travel Dictionary from firebase data
+                var travelsDict: Dictionary<String, Travel> = [:]
+                for travelEntry in fbD {
+                    let value = travelEntry.value as! Dictionary<String, Any>
+                    let travel = Travel.init(dict: value)
+                    travelsDict[travelEntry.key] = travel
+                }
+                FirebaseData.travels = travelsDict
+                NotificationCenter.default.post(name: Notification.Name("updateTravels"), object: nil)
+            }) { (error) in
+                print(error.localizedDescription)
+            }
+        }
+    }
+    
+    public static func removeTravelFromFirebase(travelid: String) {
+        if let user = Auth.auth().currentUser {
+            if (FirebaseData.ref == nil) {
+                // initialize database
+                FirebaseData.ref = Database.database().reference()
+            }
+            FirebaseData.ref.child("users").child(user.uid).child("travels").child(travelid).removeValue()
+        }
+    }
 }

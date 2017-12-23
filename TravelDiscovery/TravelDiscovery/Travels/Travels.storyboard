@@ -10,7 +10,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Country -->
+        <!--Travels-->
         <scene sceneID="WyG-CE-L37">
             <objects>
                 <tableViewController id="394-VT-zqI" customClass="TravelsTableViewController" customModule="TravelDiscovery" customModuleProvider="target" sceneMemberID="viewController">
@@ -36,7 +36,7 @@
                             <outlet property="delegate" destination="394-VT-zqI" id="XHq-Tm-FJJ"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Country " id="Q4i-yN-gKw">
+                    <navigationItem key="navigationItem" title="Travels" id="Q4i-yN-gKw">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="VoH-qi-LiF">
                             <connections>
                                 <action selector="addButtonPressed" destination="394-VT-zqI" id="oMj-Su-Ppe"/>
