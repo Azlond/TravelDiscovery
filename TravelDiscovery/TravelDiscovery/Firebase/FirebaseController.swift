@@ -259,26 +259,64 @@ class FirebaseController {
         }
     }
     public static func retrievePublicPinsFromFirebase(){
-        if Auth.auth().currentUser != nil {
-            if (FirebaseData.ref == nil) {
-                // initialize database
-                FirebaseData.ref = Database.database().reference()
-            }
-            
-            FirebaseData.ref.child("publicPins").observeSingleEvent(of: .value, with: { (snapshot) in
-                let fbD = snapshot.value as? Dictionary<String, Any> ?? [:]
-                //create Pin Dictionary from firebase data
-                var pinsArray = [Pin]()
-                for pinEntry in fbD {
-                    let value = pinEntry.value as! Dictionary<String, Any>
-                    let pin = Pin.init(dict: value)
-                    pinsArray.append(pin!)
-                }
-                FirebaseData.publicPins = pinsArray
-                NotificationCenter.default.post(name: Notification.Name("updateFeed"), object: nil)
-            }) { (error) in
+        //TODO: change/add feed UI based on error message, e.g. no network, no location data
+        Locator.currentPosition(accuracy: .neighborhood, timeout: .delayed(7.0), onSuccess: { location in
+            let url = URL(string: "https://us-central1-traveldiscovery-63134.cloudfunctions.net/getPublicPins")!
+            var request = URLRequest(url: url)
+            request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+            request.addValue("application/json", forHTTPHeaderField: "Accept")
+            request.httpMethod = "POST"
+            let postParams = ["range":String(UserDefaults.standard.float(forKey: "feedRange")), "lat":String(location.coordinate.latitude), "long":String(location.coordinate.longitude)]
+            do {
+                request.httpBody = try JSONSerialization.data(withJSONObject: postParams, options: .prettyPrinted) // pass dictionary to nsdata object and set it as request body
+            } catch let error {
                 print(error.localizedDescription)
             }
-        }
+            let task = URLSession.shared.dataTask(with: request) { data, response, error in
+                guard let data = data, error == nil else {                                                 // check for fundamental networking error
+                    print("error=\(String(describing: error))")
+                    FirebaseData.publicPins.removeAll()
+                    DispatchQueue.main.async {
+                        NotificationCenter.default.post(name: Notification.Name("updateFeed"), object: nil)
+                    }
+                    return
+                }
+                
+                if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {           // check for http errors
+                    print("statusCode should be 200, but is \(httpStatus.statusCode)")
+                    print("response = \(String(describing: response))")
+                    //TODO: If statuscode == 400, no location or range was sent to the server. Tell user about it.
+                }
+                
+                do {
+                    //create json object from data
+                    if let json = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? [String: Any] {
+                        var pinsArray = [Pin]()
+                        for element in json {
+                            let value = element.value as! Dictionary<String, Any>
+                            let pin = Pin.init(dict: value)
+                            pinsArray.append(pin!)
+                        }
+                        FirebaseData.publicPins = pinsArray
+                        DispatchQueue.main.async {
+                            NotificationCenter.default.post(name: Notification.Name("updateFeed"), object: nil)
+                        }
+                    }
+                } catch let error {
+                    FirebaseData.publicPins.removeAll()
+                    DispatchQueue.main.async {
+                        NotificationCenter.default.post(name: Notification.Name("updateFeed"), object: nil)
+                    }
+                    print(error.localizedDescription)
+                }
+            }
+            task.resume()
+        }, onFail: { (err, loc) -> (Void) in
+            FirebaseData.publicPins.removeAll()
+            DispatchQueue.main.async {
+                NotificationCenter.default.post(name: Notification.Name("updateFeed"), object: nil)
+            }
+            print(err)
+        })
     }
 }
