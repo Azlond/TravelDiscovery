@@ -34,26 +34,24 @@ class PinViewController: UITableViewController, UICollectionViewDataSource, UICo
         super.viewWillAppear(animated)
         
         //check for current location
-        Locator.currentPosition(accuracy: .house, onSuccess: { location -> (Void) in
-            self.latitude = location.coordinate.latitude
-            self.longitude = location.coordinate.longitude
-            self.initSettings()
-            
-        }) { (error, loc) -> (Void) in
-            Locator.currentPosition(accuracy: .neighborhood, onSuccess: { location -> (Void) in
+        
+        Locator.currentPosition(
+            accuracy: .house,
+            timeout: Timeout.delayed(10.0),
+            onSuccess: { location in
                 self.latitude = location.coordinate.latitude
                 self.longitude = location.coordinate.longitude
                 self.initSettings()
-                
-            }) { (error, loc) -> (Void) in
-                print(error)
-                let alert = UIAlertController(title: "Error",
-                                              message: "Unable to track location. Please try again another time.", preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in
-                    self.returnToParentViewController()
-                }))
-                self.present(alert, animated: true, completion: nil)
+            },
+            onFail: { error, loc in
+                print("Failed to get location: \(error). Location:\(loc.debugDescription)")
             }
+        )
+        // fallback if location cant be detected
+        if self.latitude == 0.0 && self.longitude == 0.0 {
+            self.latitude = UserDefaults.standard.double(forKey: "latitude")
+            self.longitude = UserDefaults.standard.double(forKey: "longitude")
+            initSettings()
         }
     }
     
@@ -71,7 +69,7 @@ class PinViewController: UITableViewController, UICollectionViewDataSource, UICo
         collectionView.reloadData()
         
         self.hideKeyboardWhenTappedAround()
-
+        
     }
     
     func initSettings() {
@@ -99,13 +97,13 @@ class PinViewController: UITableViewController, UICollectionViewDataSource, UICo
         commentsTextView.layer.cornerRadius = 5.0
     }
     
-//    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-//        return UITableViewAutomaticDimension
-//    }
-//
-//    override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-//        return UITableViewAutomaticDimension
-//    }
+    //    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    //        return UITableViewAutomaticDimension
+    //    }
+    //
+    //    override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+    //        return UITableViewAutomaticDimension
+    //    }
     
     //MARK: Image display in CollectionView
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -147,9 +145,9 @@ class PinViewController: UITableViewController, UICollectionViewDataSource, UICo
         let id = "Pin_" + UUID().uuidString
         
         let pin : Pin = Pin.init(id: id, name: name!, longitude: longitude, latitude: latitude,
-                           visibilityPublic: visibility, date: date,
-                           photos: selectedPhotos, text: text!)!
-       
+                                 visibilityPublic: visibility, date: date,
+                                 photos: selectedPhotos, text: text!)!
+        
         // save pin to firebase
         FirebaseData.pins[pin.id] = pin
         FirebaseController.savePinsToFirebase()
@@ -272,7 +270,7 @@ extension PinViewController: NohanaImagePickerControllerDelegate {
         
         for asset in pickedAssts {
             thumbnails.append(getAssetThumbnail(asset: asset))
-
+            
             let image = getUIImageFromAsset(asset: asset)
             guard let jpgImage = compressImage(image: image) else {
                 //if image compression fails use original image
