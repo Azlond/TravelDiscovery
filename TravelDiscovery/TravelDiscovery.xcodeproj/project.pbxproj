@@ -31,6 +31,8 @@
 		58F635D632DE69D8F79A6C71 /* Pods_TravelDiscoveryTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F68A9D7ED9532E30AFC203B8 /* Pods_TravelDiscoveryTests.framework */; };
 		81F7BF082CA64BC6DC302CF6 /* Pods_TravelDiscovery.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 59A094B9D15DD5382A747194 /* Pods_TravelDiscovery.framework */; };
 		845157431FE161A400691E4E /* PinViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845157421FE161A400691E4E /* PinViewController.swift */; };
+		8451574D1FEC2EC100691E4E /* PinTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8451574C1FEC2EC100691E4E /* PinTableViewCell.swift */; };
+		8451574F1FEC300C00691E4E /* PinTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8451574E1FEC300C00691E4E /* PinTableViewCell.xib */; };
 		84F5A7DD1FD5569900A885D0 /* CountriesDict.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F5A7DC1FD5569900A885D0 /* CountriesDict.swift */; };
 		C21DFF351FD4B62F00B85EAD /* Pin.swift in Sources */ = {isa = PBXBuildFile; fileRef = C21DFF341FD4B62F00B85EAD /* Pin.swift */; };
 		C21DFF371FD4BB2300B85EAD /* Travel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C21DFF361FD4BB2300B85EAD /* Travel.swift */; };
@@ -81,6 +83,8 @@
 		4BEB1DD982A34EBDA546EB93 /* Pods-TravelDiscoveryTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TravelDiscoveryTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TravelDiscoveryTests/Pods-TravelDiscoveryTests.release.xcconfig"; sourceTree = "<group>"; };
 		59A094B9D15DD5382A747194 /* Pods_TravelDiscovery.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TravelDiscovery.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		845157421FE161A400691E4E /* PinViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinViewController.swift; sourceTree = "<group>"; };
+		8451574C1FEC2EC100691E4E /* PinTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinTableViewCell.swift; sourceTree = "<group>"; };
+		8451574E1FEC300C00691E4E /* PinTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PinTableViewCell.xib; sourceTree = "<group>"; };
 		84F5A7DC1FD5569900A885D0 /* CountriesDict.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountriesDict.swift; sourceTree = "<group>"; };
 		BC819D78A77B0BE93C4145D9 /* Pods-TravelDiscoveryTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TravelDiscoveryTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TravelDiscoveryTests/Pods-TravelDiscoveryTests.debug.xcconfig"; sourceTree = "<group>"; };
 		C21DFF341FD4B62F00B85EAD /* Pin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pin.swift; sourceTree = "<group>"; };
@@ -246,6 +250,8 @@
 			isa = PBXGroup;
 			children = (
 				845157421FE161A400691E4E /* PinViewController.swift */,
+				8451574C1FEC2EC100691E4E /* PinTableViewCell.swift */,
+				8451574E1FEC300C00691E4E /* PinTableViewCell.xib */,
 			);
 			path = Pin;
 			sourceTree = "<group>";
@@ -386,6 +392,7 @@
 				3D7830F11FC8E9EF00305D1D /* Settings.storyboard in Resources */,
 				3D6763001FC6162600CFFF32 /* Login.storyboard in Resources */,
 				3D21C07D1FC4EA6E00F4DFC3 /* NavigationTabBar.storyboard in Resources */,
+				8451574F1FEC300C00691E4E /* PinTableViewCell.xib in Resources */,
 				3D7830F31FC8E9FD00305D1D /* Travels.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -545,6 +552,7 @@
 				845157431FE161A400691E4E /* PinViewController.swift in Sources */,
 				3D7830FD1FC8EC1900305D1D /* FeedTableViewController.swift in Sources */,
 				3D7830FF1FC8EC5B00305D1D /* TravelsTableViewController.swift in Sources */,
+				8451574D1FEC2EC100691E4E /* PinTableViewCell.swift in Sources */,
 				3D21C0761FC4EA6E00F4DFC3 /* AppDelegate.swift in Sources */,
 				3D979C8D1FC9BCCC00350C9E /* ScratchcardViewController.swift in Sources */,
 				C21DFF371FD4BB2300B85EAD /* Travel.swift in Sources */,

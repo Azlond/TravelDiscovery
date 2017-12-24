@@ -120,8 +120,25 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
         let camera = MGLMapCamera(lookingAtCenter: userLocation, fromEyeCoordinate: mapView.centerCoordinate, eyeAltitude: 10000000)
         mapView.setCamera(camera, withDuration: 2, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut))
         
+        UserDefaults.standard.set(userLocation.latitude, forKey: "latitude")
+        UserDefaults.standard.set(userLocation.longitude, forKey: "longitude")
     }
     
+    // TODO: add custom marker image here
+//    func mapView(_ mapView: MGLMapView, imageFor annotation: MGLAnnotation) -> MGLAnnotationImage? {
+//        var annotationImage = mapView.dequeueReusableAnnotationImage(withIdentifier: "pin")
+//        if annotationImage == nil {
+//            let image = UIImage(named: "location-pin")!
+//            //image = image.withAlignmentRectInsets(UIEdgeInsets(top: 0, left: 0, bottom: image.size.height/2, right: 0))
+//            annotationImage = MGLAnnotationImage(image: image, reuseIdentifier: "pin")
+//        }
+//        return annotationImage
+//    }
+    
+    func mapView(_ mapView: MGLMapView, annotationCanShowCallout annotation: MGLAnnotation) -> Bool {
+        // Always allow callouts to popup when annotations are tapped.
+        return true
+    }
 
     
     @objc func displayPinsOnMap() {
@@ -270,7 +287,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
         updatePolylineWithCoordinates(coordinates: coordinates)
         
         // follow coordinates with camera
-        self.mapView.setCenter(coordinates[currentIndex-1], animated: true)
+        //self.mapView.setCenter(coordinates[currentIndex-1], animated: true)
         
         currentIndex += 1
     }

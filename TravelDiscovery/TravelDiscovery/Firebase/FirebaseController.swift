@@ -195,7 +195,7 @@ class FirebaseController {
                                 if error != nil {
                                     print(error!)
                                     return
-                                    //TODO fehlermanagement
+                                    //TODO fehlermanagement uploading error
                                 }
                                 
                                 //UPLOAD SUCCESS

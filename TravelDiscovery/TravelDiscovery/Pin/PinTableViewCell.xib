@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="pnZ-aw-rT0" customClass="PinTableViewCell" customModule="TravelDiscovery" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="400"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yy4-gK-reb">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="400"/>
+                    <subviews>
+                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="F8S-aC-4aX">
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="191"/>
+                            <subviews>
+                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="QFb-KK-FEs">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="191"/>
+                                </imageView>
+                            </subviews>
+                            <constraints>
+                                <constraint firstAttribute="trailing" secondItem="QFb-KK-FEs" secondAttribute="trailing" id="2ig-Tv-6HQ"/>
+                                <constraint firstItem="QFb-KK-FEs" firstAttribute="top" secondItem="F8S-aC-4aX" secondAttribute="top" id="Rvr-J2-V4u"/>
+                                <constraint firstItem="QFb-KK-FEs" firstAttribute="leading" secondItem="F8S-aC-4aX" secondAttribute="leading" id="VzL-cs-vDf"/>
+                                <constraint firstAttribute="bottom" secondItem="QFb-KK-FEs" secondAttribute="bottom" id="WAN-a8-rgG"/>
+                            </constraints>
+                        </stackView>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="trailing" secondItem="F8S-aC-4aX" secondAttribute="trailing" id="HVh-B0-Sop"/>
+                        <constraint firstItem="F8S-aC-4aX" firstAttribute="top" secondItem="yy4-gK-reb" secondAttribute="top" id="Nwz-CM-Gwu"/>
+                        <constraint firstAttribute="bottom" secondItem="F8S-aC-4aX" secondAttribute="bottom" constant="209" id="URm-cO-IBw"/>
+                        <constraint firstItem="F8S-aC-4aX" firstAttribute="leading" secondItem="yy4-gK-reb" secondAttribute="leading" id="lzr-ew-XD0"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="yy4-gK-reb" firstAttribute="trailing" secondItem="w46-GW-c6N" secondAttribute="trailing" id="Fuf-jW-aAI"/>
+                <constraint firstItem="yy4-gK-reb" firstAttribute="top" secondItem="w46-GW-c6N" secondAttribute="top" id="cId-SS-L22"/>
+                <constraint firstItem="yy4-gK-reb" firstAttribute="leading" secondItem="w46-GW-c6N" secondAttribute="leading" id="det-aM-pc4"/>
+                <constraint firstItem="yy4-gK-reb" firstAttribute="bottom" secondItem="w46-GW-c6N" secondAttribute="bottom" id="lfK-AF-m44"/>
+            </constraints>
+            <nil key="simulatedTopBarMetrics"/>
+            <nil key="simulatedBottomBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="w46-GW-c6N"/>
+            <point key="canvasLocation" x="-3.5" y="-18"/>
+        </view>
+    </objects>
+</document>
