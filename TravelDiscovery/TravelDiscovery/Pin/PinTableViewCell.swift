@@ -11,6 +11,10 @@ import UIKit
 
 class PinTableViewCell: UITableViewCell {
     
+    @IBOutlet weak var imageStackView: UIStackView!
+    @IBOutlet weak var pinNameLabel: UILabel!
+    @IBOutlet weak var usernameLabel: UILabel!
+    @IBOutlet weak var textView: UITextView!
     
     override func awakeFromNib() {
         super.awakeFromNib()

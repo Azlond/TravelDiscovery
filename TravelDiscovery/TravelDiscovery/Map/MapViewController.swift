@@ -43,11 +43,11 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
         // Add a tap gesture recognizer to the map view.
         let gesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
         gesture.delegate = self
+        mapView.addGestureRecognizer(gesture)
+
         let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress(_:)))
         longPressGesture.delegate = self
-        mapView.addGestureRecognizer(gesture)
         mapView.addGestureRecognizer(longPressGesture)
-        
         
         NotificationCenter.default.addObserver(
             self,
@@ -71,12 +71,12 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
     
     
     @objc func handleTap(_ gesture: UITapGestureRecognizer) {
-        
+
         // Get the CGPoint where the user tapped.
         let spot = gesture.location(in: mapView)
         // Access the features at that point within the country layer.
         let features = mapView.visibleFeatures(at: spot, styleLayerIdentifiers: Set(["countries copy"]))
-        
+
         // Get the name of the selected state.
         if let feature = features.first, let country = feature.attribute(forKey: "name") as? String{
             if (FirebaseData.visitedCountries[country] != true) {
@@ -105,6 +105,13 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
             }
         }
     }
+    
+    // required to allow tap on map and tap on annotations at the same time
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return true
+    }
+
+    
     // Wait until the style is loaded before modifying the map style.
     func mapView(_ mapView: MGLMapView, didFinishLoading style: MGLStyle) {
         updateMap()
@@ -123,22 +130,6 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
         UserDefaults.standard.set(userLocation.latitude, forKey: "latitude")
         UserDefaults.standard.set(userLocation.longitude, forKey: "longitude")
     }
-    
-    // TODO: add custom marker image here
-//    func mapView(_ mapView: MGLMapView, imageFor annotation: MGLAnnotation) -> MGLAnnotationImage? {
-//        var annotationImage = mapView.dequeueReusableAnnotationImage(withIdentifier: "pin")
-//        if annotationImage == nil {
-//            let image = UIImage(named: "location-pin")!
-//            //image = image.withAlignmentRectInsets(UIEdgeInsets(top: 0, left: 0, bottom: image.size.height/2, right: 0))
-//            annotationImage = MGLAnnotationImage(image: image, reuseIdentifier: "pin")
-//        }
-//        return annotationImage
-//    }
-    
-    func mapView(_ mapView: MGLMapView, annotationCanShowCallout annotation: MGLAnnotation) -> Bool {
-        // Always allow callouts to popup when annotations are tapped.
-        return true
-    }
 
     
     @objc func displayPinsOnMap() {
@@ -152,13 +143,45 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
             let marker = MGLPointAnnotation()
             marker.coordinate = CLLocationCoordinate2D(latitude: pin.latitude, longitude: pin.longitude)
             marker.title = pin.name
+        
             //onclick: kleines pop up name/bild? pfeil zu pin in Travels->Pins
             
             mapView.addAnnotation(marker)
         }
     }
     
+    func mapView(_ mapView: MGLMapView, viewFor annotation: MGLAnnotation) -> MGLAnnotationView? {
+        guard annotation is MGLPointAnnotation else {
+            return nil
+        }
+        
+        // Use the point annotation’s longitude value (as a string) as the reuse identifier for its view.
+        let reuseIdentifier = "\(annotation.coordinate.longitude)"
+        
+        // try to reuse existing annotations.
+        var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: reuseIdentifier)
+        
+        if annotationView == nil {
+            annotationView = CustomAnnotationView(reuseIdentifier: reuseIdentifier)
+            annotationView!.frame = CGRect(x: 0, y: 0, width: 25, height: 25)
+            
+            // Set the annotation view’s background color to a value determined by its longitude.
+            let hue = CGFloat(annotation.coordinate.longitude) / 100
+            annotationView!.backgroundColor = UIColor(hue: hue, saturation: 0.5, brightness: 1, alpha: 1)
+        }
+        
+        return annotationView
+    }
     
+    func mapView(_ mapView: MGLMapView, annotationCanShowCallout annotation: MGLAnnotation) -> Bool {
+        // Always allow callouts to popup when annotations are tapped.
+        return true
+    }
+    
+    func mapView(_ mapView: MGLMapView, rightCalloutAccessoryViewFor annotation: MGLAnnotation) -> UIView? {
+        //TODO: on tap: perform segue to pin detail view
+        return UIButton(type: .detailDisclosure) 
+    }
     
     /**
      * load the Scratchcard with the selected country
@@ -304,3 +327,4 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
     }
     
 }
+
