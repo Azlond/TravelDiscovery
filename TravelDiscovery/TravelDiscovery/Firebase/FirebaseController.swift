@@ -75,6 +75,7 @@ class FirebaseController {
                     let coordinate : CLLocationCoordinate2D = CLLocationCoordinate2D.init(latitude: lat, longitude: long)
                     lD[lD.count] = coordinate
                 }
+                FirebaseData.locationData.removeAll()
                 FirebaseData.locationData = lD
             })
         }
@@ -124,7 +125,7 @@ class FirebaseController {
     }
     
     
-    public static func handleBackgroundLocationData(location: CLLocation) {
+    @objc public static func handleBackgroundLocationData(location: CLLocation) {
         if let user = Auth.auth().currentUser {
             if (FirebaseData.ref == nil) {
                 // initialize database
@@ -137,8 +138,6 @@ class FirebaseController {
                 if (location.distance(from: lastLocation) < 1000) {
                     return
                 }
-            } else {
-                
             }
             
             
