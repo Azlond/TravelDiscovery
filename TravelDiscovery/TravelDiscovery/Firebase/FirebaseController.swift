@@ -75,6 +75,7 @@ class FirebaseController {
                     let coordinate : CLLocationCoordinate2D = CLLocationCoordinate2D.init(latitude: lat, longitude: long)
                     lD[lD.count] = coordinate
                 }
+                FirebaseData.locationData.removeAll()
                 FirebaseData.locationData = lD
             })
         }
@@ -124,12 +125,22 @@ class FirebaseController {
     }
     
     
-    public static func handleBackgroundLocationData(location: CLLocation) {
+    @objc public static func handleBackgroundLocationData(location: CLLocation) {
         if let user = Auth.auth().currentUser {
             if (FirebaseData.ref == nil) {
                 // initialize database
                 FirebaseData.ref = Database.database().reference()
             }
+            
+            if (!FirebaseData.locationData.isEmpty) {
+                //if current location is too close to last location, don't record it
+                let lastLocation: CLLocation = CLLocation(latitude: (FirebaseData.locationData[FirebaseData.locationData.count-1]?.latitude)!, longitude: (FirebaseData.locationData[FirebaseData.locationData.count-1]?.longitude)!)
+                if (location.distance(from: lastLocation) < 1000) {
+                    return
+                }
+            }
+            
+            
             FirebaseData.locationData[FirebaseData.locationData.count] = location.coordinate
             
             for loc in FirebaseData.locationData {
@@ -163,7 +174,6 @@ class FirebaseController {
             print("oops")
         }
     }
-    
     
     public static func savePinsToFirebase() {
         if let user = Auth.auth().currentUser {

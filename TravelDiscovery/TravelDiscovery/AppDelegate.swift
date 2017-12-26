@@ -9,6 +9,7 @@
 import UIKit
 import Firebase
 import SwiftLocation
+import CoreLocation
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -24,12 +25,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let enableBackgroundLocationUpdates = userSettings.bool(forKey: "backgroundLocationUpdates")
         if (enableBackgroundLocationUpdates) {
             Locator.subscribeSignificantLocations(onUpdate: { location in
-                FirebaseController.handleBackgroundLocationData(location: location)
+                //short delay to make sure all other location data is loaded correctly
+                Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(self.sendBackgroundLocationData), userInfo: location, repeats: false)
             }) { (err, lastLocation) -> (Void) in
                 print("Failed with err: \(err)")
             }
         }
         return true
+    }
+    
+    @objc func sendBackgroundLocationData(timer: Timer) {
+        let location = timer.userInfo as! (CLLocation)
+        FirebaseController.handleBackgroundLocationData(location: location)
     }
     
     func applicationWillResignActive(_ application: UIApplication) {
