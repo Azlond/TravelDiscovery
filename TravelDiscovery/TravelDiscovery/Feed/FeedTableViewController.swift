@@ -17,7 +17,7 @@ class FeedTableViewController: UITableViewController {
         let nib = UINib.init(nibName: "PinTableViewCell", bundle: nil)
         self.tableView.register(nib, forCellReuseIdentifier: "PinTableViewCell")
 
-        self.tableView.estimatedRowHeight = 80
+        self.tableView.estimatedRowHeight = 100
         self.tableView.rowHeight = UITableViewAutomaticDimension
         
         // Uncomment the following line to preserve selection between presentations
@@ -32,7 +32,9 @@ class FeedTableViewController: UITableViewController {
             selector: #selector(updateFeed),
             name: Notification.Name("updateFeed"),
             object: nil)
+
         self.tableView.reloadData()
+        
         
         handleRefresh()
     }
@@ -45,6 +47,12 @@ class FeedTableViewController: UITableViewController {
             self.refreshControl?.endRefreshing()
         }
         self.tableView.reloadData()
+    }
+    
+    //TODO: doesnt do anything: meant to trigger update of cell height
+    @objc func updateCellHeights() {
+        self.tableView.beginUpdates()
+        self.tableView.endUpdates()
     }
     
     /**
@@ -114,15 +122,23 @@ class FeedTableViewController: UITableViewController {
         }
         cell.textView.text = previewText
         
+        cell.imgView.image = cell.imgView.resizeImage(image: UIImage(named: "default2")!)
+
         if ((pin.imageURLs?.count ?? 0) > 0) {
             cell.imgView.loadImageUsingCache(withUrl: pin.imageURLs![0]) //Int(arc4random_uniform(UInt32(pin.imageURLs!.count)))])
         }
+
+        
         
         return cell
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableViewAutomaticDimension
+    }
+
+    override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 100
     }
     
     /*
@@ -196,8 +212,7 @@ extension UIImageView {
         
         // check cached image
         if let cachedImage = imageCache.object(forKey: urlString as NSString) as? UIImage {
-            self.image = UIImage(named: "default")
-            self.image = self.resizeImage(image: cachedImage, targetSize: CGSize(width: 375, height: 200))
+            self.image = self.resizeImage(image: cachedImage)
             return
         }
         
@@ -211,8 +226,7 @@ extension UIImageView {
             DispatchQueue.main.async {
                 if let image = UIImage(data: data!) {
                     imageCache.setObject(image, forKey: urlString as NSString)
-                    //self.image = UIImage(named: "default")
-                    self.image = self.resizeImage(image: image, targetSize: CGSize(width: 375, height: 200))
+                    self.image = self.resizeImage(image: image)
                 }
             }
             
@@ -222,25 +236,20 @@ extension UIImageView {
     /**
      * resize downloaded image to fit into the UIImageView
      */
-    func resizeImage(image: UIImage, targetSize: CGSize) -> UIImage? {
+    func resizeImage(image: UIImage) -> UIImage? {
         let size = image.size
         
-        let widthRatio  = targetSize.width  / size.width
-        let heightRatio = targetSize.height / size.height
+        //scale image to screenWidth
+        let screenWidth = UIScreen.main.bounds.width
+        let scaleFactor = screenWidth / size.width
         
-        // Figure out what our orientation is, and use that to form the rectangle
-        var newSize: CGSize
-        if(widthRatio < heightRatio) {
-            newSize = CGSize(width: size.width * heightRatio, height: size.height * heightRatio)
-        } else {
-            newSize = CGSize(width: size.width * widthRatio,  height: size.height * widthRatio)
-        }
-        
+        let targetSize = CGSize(width: screenWidth, height: size.height * scaleFactor)
+   
         // This is the rect that we've calculated out and this is what is actually used below
-        let rect = CGRect(x: 0, y: 0, width: newSize.width, height: newSize.height)
+        let rect = CGRect(x: 0, y: 0, width: targetSize.width, height: targetSize.height)
 
         // Actually do the resizing to the rect using the ImageContext stuff
-        UIGraphicsBeginImageContextWithOptions(newSize, false, 1.0)
+        UIGraphicsBeginImageContextWithOptions(targetSize, false, 1.0)
         image.draw(in: rect)
         let newImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
