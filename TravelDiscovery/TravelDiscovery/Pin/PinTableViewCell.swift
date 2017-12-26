@@ -11,15 +11,19 @@ import UIKit
 
 class PinTableViewCell: UITableViewCell {
     
-    @IBOutlet weak var imageStackView: UIStackView!
+    @IBOutlet weak var imgView: UIImageView!
     @IBOutlet weak var pinNameLabel: UILabel!
     @IBOutlet weak var usernameLabel: UILabel!
     @IBOutlet weak var textView: UITextView!
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        
+   
+    }
     
+    override func setSelected(_ selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: animated)
+        
     }
     
 }

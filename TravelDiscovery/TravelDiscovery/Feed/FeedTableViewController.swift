@@ -12,7 +12,14 @@ class FeedTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        //include Nib in TableView
+        let nib = UINib.init(nibName: "PinTableViewCell", bundle: nil)
+        self.tableView.register(nib, forCellReuseIdentifier: "PinTableViewCell")
 
+        self.tableView.estimatedRowHeight = 80
+        self.tableView.rowHeight = UITableViewAutomaticDimension
+        
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
@@ -91,32 +98,31 @@ class FeedTableViewController: UITableViewController {
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "FeedTableViewCell", for: indexPath) as? FeedTableViewCell else {
-            fatalError("The dequeued cell is not an instance of FeedTableViewCell.")
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "PinTableViewCell", for: indexPath) as? PinTableViewCell else {
+            fatalError("The dequeued cell is not an instance of PinTableViewCell.")
         }
         let pin = FirebaseData.publicPins[indexPath.row]
         
-        cell.usernameLabel.text = pin.name
-        
+        cell.usernameLabel.text = pin.username
+        cell.pinNameLabel.text = pin.name
+
         var previewText : String = "No impression available."
         if let text = pin.text {
             if (text.count > 0) {
                 previewText = text
             }
         }
-
-        cell.previewTextLabel.text = previewText
-        cell.previewTextLabel.lineBreakMode = NSLineBreakMode.byWordWrapping
-        cell.previewTextLabel.numberOfLines = 0
+        cell.textView.text = previewText
         
         if ((pin.imageURLs?.count ?? 0) > 0) {
-            cell.previewImage.image = UIImage(named: "default")
-            cell.previewImage.loadImageUsingCache(withUrl: pin.imageURLs![0]) //Int(arc4random_uniform(UInt32(pin.imageURLs!.count)))])
-        } else {
-            cell.previewImage.image = UIImage(named: "default")
+            cell.imgView.loadImageUsingCache(withUrl: pin.imageURLs![0]) //Int(arc4random_uniform(UInt32(pin.imageURLs!.count)))])
         }
         
         return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableViewAutomaticDimension
     }
     
     /*
@@ -191,7 +197,7 @@ extension UIImageView {
         // check cached image
         if let cachedImage = imageCache.object(forKey: urlString as NSString) as? UIImage {
             self.image = UIImage(named: "default")
-            self.image = self.resizeImage(image: cachedImage, targetSize: CGSize(width: 120, height: 120))
+            self.image = self.resizeImage(image: cachedImage, targetSize: CGSize(width: 375, height: 200))
             return
         }
         
@@ -205,8 +211,8 @@ extension UIImageView {
             DispatchQueue.main.async {
                 if let image = UIImage(data: data!) {
                     imageCache.setObject(image, forKey: urlString as NSString)
-                    self.image = UIImage(named: "default")
-                    self.image = self.resizeImage(image: image, targetSize: CGSize(width: 120, height: 120))
+                    //self.image = UIImage(named: "default")
+                    self.image = self.resizeImage(image: image, targetSize: CGSize(width: 375, height: 200))
                 }
             }
             
@@ -224,7 +230,7 @@ extension UIImageView {
         
         // Figure out what our orientation is, and use that to form the rectangle
         var newSize: CGSize
-        if(widthRatio > heightRatio) {
+        if(widthRatio < heightRatio) {
             newSize = CGSize(width: size.width * heightRatio, height: size.height * heightRatio)
         } else {
             newSize = CGSize(width: size.width * widthRatio,  height: size.height * widthRatio)
@@ -232,7 +238,7 @@ extension UIImageView {
         
         // This is the rect that we've calculated out and this is what is actually used below
         let rect = CGRect(x: 0, y: 0, width: newSize.width, height: newSize.height)
-        
+
         // Actually do the resizing to the rect using the ImageContext stuff
         UIGraphicsBeginImageContextWithOptions(newSize, false, 1.0)
         image.draw(in: rect)

@@ -97,14 +97,6 @@ class PinViewController: UITableViewController, UICollectionViewDataSource, UICo
         commentsTextView.layer.cornerRadius = 5.0
     }
     
-    //    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-    //        return UITableViewAutomaticDimension
-    //    }
-    //
-    //    override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-    //        return UITableViewAutomaticDimension
-    //    }
-    
     //MARK: Image display in CollectionView
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return thumbnails.count
@@ -114,7 +106,6 @@ class PinViewController: UITableViewController, UICollectionViewDataSource, UICo
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath as IndexPath)
         let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 79, height: 79))
         imageView.image = thumbnails[indexPath.row]
-        //imageView.sizeToFit()
         cell.contentView.addSubview(imageView)
         return cell
     }
