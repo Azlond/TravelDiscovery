@@ -175,14 +175,14 @@ class FirebaseController {
         }
     }
     
-    public static func savePinsToFirebase() {
+    public static func savePinsToFirebaseOfTravel(travel: Travel) {
         if let user = Auth.auth().currentUser {
             if (FirebaseData.ref == nil) {
                 // initialize database
                 FirebaseData.ref = Database.database().reference()
             }
             // loop over pins
-            let pinsCopy = FirebaseData.pins
+            let pinsCopy = travel.pins
             for pinEntry in pinsCopy {
                 let pin = pinEntry.value
                 
@@ -217,7 +217,7 @@ class FirebaseController {
                                     //save pin after last image was uploaded
                                     if index == (pin.photos!.count-1) {
                                         let fbDict = pin.prepareDictForFirebase()
-                                        FirebaseData.ref.child("users").child(user.uid).child("pins").child(pin.id).setValue(fbDict)
+                                        FirebaseData.ref.child("users").child(user.uid).child("travels").child(travel.id).child("pins").child(pin.id).setValue(fbDict)
                                         NotificationCenter.default.post(name: Notification.Name("updatePins"), object: nil)
                                         if (pin.visibilityPublic) {
                                             print("uploading")
@@ -232,7 +232,7 @@ class FirebaseController {
                     // no images to upload: save pin to firebase immediately
                 else {
                     let fbDict = pin.prepareDictForFirebase()
-                    FirebaseData.ref.child("users").child(user.uid).child("pins").child(pin.id).setValue(fbDict)
+                    FirebaseData.ref.child("users").child(user.uid).child("travels").child(travel.id).child("pins").child(pin.id).setValue(fbDict)
                     NotificationCenter.default.post(name: Notification.Name("updatePins"), object: nil)
                     if (pin.visibilityPublic) {
                         print("uploading")
@@ -268,6 +268,7 @@ class FirebaseController {
             }
         }
     }
+    
     public static func retrievePublicPinsFromFirebase(){
         //TODO: change/add feed UI based on error message, e.g. no network, no location data
         Locator.currentPosition(accuracy: .neighborhood, timeout: .delayed(7.0), onSuccess: { location in
@@ -342,6 +343,10 @@ class FirebaseController {
                 let travel = travelEntry.value
                 let fbDict = travel.prepareDictForFirebase()
                 FirebaseData.ref.child("users").child(user.uid).child("travels").child(travel.id).setValue(fbDict)
+                
+                //save pins
+                savePinsToFirebaseOfTravel(travel: travel)
+                
                 NotificationCenter.default.post(name: Notification.Name("updateTravels"), object: nil)
             }
         }
@@ -366,6 +371,8 @@ class FirebaseController {
                 }
                 FirebaseData.travels = travelsDict
                 NotificationCenter.default.post(name: Notification.Name("updateTravels"), object: nil)
+                NotificationCenter.default.post(name: Notification.Name("updatePins"), object: nil)
+
             }) { (error) in
                 print(error.localizedDescription)
             }

@@ -40,6 +40,7 @@ class Travel {
         // Initialize stored properties.
         self.id = id
         self.name = name
+        self.active = true
     }
     
     
@@ -47,14 +48,32 @@ class Travel {
     init?(dict: (Dictionary<String,Any>))  {
         self.id =  dict["id"] as! String
         self.name = dict["name"] as! String
+        self.active = dict["active"] as? Bool
+        
+        //load pins
+        let tmpPins = dict["pins"] as? Dictionary<String, Any> ?? [:]
+        for pinEntry in tmpPins{
+            let value = pinEntry.value as! Dictionary<String, Any>
+            let pin = Pin.init(dict: value)
+            self.pins[pinEntry.key] = pin
+        }
+        
     }
+    
+    func endTrip(){
+        self.active = false
+    }
+    
     
     func prepareDictForFirebase() -> Dictionary<String, Any>{
         var dict = [String:Any]()
         
-        dict =     ["id":self.id,
-                    "name":self.name]
+        dict = ["id":self.id,
+                "name":self.name,
+                "active": self.active ?? false]
         
         return dict
     }
+    
+    
 }

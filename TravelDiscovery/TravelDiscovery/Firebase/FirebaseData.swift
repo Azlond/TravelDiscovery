@@ -20,4 +20,14 @@ class FirebaseData {
     public static var pins: Dictionary<String, Pin> = [:]
     public static var publicPins = [Pin]()
     public static var travels: Dictionary<String, Travel> = [:]
+    
+    static func getActiveTravel() -> Travel? {
+        for travelEntry in FirebaseData.travels{
+            let travel = travelEntry.value
+            if(travel.active)!{
+                return travel
+            }
+        }
+        return nil
+    }
 }

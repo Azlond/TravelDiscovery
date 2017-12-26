@@ -139,9 +139,13 @@ class PinViewController: UITableViewController, UICollectionViewDataSource, UICo
                                  visibilityPublic: visibility, date: date,
                                  photos: selectedPhotos, text: text!)!
         
-        // save pin to firebase
-        FirebaseData.pins[pin.id] = pin
-        FirebaseController.savePinsToFirebase()
+        // save pin to travel
+        if let currentTravel = FirebaseData.getActiveTravel() {
+            currentTravel.pins[pin.id] = pin
+            FirebaseController.saveTravelsToFirebase()
+        }
+        
+        //TODO? add progress bar during image upload
         
         //save location to background data for route visualization
         let location = CLLocation.init(latitude: latitude, longitude: longitude)

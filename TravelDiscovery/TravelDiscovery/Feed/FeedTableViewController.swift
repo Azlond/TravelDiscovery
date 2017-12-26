@@ -127,8 +127,8 @@ class FeedTableViewController: UITableViewController {
         if ((pin.imageURLs?.count ?? 0) > 0) {
             cell.imgView.loadImageUsingCache(withUrl: pin.imageURLs![0]) //Int(arc4random_uniform(UInt32(pin.imageURLs!.count)))])
         }
-
         
+        //TODO (nice to have): if multiple images are available: show multi image preview
         
         return cell
     }

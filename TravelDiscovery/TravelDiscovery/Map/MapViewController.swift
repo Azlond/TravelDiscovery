@@ -10,19 +10,19 @@ import UIKit
 import Mapbox
 
 class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecognizerDelegate {
-
+    
     var mapView : MGLMapView!
     var activeTrip : Bool! = true     //TODO: implement properly
     
     @IBOutlet weak var buttonAddPin: UIBarButtonItem!
     
-   
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         // set Navigation Bar Button item
         buttonAddPin!.title = activeTrip ? "📍" : "New Trip"
-
+        
         // Create a new map view using the Mapbox Light style.
         let styleURL = URL(string: "mapbox://styles/iostravelcrew/cjamqrp7r1cg92rphoiyqqhmm")
         let navigationBarHeight: CGFloat = self.navigationController!.navigationBar.frame.height
@@ -44,7 +44,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
         let gesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
         gesture.delegate = self
         mapView.addGestureRecognizer(gesture)
-
+        
         let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress(_:)))
         longPressGesture.delegate = self
         mapView.addGestureRecognizer(longPressGesture)
@@ -65,18 +65,18 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
             name:Notification.Name("updatePins"),
             object: nil)
         
-        FirebaseController.retrievePinsFromFirebase()
+        FirebaseController.retrieveTravelsFromFirebase()
         
     }
     
     
     @objc func handleTap(_ gesture: UITapGestureRecognizer) {
-
+        
         // Get the CGPoint where the user tapped.
         let spot = gesture.location(in: mapView)
         // Access the features at that point within the country layer.
         let features = mapView.visibleFeatures(at: spot, styleLayerIdentifiers: Set(["countries copy"]))
-
+        
         // Get the name of the selected state.
         if let feature = features.first, let country = feature.attribute(forKey: "name") as? String{
             if (FirebaseData.visitedCountries[country] != true) {
@@ -110,7 +110,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         return true
     }
-
+    
     
     // Wait until the style is loaded before modifying the map style.
     func mapView(_ mapView: MGLMapView, didFinishLoading style: MGLStyle) {
@@ -130,23 +130,24 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
         UserDefaults.standard.set(userLocation.latitude, forKey: "latitude")
         UserDefaults.standard.set(userLocation.longitude, forKey: "longitude")
     }
-
+    
     
     @objc func displayPinsOnMap() {
         //remove pins before redrawing them
         if let markers = mapView.annotations {
             mapView.removeAnnotations(markers)
         }
-        
-        for pinEntry in FirebaseData.pins{
-            let pin = pinEntry.value
-            let marker = MGLPointAnnotation()
-            marker.coordinate = CLLocationCoordinate2D(latitude: pin.latitude, longitude: pin.longitude)
-            marker.title = pin.name
-        
-            //onclick: kleines pop up name/bild? pfeil zu pin in Travels->Pins
+        for travelEntry in FirebaseData.travels {
+            let travel = travelEntry.value
             
-            mapView.addAnnotation(marker)
+            for pinEntry in travel.pins{
+                let pin = pinEntry.value
+                let marker = MGLPointAnnotation()
+                marker.coordinate = CLLocationCoordinate2D(latitude: pin.latitude, longitude: pin.longitude)
+                marker.title = pin.name
+                                
+                mapView.addAnnotation(marker)
+            }
         }
     }
     
@@ -242,14 +243,14 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
     }
     
     /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    
+     // MARK: - Navigation
+     
+     // In a storyboard-based application, you will often want to do a little preparation before navigation
+     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+     // Get the new view controller using segue.destinationViewController.
+     // Pass the selected object to the new view controller.
+     }
+     
      */
     
     
@@ -290,7 +291,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
         }
     }
     
-   @objc func animateTravel() {
+    @objc func animateTravel() {
         currentIndex = 1
         timer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(tick), userInfo: nil, repeats: true)
     }
