@@ -12,16 +12,12 @@ import Mapbox
 class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecognizerDelegate {
     
     var mapView : MGLMapView!
-    var activeTrip : Bool! = true     //TODO: implement properly
     
     @IBOutlet weak var buttonAddPin: UIBarButtonItem!
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // set Navigation Bar Button item
-        buttonAddPin!.title = activeTrip ? "📍" : "New Trip"
         
         // Create a new map view using the Mapbox Light style.
         let styleURL = URL(string: "mapbox://styles/iostravelcrew/cjamqrp7r1cg92rphoiyqqhmm")
@@ -133,6 +129,9 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
     
     
     @objc func displayPinsOnMap() {
+        // set Navigation Bar Button item
+        buttonAddPin!.title = (FirebaseData.getActiveTravel() != nil) ? "📍" : "New Trip"
+        
         //remove pins before redrawing them
         if let markers = mapView.annotations {
             mapView.removeAnnotations(markers)
@@ -278,7 +277,8 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
     }
     
     @IBAction func addMarker(_ sender: UIBarButtonItem) {
-        if activeTrip {
+        // add Pin to current active Travel if one exists
+        if (FirebaseData.getActiveTravel() != nil) {
             //save current location in user defaults
             let userLocation: CLLocationCoordinate2D = (mapView.userLocation?.coordinate)!
             UserDefaults.standard.set(userLocation.longitude, forKey: "longitude")
