@@ -32,9 +32,13 @@ class FeedTableViewController: UITableViewController {
             selector: #selector(updateFeed),
             name: Notification.Name("updateFeed"),
             object: nil)
+//        NotificationCenter.default.addObserver(
+//            self,
+//            selector: #selector(updateCellHeights),
+//            name: Notification.Name("imageLoaded"),
+//            object: nil)
 
         self.tableView.reloadData()
-        
         
         handleRefresh()
     }
@@ -227,6 +231,7 @@ extension UIImageView {
                 if let image = UIImage(data: data!) {
                     imageCache.setObject(image, forKey: urlString as NSString)
                     self.image = self.resizeImage(image: image)
+//                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: "imageLoaded"), object: nil)
                 }
             }
             

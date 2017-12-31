@@ -38,7 +38,7 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <textView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" delaysContentTouches="NO" canCancelContentTouches="NO" bouncesZoom="NO" editable="NO" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wKB-gW-cgg">
-                            <rect key="frame" x="16" y="270.5" width="343" height="159.5"/>
+                            <rect key="frame" x="16" y="274.5" width="343" height="159.5"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <accessibility key="accessibilityConfiguration">
                                 <accessibilityTraits key="traits" staticText="YES" notEnabled="YES"/>
@@ -54,13 +54,13 @@
                         <constraint firstItem="wKB-gW-cgg" firstAttribute="leading" secondItem="yy4-gK-reb" secondAttribute="leading" constant="16" id="674-Jx-F9B"/>
                         <constraint firstItem="iTW-y0-8pa" firstAttribute="leading" secondItem="yy4-gK-reb" secondAttribute="leading" constant="16" id="7IC-xB-uHl"/>
                         <constraint firstAttribute="trailing" secondItem="wKB-gW-cgg" secondAttribute="trailing" constant="16" id="ODC-3M-0cS"/>
-                        <constraint firstItem="wKB-gW-cgg" firstAttribute="top" secondItem="1IN-dq-wtk" secondAttribute="bottom" constant="-3.5" id="R0R-2k-5Kx"/>
+                        <constraint firstItem="wKB-gW-cgg" firstAttribute="top" secondItem="1IN-dq-wtk" secondAttribute="bottom" constant="0.5" id="R0R-2k-5Kx"/>
                         <constraint firstAttribute="trailing" secondItem="iTW-y0-8pa" secondAttribute="trailing" constant="16" id="TuR-QA-tAj"/>
                         <constraint firstItem="1IN-dq-wtk" firstAttribute="leading" secondItem="yy4-gK-reb" secondAttribute="leading" constant="20" id="Uy0-8t-QjX"/>
                         <constraint firstItem="iTW-y0-8pa" firstAttribute="top" secondItem="BGv-8I-Flg" secondAttribute="bottom" constant="4" id="XTA-JO-7rl"/>
                         <constraint firstItem="BGv-8I-Flg" firstAttribute="top" secondItem="yy4-gK-reb" secondAttribute="top" constant="8" id="gvn-lm-cUJ"/>
                         <constraint firstItem="1IN-dq-wtk" firstAttribute="top" secondItem="iTW-y0-8pa" secondAttribute="bottom" constant="7" id="rXK-Kp-EL3"/>
-                        <constraint firstAttribute="bottom" secondItem="wKB-gW-cgg" secondAttribute="bottom" constant="20" id="u0j-6B-3dN"/>
+                        <constraint firstAttribute="bottom" secondItem="wKB-gW-cgg" secondAttribute="bottom" constant="16" id="u0j-6B-3dN"/>
                         <constraint firstItem="BGv-8I-Flg" firstAttribute="leading" secondItem="yy4-gK-reb" secondAttribute="leading" constant="16" id="wrD-fQ-sVl"/>
                     </constraints>
                 </view>

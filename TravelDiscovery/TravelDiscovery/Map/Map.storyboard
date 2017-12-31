@@ -197,7 +197,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="KHI-9h-Xfm">
-                                                    <rect key="frame" x="16" y="0.0" width="232" height="95"/>
+                                                    <rect key="frame" x="16" y="0.0" width="232" height="93"/>
                                                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="5" minimumInteritemSpacing="2" id="6q6-pn-Kt9">
                                                         <size key="itemSize" width="80" height="80"/>
@@ -207,7 +207,7 @@
                                                     </collectionViewFlowLayout>
                                                     <cells>
                                                         <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" reuseIdentifier="cell" id="6Fc-OA-oAc">
-                                                            <rect key="frame" x="0.0" y="8" width="79" height="79"/>
+                                                            <rect key="frame" x="0.0" y="7" width="79" height="79"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
                                                                 <rect key="frame" x="0.0" y="0.0" width="79" height="79"/>
@@ -219,10 +219,10 @@
                                                     </cells>
                                                 </collectionView>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2ff-WL-frE">
-                                                    <rect key="frame" x="264" y="28" width="40" height="40"/>
+                                                    <rect key="frame" x="267" y="28" width="37" height="37"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="height" constant="40" id="mJT-MQ-4UB"/>
-                                                        <constraint firstAttribute="width" constant="40" id="yc5-K9-vdD"/>
+                                                        <constraint firstAttribute="height" constant="37" id="mJT-MQ-4UB"/>
+                                                        <constraint firstAttribute="width" constant="37" id="yc5-K9-vdD"/>
                                                     </constraints>
                                                     <inset key="contentEdgeInsets" minX="2" minY="2" maxX="2" maxY="2"/>
                                                     <state key="normal" backgroundImage="add">
@@ -236,7 +236,7 @@
                                             <constraints>
                                                 <constraint firstItem="2ff-WL-frE" firstAttribute="trailing" secondItem="4Cr-9s-S7I" secondAttribute="trailingMargin" id="2TI-c6-Uta"/>
                                                 <constraint firstItem="KHI-9h-Xfm" firstAttribute="top" secondItem="4Cr-9s-S7I" secondAttribute="top" id="30U-mv-T3C"/>
-                                                <constraint firstItem="2ff-WL-frE" firstAttribute="leading" secondItem="KHI-9h-Xfm" secondAttribute="trailing" constant="16" id="D4L-SN-7Ir"/>
+                                                <constraint firstItem="2ff-WL-frE" firstAttribute="leading" secondItem="KHI-9h-Xfm" secondAttribute="trailing" constant="19" id="D4L-SN-7Ir"/>
                                                 <constraint firstItem="KHI-9h-Xfm" firstAttribute="leading" secondItem="4Cr-9s-S7I" secondAttribute="leadingMargin" id="Gjf-RN-y58"/>
                                                 <constraint firstItem="2ff-WL-frE" firstAttribute="centerY" secondItem="KHI-9h-Xfm" secondAttribute="centerY" id="NSb-rl-RxE"/>
                                                 <constraint firstItem="2ff-WL-frE" firstAttribute="trailing" secondItem="4Cr-9s-S7I" secondAttribute="trailingMargin" id="XQR-tq-8lE"/>
