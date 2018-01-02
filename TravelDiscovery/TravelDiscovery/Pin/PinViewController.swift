@@ -12,7 +12,7 @@ import Photos
 import NohanaImagePicker
 import SwiftLocation
 
-class PinViewController: UITableViewController, UICollectionViewDataSource, UICollectionViewDelegate {
+class PinViewController: UITableViewController, UICollectionViewDataSource, UICollectionViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     //MARK: UI controls
     @IBOutlet weak var locationTextField: UITextField!
@@ -21,6 +21,7 @@ class PinViewController: UITableViewController, UICollectionViewDataSource, UICo
     @IBOutlet weak var commentsTextView: UITextView!
     @IBOutlet weak var publicSwitch: UISwitch!
     @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var videoPreview: UIImageView!
     
     var latitude: Double = 0.0, longitude: Double = 0.0
     
@@ -29,6 +30,9 @@ class PinViewController: UITableViewController, UICollectionViewDataSource, UICo
     var selectedPhotos = [UIImage]()
     var thumbnails = [UIImage]()
     
+    var videoPicker = UIImagePickerController()
+    var selectedVideoURL: URL?
+
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -62,6 +66,7 @@ class PinViewController: UITableViewController, UICollectionViewDataSource, UICo
         addBorderToTextView()
         
         //init image picker
+        videoPicker.delegate = self
         picker.delegate = self
         
         collectionView.dataSource = self
@@ -137,7 +142,7 @@ class PinViewController: UITableViewController, UICollectionViewDataSource, UICo
         
         let pin : Pin = Pin.init(id: id, name: name!, longitude: longitude, latitude: latitude,
                                  visibilityPublic: visibility, date: date,
-                                 photos: selectedPhotos, text: text!)!
+                                 photos: selectedPhotos, videoURL: selectedVideoURL, text: text!)!
         
         // save pin to travel
         if let currentTravel = FirebaseData.getActiveTravel() {
@@ -159,6 +164,15 @@ class PinViewController: UITableViewController, UICollectionViewDataSource, UICo
         //open multi image picker
         present(picker, animated: true, completion: nil)
     }
+    
+    @IBAction func addVideo(_ sender: Any) {
+        videoPicker.sourceType = .savedPhotosAlbum
+        videoPicker.mediaTypes = ["public.movie"]
+        videoPicker.allowsEditing = true
+        videoPicker.videoQuality = .typeMedium
+        present(videoPicker, animated: true, completion: nil)
+    }
+    
     
     // MARK: Helper Functions
     
@@ -237,6 +251,23 @@ class PinViewController: UITableViewController, UICollectionViewDataSource, UICo
         }
         return imageData
     }
+    
+    //video selected
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        if let videoURL = info[UIImagePickerControllerMediaURL] as? URL {
+            self.selectedVideoURL = videoURL
+        }
+        if let asset = info["UIImagePickerControllerPHAsset"] as? PHAsset {
+            let videoThumbnail = getAssetThumbnail(asset: asset)
+            videoPreview.image = videoThumbnail
+        }
+        videoPicker.dismiss(animated: true, completion: nil)
+    }
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        
+    }
+  
     
     
     func returnToParentViewController() {

@@ -118,7 +118,7 @@ class FeedTableViewController: UITableViewController {
         cell.usernameLabel.text = pin.username
         cell.pinNameLabel.text = pin.name
 
-        var previewText : String = "No impression available."
+        var previewText : String = ""
         if let text = pin.text {
             if (text.count > 0) {
                 previewText = text
