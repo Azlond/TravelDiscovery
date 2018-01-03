@@ -20,7 +20,7 @@ class SettingsViewController: FormViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         let userSettings = UserDefaults.standard
-
+        
         form +++ Section("Account Details")
             <<< EmailRow(){ row in
                 row.title = "E-Mail Address"
@@ -189,9 +189,21 @@ class SettingsViewController: FormViewController {
                 })
             }
             if (success) {
-                let now = Date()
-                let startOfDay = Calendar.current.startOfDay(for: now)
-                let predicate = HKQuery.predicateForSamples(withStart: startOfDay, end: now, options: .strictStartDate)
+                let userCalendar = Calendar.current // user calendar
+
+                var dateComponentsStart = DateComponents()
+                dateComponentsStart.year = 2017
+                dateComponentsStart.month = 1
+                dateComponentsStart.day = 1
+                dateComponentsStart.timeZone = TimeZone(abbreviation: "CET") // Central European Time
+                dateComponentsStart.hour = 0
+                
+                let startDate = userCalendar.date(from: dateComponentsStart)
+                
+                let dateCompononentEnd = DateComponents()
+                let endDate = Date()
+                
+                let predicate = HKQuery.predicateForSamples(withStart: startDate, end: endDate, options: .strictStartDate)
                 
                 let stepsSampleQuery = HKStatisticsQuery(quantityType: stepsCount!, quantitySamplePredicate: predicate, options: .cumulativeSum) { (_, result, error) in
                     var resultCount = 0.0
