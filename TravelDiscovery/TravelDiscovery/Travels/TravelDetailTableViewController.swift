@@ -9,18 +9,30 @@
 import UIKit
 
 class TravelDetailTableViewController: UITableViewController {
+    
+    var datePickerHidden = true
+    var rowTag : Int = 0
 
     @IBOutlet var infoTableView: UITableView!
     
-    @IBOutlet weak var beginDataLabel: UILabel!
-    @IBOutlet weak var endDataLabel: UILabel!
+    //@IBOutlet weak var beginDataLabel: UILabel!
+    //@IBOutlet weak var endDataLabel: UILabel!
+
+    
+    @IBOutlet weak var beginDateLabel: UILabel!
+    @IBOutlet weak var endDateLabel: UILabel!
+    
+    @IBOutlet weak var datePicker: UIDatePicker!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+       
+        datePickerChanged()
 
-        infoTableView.estimatedRowHeight = 44.0
-        infoTableView.rowHeight = UITableViewAutomaticDimension
+       // infoTableView.estimatedRowHeight = 44.0
+     //   infoTableView.rowHeight = UITableViewAutomaticDimension
         
+       
         
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -30,13 +42,9 @@ class TravelDetailTableViewController: UITableViewController {
     }
     
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-
+   
     // MARK: - Table view data source
-
+/*
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         return 1
@@ -46,9 +54,23 @@ class TravelDetailTableViewController: UITableViewController {
         // #warning Incomplete implementation, return the number of rows
         return 4
     }
-
+*/
+    
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableViewAutomaticDimension
+        if datePickerHidden && indexPath.section == 1 && indexPath.row == 2 {
+            return 0
+        } else {
+            return super.tableView(tableView, heightForRowAt: indexPath)
+        }
+        
+        // return UITableViewAutomaticDimension
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if indexPath.section == 1 && (indexPath.row == 0 || indexPath.row == 1) {
+            rowTag = indexPath.row
+            toggleDatepicker ()
+        }
     }
     /*
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -105,4 +127,36 @@ class TravelDetailTableViewController: UITableViewController {
     }
     */
 
+    @IBAction func beginDatePickerValue(_ sender: UIDatePicker) {
+        datePickerChanged()
+    }
+    
+    func datePickerChanged () {
+        if rowTag == 0 {
+            beginDateLabel.text = DateFormatter.localizedString(from: datePicker.date, dateStyle: DateFormatter.Style.short, timeStyle: DateFormatter.Style.short)
+        } else if rowTag == 1 {
+            endDateLabel.text = DateFormatter.localizedString(from: datePicker.date, dateStyle: DateFormatter.Style.short, timeStyle: DateFormatter.Style.short)
+        }
+    }
+    
+    func toggleDatepicker() {
+        datePickerHidden = !datePickerHidden
+        
+        /*
+        if !datePickerHidden {
+            datePickerHidden = !datePickerHidden
+        }
+ */
+        infoTableView.beginUpdates()
+        infoTableView.endUpdates()
+        
+        
+      
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
+        datePicker.isHidden = true
+    }
+    
 }
