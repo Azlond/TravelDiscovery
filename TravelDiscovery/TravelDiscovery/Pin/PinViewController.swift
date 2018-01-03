@@ -169,7 +169,7 @@ class PinViewController: UITableViewController, UICollectionViewDataSource, UICo
         videoPicker.sourceType = .savedPhotosAlbum
         videoPicker.mediaTypes = ["public.movie"]
         videoPicker.allowsEditing = true
-        videoPicker.videoQuality = .typeMedium
+        videoPicker.videoQuality = .typeIFrame960x540
         present(videoPicker, animated: true, completion: nil)
     }
     

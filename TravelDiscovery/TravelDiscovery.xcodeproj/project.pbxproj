@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		3D21C0761FC4EA6E00F4DFC3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D21C0751FC4EA6E00F4DFC3 /* AppDelegate.swift */; };
 		3D21C07D1FC4EA6E00F4DFC3 /* NavigationTabBar.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3D21C07B1FC4EA6E00F4DFC3 /* NavigationTabBar.storyboard */; };
-		3D21C07F1FC4EA6E00F4DFC3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3D21C07E1FC4EA6E00F4DFC3 /* Assets.xcassets */; };
 		3D21C0821FC4EA6E00F4DFC3 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3D21C0801FC4EA6E00F4DFC3 /* LaunchScreen.storyboard */; };
 		3D21C08D1FC4EA6F00F4DFC3 /* TravelDiscoveryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D21C08C1FC4EA6F00F4DFC3 /* TravelDiscoveryTests.swift */; };
 		3D6763001FC6162600CFFF32 /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3D6762FF1FC6162600CFFF32 /* Login.storyboard */; };
@@ -34,6 +33,9 @@
 		8451574D1FEC2EC100691E4E /* PinTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8451574C1FEC2EC100691E4E /* PinTableViewCell.swift */; };
 		8451574F1FEC300C00691E4E /* PinTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8451574E1FEC300C00691E4E /* PinTableViewCell.xib */; };
 		845157511FEFCA9E00691E4E /* CustomAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845157501FEFCA9E00691E4E /* CustomAnnotationView.swift */; };
+		845157551FFD208900691E4E /* PinDetailView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 845157541FFD208900691E4E /* PinDetailView.storyboard */; };
+		845157571FFD3AC600691E4E /* PinDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845157561FFD3AC600691E4E /* PinDetailViewController.swift */; };
+		845157591FFD92A700691E4E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 845157581FFD92A600691E4E /* Assets.xcassets */; };
 		84F5A7DD1FD5569900A885D0 /* CountriesDict.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F5A7DC1FD5569900A885D0 /* CountriesDict.swift */; };
 		C21DFF351FD4B62F00B85EAD /* Pin.swift in Sources */ = {isa = PBXBuildFile; fileRef = C21DFF341FD4B62F00B85EAD /* Pin.swift */; };
 		C21DFF371FD4BB2300B85EAD /* Travel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C21DFF361FD4BB2300B85EAD /* Travel.swift */; };
@@ -58,7 +60,6 @@
 		3D21C0721FC4EA6E00F4DFC3 /* TravelDiscovery.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TravelDiscovery.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3D21C0751FC4EA6E00F4DFC3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3D21C07C1FC4EA6E00F4DFC3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/NavigationTabBar.storyboard; sourceTree = "<group>"; };
-		3D21C07E1FC4EA6E00F4DFC3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3D21C0811FC4EA6E00F4DFC3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		3D21C0831FC4EA6E00F4DFC3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3D21C0881FC4EA6F00F4DFC3 /* TravelDiscoveryTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TravelDiscoveryTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -88,6 +89,9 @@
 		8451574C1FEC2EC100691E4E /* PinTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinTableViewCell.swift; sourceTree = "<group>"; };
 		8451574E1FEC300C00691E4E /* PinTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PinTableViewCell.xib; sourceTree = "<group>"; };
 		845157501FEFCA9E00691E4E /* CustomAnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAnnotationView.swift; sourceTree = "<group>"; };
+		845157541FFD208900691E4E /* PinDetailView.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = PinDetailView.storyboard; sourceTree = "<group>"; };
+		845157561FFD3AC600691E4E /* PinDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinDetailViewController.swift; sourceTree = "<group>"; };
+		845157581FFD92A600691E4E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = TravelDiscovery/Assets.xcassets; sourceTree = SOURCE_ROOT; };
 		84F5A7DC1FD5569900A885D0 /* CountriesDict.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountriesDict.swift; sourceTree = "<group>"; };
 		BC819D78A77B0BE93C4145D9 /* Pods-TravelDiscoveryTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TravelDiscoveryTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TravelDiscoveryTests/Pods-TravelDiscoveryTests.debug.xcconfig"; sourceTree = "<group>"; };
 		C21DFF341FD4B62F00B85EAD /* Pin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pin.swift; sourceTree = "<group>"; };
@@ -156,7 +160,7 @@
 				3D7830EC1FC8E98600305D1D /* Map */,
 				3D6762FE1FC6161900CFFF32 /* Login */,
 				3D21C0751FC4EA6E00F4DFC3 /* AppDelegate.swift */,
-				3D21C07E1FC4EA6E00F4DFC3 /* Assets.xcassets */,
+				845157581FFD92A600691E4E /* Assets.xcassets */,
 				3D21C0801FC4EA6E00F4DFC3 /* LaunchScreen.storyboard */,
 				3D21C0831FC4EA6E00F4DFC3 /* Info.plist */,
 				3D7F34CB1FC785330005129C /* GoogleService-Info.plist */,
@@ -255,6 +259,8 @@
 			isa = PBXGroup;
 			children = (
 				845157421FE161A400691E4E /* PinViewController.swift */,
+				845157561FFD3AC600691E4E /* PinDetailViewController.swift */,
+				845157541FFD208900691E4E /* PinDetailView.storyboard */,
 				8451574C1FEC2EC100691E4E /* PinTableViewCell.swift */,
 				8451574E1FEC300C00691E4E /* PinTableViewCell.xib */,
 				845157501FEFCA9E00691E4E /* CustomAnnotationView.swift */,
@@ -390,15 +396,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				3D21C0821FC4EA6E00F4DFC3 /* LaunchScreen.storyboard in Resources */,
-				3D21C07F1FC4EA6E00F4DFC3 /* Assets.xcassets in Resources */,
 				3D7830F71FC8EA1900305D1D /* Feed.storyboard in Resources */,
 				3D7F34CC1FC785330005129C /* GoogleService-Info.plist in Resources */,
+				845157551FFD208900691E4E /* PinDetailView.storyboard in Resources */,
 				3D7830F51FC8EA0800305D1D /* Map.storyboard in Resources */,
 				3D979C8B1FC9BCAC00350C9E /* Scratchcard.storyboard in Resources */,
 				3D7830F11FC8E9EF00305D1D /* Settings.storyboard in Resources */,
 				3D6763001FC6162600CFFF32 /* Login.storyboard in Resources */,
 				3D21C07D1FC4EA6E00F4DFC3 /* NavigationTabBar.storyboard in Resources */,
 				8451574F1FEC300C00691E4E /* PinTableViewCell.xib in Resources */,
+				845157591FFD92A700691E4E /* Assets.xcassets in Resources */,
 				3D7830F31FC8E9FD00305D1D /* Travels.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -557,6 +564,7 @@
 				3D7830F91FC8EA5100305D1D /* SettingsViewController.swift in Sources */,
 				845157431FE161A400691E4E /* PinViewController.swift in Sources */,
 				C255EDAC1FEC46C000BBDF69 /* FeedTableViewCell.swift in Sources */,
+				845157571FFD3AC600691E4E /* PinDetailViewController.swift in Sources */,
 				3D7830FD1FC8EC1900305D1D /* FeedTableViewController.swift in Sources */,
 				3D7830FF1FC8EC5B00305D1D /* TravelsTableViewController.swift in Sources */,
 				845157511FEFCA9E00691E4E /* CustomAnnotationView.swift in Sources */,
@@ -724,7 +732,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = TravelDiscovery/TravelDiscovery.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = Q632JFQA88;
+				DEVELOPMENT_TEAM = 8ZSLR345X6;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Pods/FirebaseAnalytics/Frameworks",
@@ -748,7 +756,7 @@
 				);
 				INFOPLIST_FILE = TravelDiscovery/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = iOSTravelCrew.TravelDiscovery;
+				PRODUCT_BUNDLE_IDENTIFIER = iOSTravelCrew2.TravelDiscovery;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -762,7 +770,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = TravelDiscovery/TravelDiscovery.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = Q632JFQA88;
+				DEVELOPMENT_TEAM = 8ZSLR345X6;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Pods/FirebaseAnalytics/Frameworks",
@@ -786,7 +794,7 @@
 				);
 				INFOPLIST_FILE = TravelDiscovery/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = iOSTravelCrew.TravelDiscovery;
+				PRODUCT_BUNDLE_IDENTIFIER = iOSTravelCrew2.TravelDiscovery;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = 1;
