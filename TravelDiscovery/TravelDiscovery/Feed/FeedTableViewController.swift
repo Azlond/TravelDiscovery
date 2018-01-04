@@ -9,7 +9,7 @@
 import UIKit
 
 class FeedTableViewController: UITableViewController {
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -184,75 +184,4 @@ class FeedTableViewController: UITableViewController {
     }
     */
 
-}
-extension NSMutableAttributedString {
-    @discardableResult func bold(_ text: String) -> NSMutableAttributedString {
-        let attrs: [NSAttributedStringKey: Any] = [.font: UIFont(name: "AvenirNext-Medium", size: 20)!]
-        let boldString = NSMutableAttributedString(string:text, attributes: attrs)
-        append(boldString)
-        
-        return self
-    }
-    
-    @discardableResult func normal(_ text: String) -> NSMutableAttributedString {
-        let normal = NSAttributedString(string: text)
-        append(normal)
-        
-        return self
-    }
-}
-
-let imageCache = NSCache<NSString, AnyObject>()
-
-extension UIImageView {
-    func loadImageUsingCache(withUrl urlString : String) {
-        let url = URL(string: urlString)
-        
-        // check cached image
-        if let cachedImage = imageCache.object(forKey: urlString as NSString) as? UIImage {
-            self.image = self.resizeImage(image: cachedImage)
-            return
-        }
-        
-        // if not, download image from url
-        URLSession.shared.dataTask(with: url!, completionHandler: { (data, response, error) in
-            if error != nil {
-                print(error!)
-                return
-            }
-            
-            DispatchQueue.main.async {
-                if let image = UIImage(data: data!) {
-                    imageCache.setObject(image, forKey: urlString as NSString)
-                    self.image = self.resizeImage(image: image)
-//                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: "imageLoaded"), object: nil)
-                }
-            }
-            
-        }).resume()
-    }
-    
-    /**
-     * resize downloaded image to fit into the UIImageView
-     */
-    func resizeImage(image: UIImage) -> UIImage? {
-        let size = image.size
-        
-        //scale image to screenWidth
-        let screenWidth = UIScreen.main.bounds.width
-        let scaleFactor = screenWidth / size.width
-        
-        let targetSize = CGSize(width: screenWidth, height: size.height * scaleFactor)
-   
-        // This is the rect that we've calculated out and this is what is actually used below
-        let rect = CGRect(x: 0, y: 0, width: targetSize.width, height: targetSize.height)
-
-        // Actually do the resizing to the rect using the ImageContext stuff
-        UIGraphicsBeginImageContextWithOptions(targetSize, false, 1.0)
-        image.draw(in: rect)
-        let newImage = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        
-        return newImage
-    }
 }

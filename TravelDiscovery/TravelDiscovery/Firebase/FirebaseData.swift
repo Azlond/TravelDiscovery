@@ -20,6 +20,7 @@ class FirebaseData {
     public static var pins: Dictionary<String, Pin> = [:]
     public static var publicPins = [Pin]()
     public static var travels: Dictionary<String, Travel> = [:]
+    public static let imageCache = NSCache<NSString, AnyObject>()
     
     static func getActiveTravel() -> Travel? {
         for travelEntry in FirebaseData.travels{

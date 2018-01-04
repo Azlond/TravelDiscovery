@@ -132,18 +132,3 @@ class EmailSignUpViewController: UIViewController, UITextFieldDelegate {
     */
 
 }
-
-extension UIViewController {
-    /**
-     * Hide keyboard when tapping in the view besides the textfields
-     */
-    func hideKeyboardWhenTappedAround() {
-        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UIViewController.dismissKeyboard))
-        tap.cancelsTouchesInView = false
-        view.addGestureRecognizer(tap)
-    }
-    
-    @objc func dismissKeyboard() {
-        view.endEditing(true)
-    }
-}
