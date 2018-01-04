@@ -263,10 +263,6 @@ class PinViewController: UITableViewController, UICollectionViewDataSource, UICo
         }
         videoPicker.dismiss(animated: true, completion: nil)
     }
-    
-    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        
-    }
   
     
     

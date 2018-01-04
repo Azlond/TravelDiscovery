@@ -8,7 +8,7 @@
 
 import UIKit
 
-class PinDetailViewController: UIViewController {
+class PinDetailViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
     @IBOutlet weak var usernameLabel: UILabel!
     @IBOutlet weak var primaryImageView: UIImageView!
@@ -17,14 +17,13 @@ class PinDetailViewController: UIViewController {
     @IBOutlet weak var imagesCV: UICollectionView!
     @IBOutlet weak var videoDisplay: UIImageView!
     
+    @IBOutlet weak var imagesCVHeight: NSLayoutConstraint!
+    @IBOutlet weak var primaryImageHeight: NSLayoutConstraint!
     
     var pin: Pin!
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // Hide the navigation bar on the this view controller
-        //self.navigationController?.setNavigationBarHidden(true, animated: true)
         
         usernameLabel.text = "by " + pin.username
         pinNameLabel.text = pin.name
@@ -35,10 +34,13 @@ class PinDetailViewController: UIViewController {
         }
         
         primaryImageView.image = primaryImageView.resizeImage(image: UIImage(named: "default2")!)
-        
         if ((pin.imageURLs?.count ?? 0) > 0) {
             primaryImageView.loadImageUsingCache(withUrl: pin.imageURLs![0])
         }
+        
+        imagesCV.dataSource = self
+        imagesCV.delegate = self
+        imagesCV.reloadData()
         
     }
 
@@ -47,20 +49,68 @@ class PinDetailViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        
-        // Show the navigation bar on other view controllers
-       // self.navigationController?.setNavigationBarHidden(false, animated: false)
+    
+    
+    // MARK: Image Collection View
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        if (pin.imageURLs?.count ?? 0) > 0 {
+            return pin.imageURLs!.count
+        }
+        return 0
     }
     
-    @IBAction func backPressed(_ sender: UIButton) {
-        if let nav = self.navigationController {
-            nav.popViewController(animated: true)
-        } else {
-            self.dismiss(animated: true, completion: nil)
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        if (pin.imageURLs?.count ?? 0) > 0 {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "detailCell", for: indexPath as IndexPath)
+            let cellSize = getCellSize(itemCount: pin.imageURLs!.count)
+            let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: cellSize.width, height: cellSize.height))
+            imageView.loadImageUsingCache(withUrl: pin.imageURLs![indexPath.row])
+            imageView.clipsToBounds = true
+            imageView.contentMode = .scaleAspectFill
+            if pin.imageURLs!.count == 1 {
+                imageView.contentMode = .scaleAspectFit
+            }
+            cell.contentView.addSubview(imageView)
+            return cell
         }
+        return collectionView.dequeueReusableCell(withReuseIdentifier: "detailCell", for: indexPath as IndexPath)
     }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        if (pin.imageURLs?.count ?? 0) > 0 {
+            let cellSize = getCellSize(itemCount: pin.imageURLs!.count)
+            
+            return cellSize
+        }
+        return CGSize(width:0, height:0)
+    }
+    
+    private func getCellSize(itemCount: Int) -> CGSize {
+        var cellRowNumber: CGFloat = 0
+        if itemCount == 1 {
+           cellRowNumber = 1
+        }
+        else if itemCount % 2 == 0 {
+            cellRowNumber = 2
+        }
+        else if itemCount % 3 == 0 {
+            cellRowNumber = 3
+        }
+        else {
+            cellRowNumber = CGFloat((itemCount % 3) + 1)
+        }
+        //subtract the 5 pixels that are between the items
+        let cellSize = (UIScreen.main.bounds.size.width - (5*(cellRowNumber-1))) / cellRowNumber
+        
+        //adjust height of collectionview
+        let cellColumnNumber = CGFloat(itemCount)/cellRowNumber
+        self.imagesCVHeight.constant = cellSize * ceil(cellColumnNumber) + (5*(cellColumnNumber-1))
+        
+        return CGSize(width: cellSize, height: cellSize)
+
+    }
+    
     
     /*
     // MARK: - Navigation
