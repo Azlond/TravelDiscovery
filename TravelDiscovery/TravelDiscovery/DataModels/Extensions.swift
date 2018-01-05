@@ -194,4 +194,18 @@ extension UIImageView {
         
         return newImage
     }
+    
+    /**
+     * returns image with reduces saturation
+     */
+    func reduceSaturation(){
+        let context = CIContext(options: nil)
+        
+        let filter = CIFilter(name: "CIPhotoEffectFade")
+        filter!.setValue(CIImage(image: self.image!), forKey: kCIInputImageKey)
+        let output = filter!.outputImage
+        let cgimg = context.createCGImage(output!,from: output!.extent)
+        self.image = UIImage(cgImage: cgimg!)
+        
+    }
 }

@@ -28,11 +28,13 @@ class Pin {
     var imageURLs: [String]? = []
     var videoUploadURL: URL?
     var videoDownloadURL : String?
+    var videoThumbnail: UIImage?
+    var videoThumbnailURL : String?
     
     
     //MARK: Initialization
     
-    init?(id: String, name: String, longitude: Double, latitude: Double, visibilityPublic: Bool, date: String, photos: [UIImage]?, videoURL: URL?, text: String?) {
+    init?(id: String, name: String, longitude: Double, latitude: Double, visibilityPublic: Bool, date: String, photos: [UIImage]?, videoURL: URL?, videoThumbnail: UIImage?, text: String?) {
         // Initialization should fail if there is no name
         guard !name.isEmpty else {
             return nil
@@ -47,6 +49,7 @@ class Pin {
         self.date = date
         self.photos = photos
         self.videoUploadURL = videoURL
+        self.videoThumbnail = videoThumbnail
         self.text = text
         
         self.number = 0 // TODO: init with number of pins in Travel list/dict
@@ -78,6 +81,9 @@ class Pin {
         
         if let videoURL = dict["videoDownloadURL"] as? String {
             self.videoDownloadURL = videoURL
+            if let thumbnailURL = dict["videoThumbnailURL"] as? String {
+                self.videoThumbnailURL = thumbnailURL
+            }
         }
         
     }
@@ -110,6 +116,9 @@ class Pin {
         
         if videoDownloadURL != nil {
             dict["videoDownloadURL"] = self.videoDownloadURL
+        }
+        if videoThumbnailURL != nil {
+            dict["videoThumbnailURL"] = self.videoThumbnailURL
         }
         
         

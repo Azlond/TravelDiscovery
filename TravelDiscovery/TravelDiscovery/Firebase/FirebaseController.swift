@@ -15,6 +15,11 @@ import UserNotifications
 import FirebaseStorage
 
 class FirebaseController {
+    //locks for uploads
+    static var uploadingImages: Bool = false
+    static var uploadingVideo: Bool = false
+    static var uploadingVideoThumbnail: Bool = false
+    
     
     public static func saveCountriesToFirebase() {
         if let user = Auth.auth().currentUser {
@@ -191,6 +196,7 @@ class FirebaseController {
                     
                     // IMGAGE UPLOAD: if a pin doesn't have imageURL entries but has photos -> upload images
                     if ((pin.imageURLs?.isEmpty ?? true) && !(pin.photos?.isEmpty ?? true)) {
+                        self.uploadingImages = true
                         //loop over images
                         for (index,image) in pin.photos!.enumerated() {
                             
@@ -205,6 +211,7 @@ class FirebaseController {
                                     (metadata, error) in
                                     if error != nil {
                                         print(error!)
+                                        self.uploadingImages = false
                                         return
                                         //TODO fehlermanagement uploading error
                                     }
@@ -216,13 +223,8 @@ class FirebaseController {
                                         
                                         //save pin after last image was uploaded
                                         if index == (pin.photos!.count-1) {
-                                            let fbDict = pin.prepareDictForFirebase()
-                                            FirebaseData.ref.child("users").child(user.uid).child("travels").child(travel.id).child("pins").child(pin.id).setValue(fbDict)
-                                            NotificationCenter.default.post(name: Notification.Name("updatePins"), object: nil)
-                                            if (pin.visibilityPublic) {
-                                                print("uploading")
-                                                FirebaseData.ref.child("publicPins").child(pin.id).setValue(fbDict)
-                                            }
+                                            self.uploadingImages = false
+                                            self.savePinToFirebase(pin: pin, user: user, travel: travel)
                                         }
                                     }
                                 })
@@ -232,41 +234,76 @@ class FirebaseController {
                     
                     //upload video if pin only has an uploadURL saved but no downloadURL
                     if pin.videoUploadURL != nil && pin.videoDownloadURL == nil {
+                        self.uploadingVideo = true
+                        
                         let videoName = UUID().uuidString + ".mov"
                         let storageRef = Storage.storage().reference().child("videos").child(videoName)
                         
+                        //upload video
                         storageRef.putFile(from: pin.videoUploadURL!, metadata:nil, completion: {
                             (metadata, error) in
                             if error != nil {
                                 print(error!)
+                                self.uploadingVideo = false
                                 return
                                 //TODO fehlermanagement uploading error
                             }
                             //UPLOAD SUCCESS
                             //retrieve URL of uploaded video
-                            if let imageURL = metadata?.downloadURL()?.absoluteString {
-                                pin.videoDownloadURL = imageURL
-                                let fbDict = pin.prepareDictForFirebase()
-                                FirebaseData.ref.child("users").child(user.uid).child("travels").child(travel.id).child("pins").child(pin.id).setValue(fbDict)
-                                NotificationCenter.default.post(name: Notification.Name("updatePins"), object: nil)
-                                if (pin.visibilityPublic) {
-                                    print("uploading")
-                                    FirebaseData.ref.child("publicPins").child(pin.id).setValue(fbDict)
-                                }
+                            if let videoURL = metadata?.downloadURL()?.absoluteString {
+                                pin.videoDownloadURL = videoURL
+                                self.uploadingVideo = false
+                                self.savePinToFirebase(pin: pin, user: user, travel: travel)
                             }
                         })
+                        //upload video thumbnail
+                        let imageName = UUID().uuidString + ".jpeg"
+                        let storageRefImages = Storage.storage().reference().child("images").child(imageName)
+                        
+                        if let uploadData = UIImageJPEGRepresentation(pin.videoThumbnail!, 1) {
+                            self.uploadingVideoThumbnail = true
+                            storageRefImages.putData(uploadData, metadata:nil, completion: {
+                                (metadata, error) in
+                                if error != nil {
+                                    print("Error Uploading: ",error!)
+                                    self.uploadingVideoThumbnail = false
+                                    return
+                                }
+                                //UPLOAD SUCCESS
+                                //retrieve URL of uploaded video thumbnail
+                                if let imageURL = metadata?.downloadURL()?.absoluteString {
+                                    pin.videoThumbnailURL = imageURL
+                                    self.uploadingVideoThumbnail = false
+                                    self.savePinToFirebase(pin: pin, user: user, travel: travel)
+                                }
+                            })
+                        }
+                        
                     }
                 }
-                // no images to upload: save pin to firebase immediately
+                    // no images or video to upload: save pin to firebase immediately
                 else {
-                    let fbDict = pin.prepareDictForFirebase()
-                    FirebaseData.ref.child("users").child(user.uid).child("travels").child(travel.id).child("pins").child(pin.id).setValue(fbDict)
-                    NotificationCenter.default.post(name: Notification.Name("updatePins"), object: nil)
-                    if (pin.visibilityPublic) {
-                        print("uploading")
-                        FirebaseData.ref.child("publicPins").child(pin.id).setValue(fbDict)
-                    }
+                    self.savePinToFirebase(pin: pin, user: user, travel: travel)
                 }
+            }
+        }
+    }
+    
+    public static func savePinToFirebase(pin: Pin, user: User, travel: Travel) {
+        //check if all uploading processes are complete
+        if !self.uploadingImages && !self.uploadingVideo && !self.uploadingVideoThumbnail{
+            //save pin
+            if FirebaseData.ref == nil {
+                FirebaseData.ref = Database.database().reference()
+            }
+            let fbDict = pin.prepareDictForFirebase()
+            FirebaseData.ref.child("users").child(user.uid).child("travels").child(travel.id).child("pins").child(pin.id).setValue(fbDict)
+            NotificationCenter.default.post(name: Notification.Name("updatePins"), object: nil)
+            
+            //save public pin
+            if (pin.visibilityPublic) {
+                print("uploading to public pins")
+                FirebaseData.ref.child("publicPins").child(pin.id).setValue(fbDict)
             }
         }
     }

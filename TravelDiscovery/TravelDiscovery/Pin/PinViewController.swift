@@ -32,6 +32,7 @@ class PinViewController: UITableViewController, UICollectionViewDataSource, UICo
     
     var videoPicker = UIImagePickerController()
     var selectedVideoURL: URL?
+    var videoThumbnail: UIImage?
 
     
     override func viewWillAppear(_ animated: Bool) {
@@ -122,7 +123,9 @@ class PinViewController: UITableViewController, UICollectionViewDataSource, UICo
     }
     
     @IBAction func clickedSave(_ sender: UIBarButtonItem) {
-        //required parameters
+
+        let id = "Pin_" + UUID().uuidString
+        
         let name = locationTextField.text
         if name == "" {
             //display warning
@@ -133,16 +136,17 @@ class PinViewController: UITableViewController, UICollectionViewDataSource, UICo
             self.present(alert, animated: true, completion: nil)
             return
         }
-        let date = dateText.text!
-        let longitude = self.longitude
-        let latitude = self.latitude
-        let visibility = publicSwitch.isOn
-        let text = commentsTextView.text
-        let id = "Pin_" + UUID().uuidString
         
-        let pin : Pin = Pin.init(id: id, name: name!, longitude: longitude, latitude: latitude,
-                                 visibilityPublic: visibility, date: date,
-                                 photos: selectedPhotos, videoURL: selectedVideoURL, text: text!)!
+        let pin : Pin = Pin.init(id: id,
+                                 name: name!,
+                                 longitude: longitude,
+                                 latitude: latitude,
+                                 visibilityPublic: publicSwitch.isOn,
+                                 date: dateText.text!,
+                                 photos: selectedPhotos,
+                                 videoURL: selectedVideoURL,
+                                 videoThumbnail: videoThumbnail,
+                                 text: commentsTextView.text!)!
         
         // save pin to travel
         if let currentTravel = FirebaseData.getActiveTravel() {
@@ -258,7 +262,7 @@ class PinViewController: UITableViewController, UICollectionViewDataSource, UICo
             self.selectedVideoURL = videoURL
         }
         if let asset = info["UIImagePickerControllerPHAsset"] as? PHAsset {
-            let videoThumbnail = getAssetThumbnail(asset: asset)
+            self.videoThumbnail = getUIImageFromAsset(asset: asset)
             videoPreview.image = videoThumbnail
         }
         videoPicker.dismiss(animated: true, completion: nil)

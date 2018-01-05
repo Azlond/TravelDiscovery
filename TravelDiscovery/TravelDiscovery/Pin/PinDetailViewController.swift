@@ -54,6 +54,7 @@ class PinDetailViewController: UIViewController, UICollectionViewDataSource, UIC
         primaryImageView.image = primaryImageView.resizeImage(image: UIImage(named: "default2")!)
         if ((pin.imageURLs?.count ?? 0) > 0) {
             primaryImageView.loadImageUsingCache(withUrl: pin.imageURLs![0])
+            primaryImageView.reduceSaturation()
         } else {
             imagesCVHeight.constant = 0
         }
