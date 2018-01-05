@@ -187,7 +187,7 @@ extension UIImageView {
         let rect = CGRect(x: 0, y: 0, width: targetSize.width, height: targetSize.height)
         
         // Actually do the resizing to the rect using the ImageContext stuff
-        UIGraphicsBeginImageContextWithOptions(targetSize, false, 1.0)
+        UIGraphicsBeginImageContextWithOptions(targetSize, false, UIScreen.main.scale)
         image.draw(in: rect)
         let newImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
@@ -207,5 +207,20 @@ extension UIImageView {
         let cgimg = context.createCGImage(output!,from: output!.extent)
         self.image = UIImage(cgImage: cgimg!)
         
+    }
+    
+    func setRandomBackgroundColor(){
+        var red: CGFloat = CGFloat(arc4random() % 256 ) / 256
+        var green: CGFloat = CGFloat(arc4random() % 256 ) / 256
+        var blue: CGFloat = CGFloat(arc4random() % 256 ) / 256
+        
+        let mixRed: CGFloat = 1+0xad/256, mixGreen: CGFloat = 1+0xd8/256, mixBlue: CGFloat = 1+0xe6/256;
+        red = (red + mixRed) / 3;
+        green = (green + mixGreen) / 3;
+        blue = (blue + mixBlue) / 3;
+        
+        
+        self.backgroundColor = UIColor(red: red, green: green, blue: blue, alpha: 1)
+
     }
 }

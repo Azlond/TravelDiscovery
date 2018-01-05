@@ -302,15 +302,20 @@
                                                         <action selector="addVideo:" destination="4Ha-Kk-d7t" eventType="touchUpInside" id="jH6-zo-ivc"/>
                                                     </connections>
                                                 </button>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8DO-KY-uTn">
-                                                    <rect key="frame" x="16" y="11" width="79" height="79"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="8DO-KY-uTn">
+                                                    <rect key="frame" x="16" y="8" width="79" height="79"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="79" id="2ue-su-tOb"/>
+                                                    </constraints>
                                                 </imageView>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="p1B-fC-m3O" firstAttribute="centerY" secondItem="Dso-s2-Pid" secondAttribute="centerY" id="2do-yC-7tm"/>
+                                                <constraint firstItem="8DO-KY-uTn" firstAttribute="leading" secondItem="Dso-s2-Pid" secondAttribute="leading" constant="16" id="7Xo-UM-zbM"/>
                                                 <constraint firstItem="p1B-fC-m3O" firstAttribute="trailing" secondItem="Dso-s2-Pid" secondAttribute="trailingMargin" id="9pp-rC-agE"/>
                                                 <constraint firstItem="p1B-fC-m3O" firstAttribute="trailing" secondItem="Dso-s2-Pid" secondAttribute="trailingMargin" id="Jdi-Mb-Wog"/>
+                                                <constraint firstAttribute="bottom" secondItem="8DO-KY-uTn" secondAttribute="bottom" constant="8" id="cIU-oE-JKf"/>
+                                                <constraint firstItem="8DO-KY-uTn" firstAttribute="top" secondItem="Dso-s2-Pid" secondAttribute="top" constant="8" id="xxi-8P-IAp"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>

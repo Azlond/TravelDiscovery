@@ -64,6 +64,7 @@ class PinDetailViewController: UIViewController, UICollectionViewDataSource, UIC
             setupVideoDisplay()
             
         } else {
+            
             videoDisplayHeight.constant = 0
         }
         
@@ -98,6 +99,19 @@ class PinDetailViewController: UIViewController, UICollectionViewDataSource, UIC
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        if (pin.imageURLs?.count ?? 0) == 1 {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "detailCell", for: indexPath as IndexPath)
+            let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.width))
+            imageView.loadImageUsingCache(withUrl: pin.imageURLs![indexPath.row])
+            if imageView.image != nil {
+                imageView.frame = CGRect(x: 0, y: 0, width: (imageView.image?.size.width)!, height: (imageView.image?.size.height)!)
+            }
+            imageView.isUserInteractionEnabled = true
+            imageView.addGestureRecognizer(UITapGestureRecognizer(target:self, action: #selector(zoomImage)))
+            
+            cell.contentView.addSubview(imageView)
+            return cell
+        }
         if (pin.imageURLs?.count ?? 0) > 0 {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "detailCell", for: indexPath as IndexPath)
             let cellSize = getCellSize(itemCount: pin.imageURLs!.count)
@@ -105,9 +119,9 @@ class PinDetailViewController: UIViewController, UICollectionViewDataSource, UIC
             imageView.loadImageUsingCache(withUrl: pin.imageURLs![indexPath.row])
             imageView.clipsToBounds = true
             imageView.contentMode = .scaleAspectFill
-            if pin.imageURLs!.count == 1 {
-                imageView.contentMode = .scaleAspectFit
-            }
+            imageView.isUserInteractionEnabled = true
+            imageView.addGestureRecognizer(UITapGestureRecognizer(target:self, action: #selector(zoomImage)))
+            
             cell.contentView.addSubview(imageView)
             return cell
         }
@@ -116,17 +130,16 @@ class PinDetailViewController: UIViewController, UICollectionViewDataSource, UIC
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         if (pin.imageURLs?.count ?? 0) > 0 {
-            let cellSize = getCellSize(itemCount: pin.imageURLs!.count)
-            
-            return cellSize
+            return getCellSize(itemCount: pin.imageURLs!.count)
         }
         return CGSize(width:0, height:0)
     }
     
+    
     private func getCellSize(itemCount: Int) -> CGSize {
         var cellRowNumber: CGFloat = 0
         if itemCount == 1 {
-           cellRowNumber = 1
+            cellRowNumber = 1
         }
         else if itemCount % 2 == 0 {
             cellRowNumber = 2
@@ -148,17 +161,15 @@ class PinDetailViewController: UIViewController, UICollectionViewDataSource, UIC
 
     }
     
+    @objc func zoomImage(tapGesture: UITapGestureRecognizer){
+        print("tapped")
+    }
+    
     private func setupVideoDisplay() {
-        //create thumbnail from video for preview
-        //TODO async loading in background
-        let sourceURL = URL(string: pin.videoDownloadURL!)
-        let asset = AVAsset(url: sourceURL!)
-        let imageGenerator = AVAssetImageGenerator(asset: asset)
-        let time = CMTimeMake(1, 1)
-        let imageRef = try! imageGenerator.copyCGImage(at: time, actualTime: nil)
-        let thumbnail = UIImage(cgImage:imageRef)
-        
-        self.videoDisplay.image = thumbnail
+       //set first video frame as image
+        if pin.videoThumbnailURL != nil {
+            self.videoDisplay.loadImageUsingCache(withUrl: pin.videoThumbnailURL!)
+        }
         
         //add play button
         self.videoDisplay.addSubview(playButton)
@@ -177,7 +188,6 @@ class PinDetailViewController: UIViewController, UICollectionViewDataSource, UIC
         spinner.centerYAnchor.constraint(lessThanOrEqualTo: self.videoDisplay.centerYAnchor).isActive = true
         spinner.widthAnchor.constraint(equalToConstant: 50).isActive = true
         spinner.heightAnchor.constraint(equalToConstant: 50).isActive = true
-
         
     }
     
@@ -199,8 +209,12 @@ class PinDetailViewController: UIViewController, UICollectionViewDataSource, UIC
     }
     
     @objc func playerDidFinishPlaying(sender: Notification){
+        for var subview in videoDisplay.subviews {
+            subview.removeFromSuperview()
+        }
         playButton.isHidden = false
         spinner.stopAnimating()
+        setupVideoDisplay()
 
     }
     

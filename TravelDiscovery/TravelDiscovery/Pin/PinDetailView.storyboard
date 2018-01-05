@@ -64,8 +64,13 @@
                                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                     </textView>
+                                    <imageView autoresizesSubviews="NO" opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FCF-4z-BS9" userLabel="VideoFrame">
+                                        <rect key="frame" x="0.0" y="576" width="375" height="603"/>
+                                        <color key="backgroundColor" cocoaTouchSystemColor="tableCellGroupedBackgroundColor"/>
+                                    </imageView>
                                     <imageView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="INb-h7-k9Y">
-                                        <rect key="frame" x="16" y="575.5" width="343" height="300"/>
+                                        <rect key="frame" x="16" y="590.5" width="343" height="300"/>
+                                        <color key="backgroundColor" red="0.0" green="0.50196081400000003" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="300" id="2ky-uC-NMG"/>
                                         </constraints>
@@ -90,6 +95,7 @@
                                                     <rect key="frame" x="0.0" y="0.0" width="110" height="110"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                 </view>
+                                                <color key="backgroundColor" red="0.94844166911798078" green="0.94844166911798078" blue="0.94844166911798078" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             </collectionViewCell>
                                         </cells>
                                     </collectionView>
@@ -102,20 +108,24 @@
                                     <constraint firstItem="jqe-6T-f8u" firstAttribute="width" secondItem="uy6-U4-isX" secondAttribute="width" id="4Dj-TE-JHz"/>
                                     <constraint firstItem="BJE-hL-rPO" firstAttribute="top" secondItem="fiz-eP-YFI" secondAttribute="bottom" constant="8" id="9Nc-8c-HeX"/>
                                     <constraint firstItem="jqe-6T-f8u" firstAttribute="centerY" secondItem="uy6-U4-isX" secondAttribute="centerY" id="9n1-Ar-dv6"/>
-                                    <constraint firstItem="uy6-U4-isX" firstAttribute="centerY" secondItem="ZP3-6f-pj7" secondAttribute="centerY" constant="6" id="Dmd-lg-zax"/>
+                                    <constraint firstItem="uy6-U4-isX" firstAttribute="centerY" secondItem="ZP3-6f-pj7" secondAttribute="centerY" constant="4.5" id="Dmd-lg-zax"/>
                                     <constraint firstItem="fiz-eP-YFI" firstAttribute="leading" secondItem="BJE-hL-rPO" secondAttribute="leading" constant="16" id="EbX-Ul-mfY"/>
                                     <constraint firstAttribute="trailing" secondItem="uy6-U4-isX" secondAttribute="trailing" id="IMt-sX-t91"/>
                                     <constraint firstItem="uy6-U4-isX" firstAttribute="centerX" secondItem="ZP3-6f-pj7" secondAttribute="centerX" id="Js6-zx-1Wp"/>
+                                    <constraint firstAttribute="trailing" secondItem="FCF-4z-BS9" secondAttribute="trailing" id="K0a-z9-DaF"/>
+                                    <constraint firstItem="FCF-4z-BS9" firstAttribute="leading" secondItem="kaz-pE-pk5" secondAttribute="leading" id="LT1-jf-c15"/>
                                     <constraint firstAttribute="trailing" secondItem="BJE-hL-rPO" secondAttribute="trailing" id="LTc-TG-vBA"/>
+                                    <constraint firstAttribute="bottom" secondItem="FCF-4z-BS9" secondAttribute="bottom" constant="-312" id="Sya-oj-8vn"/>
                                     <constraint firstAttribute="bottom" secondItem="INb-h7-k9Y" secondAttribute="bottom" constant="230" id="TSL-dp-V0u"/>
                                     <constraint firstItem="INb-h7-k9Y" firstAttribute="leading" secondItem="kaz-pE-pk5" secondAttribute="leading" constant="16" id="VKK-l7-ce5"/>
                                     <constraint firstItem="jqe-6T-f8u" firstAttribute="leading" secondItem="uy6-U4-isX" secondAttribute="leading" id="bE4-eH-Rcu"/>
                                     <constraint firstItem="fiz-eP-YFI" firstAttribute="leading" secondItem="kaz-pE-pk5" secondAttribute="leading" constant="16" id="buQ-f4-4tU"/>
                                     <constraint firstItem="uy6-U4-isX" firstAttribute="top" secondItem="kaz-pE-pk5" secondAttribute="top" id="c3N-bm-mn8"/>
-                                    <constraint firstItem="INb-h7-k9Y" firstAttribute="top" secondItem="BJE-hL-rPO" secondAttribute="bottom" constant="8" id="cev-Np-WTv"/>
+                                    <constraint firstItem="INb-h7-k9Y" firstAttribute="top" secondItem="BJE-hL-rPO" secondAttribute="bottom" constant="23" id="cev-Np-WTv"/>
                                     <constraint firstAttribute="trailing" secondItem="INb-h7-k9Y" secondAttribute="trailing" constant="16" id="fjH-Ub-3bk"/>
                                     <constraint firstItem="jqe-6T-f8u" firstAttribute="height" secondItem="uy6-U4-isX" secondAttribute="height" id="nQm-S0-2qs"/>
                                     <constraint firstItem="ukK-v8-XM7" firstAttribute="top" secondItem="uy6-U4-isX" secondAttribute="bottom" constant="13" id="w7i-Z6-jeN"/>
+                                    <constraint firstItem="FCF-4z-BS9" firstAttribute="top" secondItem="INb-h7-k9Y" secondAttribute="top" constant="-23" id="xU6-19-OkI"/>
                                     <constraint firstItem="ukK-v8-XM7" firstAttribute="leading" secondItem="kaz-pE-pk5" secondAttribute="leading" constant="16" id="zV1-rQ-gAM"/>
                                 </constraints>
                             </scrollView>
@@ -145,7 +155,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BSZ-3Q-YOG" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="108" y="149.26108374384236"/>
+            <point key="canvasLocation" x="108" y="148.87556221889056"/>
         </scene>
     </scenes>
     <resources>
