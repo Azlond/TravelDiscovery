@@ -9,6 +9,11 @@
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="SnellRoundhand.ttc">
+            <string>SnellRoundhand-Bold</string>
+        </array>
+    </customFonts>
     <scenes>
         <!--Log In-->
         <scene sceneID="EIY-uB-hLd">
@@ -144,24 +149,73 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zpU-nJ-EhV">
-                                <rect key="frame" x="16" y="441" width="288" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Email Log In"/>
-                                <connections>
-                                    <segue destination="wlT-bG-LKb" kind="presentation" id="SIt-Yj-X5w"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1Gj-sC-XNS">
-                                <rect key="frame" x="16" y="479" width="288" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Email Sign Up"/>
-                                <connections>
-                                    <segue destination="fpH-Zp-k9G" kind="presentation" id="bzp-Wt-u6n"/>
-                                </connections>
-                            </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="background" translatesAutoresizingMaskIntoConstraints="NO" id="mlh-zP-9t8">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                            </imageView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qgy-vU-xWf">
+                                <rect key="frame" x="16" y="234" width="288" height="100"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zpU-nJ-EhV">
+                                        <rect key="frame" x="8" y="8" width="272" height="30"/>
+                                        <color key="backgroundColor" red="0.23913967118288515" green="0.66566344545001244" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="30" id="j0g-4A-RWC"/>
+                                        </constraints>
+                                        <state key="normal" title="Log In">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <segue destination="wlT-bG-LKb" kind="presentation" id="SIt-Yj-X5w"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1Gj-sC-XNS">
+                                        <rect key="frame" x="8" y="53" width="272" height="30"/>
+                                        <color key="backgroundColor" red="0.23913967119999999" green="0.66566344550000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="30" id="bh8-PC-Svq"/>
+                                        </constraints>
+                                        <state key="normal" title="Sign Up">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <segue destination="fpH-Zp-k9G" kind="presentation" id="bzp-Wt-u6n"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="1Gj-sC-XNS" firstAttribute="leading" secondItem="qgy-vU-xWf" secondAttribute="leading" constant="8" id="32J-SC-ySF"/>
+                                    <constraint firstAttribute="height" constant="100" id="5qx-J0-fzA"/>
+                                    <constraint firstAttribute="trailing" secondItem="zpU-nJ-EhV" secondAttribute="trailing" constant="8" id="De0-0b-X04"/>
+                                    <constraint firstItem="zpU-nJ-EhV" firstAttribute="leading" secondItem="qgy-vU-xWf" secondAttribute="leading" constant="8" id="ImR-LN-Raz"/>
+                                    <constraint firstItem="1Gj-sC-XNS" firstAttribute="top" secondItem="zpU-nJ-EhV" secondAttribute="bottom" constant="15" id="dgq-1g-edD"/>
+                                    <constraint firstItem="zpU-nJ-EhV" firstAttribute="top" secondItem="qgy-vU-xWf" secondAttribute="top" constant="8" id="mB6-Id-0bd"/>
+                                    <constraint firstAttribute="trailing" secondItem="1Gj-sC-XNS" secondAttribute="trailing" constant="8" id="uTz-W1-E2o"/>
+                                </constraints>
+                            </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="TravelDiscovery" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="U93-3k-MNe">
+                                <rect key="frame" x="16" y="148" width="288" height="70"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="70" id="tK8-mO-fG8"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="SnellRoundhand-Bold" family="Snell Roundhand" pointSize="40"/>
+                                <color key="textColor" red="0.23913967119999999" green="0.66566344550000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="qgy-vU-xWf" firstAttribute="centerY" secondItem="aiA-ll-zND" secondAttribute="centerY" id="JCM-GB-dc9"/>
+                            <constraint firstItem="8iw-5M-8nC" firstAttribute="trailing" secondItem="U93-3k-MNe" secondAttribute="trailing" constant="16" id="TZF-sA-1lm"/>
+                            <constraint firstItem="mlh-zP-9t8" firstAttribute="trailing" secondItem="8iw-5M-8nC" secondAttribute="trailing" id="TuW-WG-2EZ"/>
+                            <constraint firstItem="qgy-vU-xWf" firstAttribute="leading" secondItem="8iw-5M-8nC" secondAttribute="leading" constant="16" id="UYC-kb-GKD"/>
+                            <constraint firstItem="8iw-5M-8nC" firstAttribute="trailing" secondItem="qgy-vU-xWf" secondAttribute="trailing" constant="16" id="WMz-hS-rEt"/>
+                            <constraint firstItem="qgy-vU-xWf" firstAttribute="top" secondItem="U93-3k-MNe" secondAttribute="bottom" constant="16" id="aeB-Gm-L5o"/>
+                            <constraint firstItem="qgy-vU-xWf" firstAttribute="centerX" secondItem="aiA-ll-zND" secondAttribute="centerX" id="bAD-YZ-ict"/>
+                            <constraint firstItem="U93-3k-MNe" firstAttribute="leading" secondItem="8iw-5M-8nC" secondAttribute="leading" constant="16" id="ele-eY-11d"/>
+                            <constraint firstItem="mlh-zP-9t8" firstAttribute="top" secondItem="aiA-ll-zND" secondAttribute="top" id="glO-E1-JZ1"/>
+                            <constraint firstItem="mlh-zP-9t8" firstAttribute="leading" secondItem="8iw-5M-8nC" secondAttribute="leading" id="jCS-Ec-uMq"/>
+                            <constraint firstItem="mlh-zP-9t8" firstAttribute="bottom" secondItem="8iw-5M-8nC" secondAttribute="bottom" id="vdm-H8-2A4"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="8iw-5M-8nC"/>
                     </view>
                 </viewController>
@@ -214,4 +268,7 @@
             <point key="canvasLocation" x="1347.2" y="908.54572713643188"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="background" width="1824" height="2736"/>
+    </resources>
 </document>
