@@ -121,8 +121,9 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
         
         //animate camera to zoom and center to user location
         let camera = MGLMapCamera(lookingAtCenter: userLocation, fromEyeCoordinate: mapView.centerCoordinate, eyeAltitude: 10000000)
-        mapView.setCamera(camera, withDuration: 2, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut))
-        
+        mapView.setCamera(camera, withDuration: 2, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut), completionHandler: {
+            mapView.setDirection(0.0, animated: true)
+        })
         UserDefaults.standard.set(userLocation.latitude, forKey: "latitude")
         UserDefaults.standard.set(userLocation.longitude, forKey: "longitude")
     }
