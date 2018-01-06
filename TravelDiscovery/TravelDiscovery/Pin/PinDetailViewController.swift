@@ -37,7 +37,7 @@ class PinDetailViewController: UIViewController, UICollectionViewDataSource, UIC
         aiv.translatesAutoresizingMaskIntoConstraints = false
         return aiv
     }()
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -62,9 +62,7 @@ class PinDetailViewController: UIViewController, UICollectionViewDataSource, UIC
         // set video
         if pin.videoDownloadURL != nil {
             setupVideoDisplay()
-            
         } else {
-            
             videoDisplayHeight.constant = 0
         }
         
@@ -77,7 +75,7 @@ class PinDetailViewController: UIViewController, UICollectionViewDataSource, UIC
         self.navigationController?.navigationBar.prefersLargeTitles = false
     }
     
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -107,7 +105,7 @@ class PinDetailViewController: UIViewController, UICollectionViewDataSource, UIC
                 imageView.frame = CGRect(x: 0, y: 0, width: (imageView.image?.size.width)!, height: (imageView.image?.size.height)!)
             }
             imageView.isUserInteractionEnabled = true
-            imageView.addGestureRecognizer(UITapGestureRecognizer(target:self, action: #selector(zoomImage)))
+            imageView.addGestureRecognizer(UITapGestureRecognizer(target:self, action: #selector(zoomIn)))
             
             cell.contentView.addSubview(imageView)
             return cell
@@ -120,7 +118,7 @@ class PinDetailViewController: UIViewController, UICollectionViewDataSource, UIC
             imageView.clipsToBounds = true
             imageView.contentMode = .scaleAspectFill
             imageView.isUserInteractionEnabled = true
-            imageView.addGestureRecognizer(UITapGestureRecognizer(target:self, action: #selector(zoomImage)))
+            imageView.addGestureRecognizer(UITapGestureRecognizer(target:self, action: #selector(zoomIn)))
             
             cell.contentView.addSubview(imageView)
             return cell
@@ -158,28 +156,76 @@ class PinDetailViewController: UIViewController, UICollectionViewDataSource, UIC
         self.imagesCVHeight.constant = cellSize * ceil(cellColumnNumber) + (5*(cellColumnNumber-1))
         
         return CGSize(width: cellSize, height: cellSize)
-
+        
     }
     
-    @objc func zoomImage(tapGesture: UITapGestureRecognizer){
-        print("tapped")
+    // MARK: Image Click Animation
+    
+    var startFrame: CGRect?
+    var blackBackground: UIView?
+    
+    @objc func zoomIn(tapGesture: UITapGestureRecognizer){
+        if let imageView = tapGesture.view as? UIImageView {
+            startFrame = imageView.superview?.convert(imageView.frame, to: nil)
+            
+            let zoomInView = UIImageView(frame: startFrame!)
+            zoomInView.image = imageView.image
+            zoomInView.isUserInteractionEnabled = true
+            zoomInView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(zoomOut)))
+
+            if let keyWindow = UIApplication.shared.keyWindow {
+                blackBackground = UIView(frame: keyWindow.frame)
+                blackBackground!.backgroundColor = UIColor.black
+                blackBackground!.alpha = 0
+                
+                keyWindow.addSubview(blackBackground!)
+                keyWindow.addSubview(zoomInView)
+            
+                //animate image to fill the screen with black background
+                UIView.animate(withDuration: 0.4, delay: 0, options: .curveEaseOut, animations: {
+                    self.blackBackground!.alpha = 1
+                    
+                    let height = imageView.image!.size.height / imageView.image!.size.width * keyWindow.frame.width
+                    zoomInView.frame = CGRect(x: 0, y: 0, width: keyWindow.frame.width, height: height)
+                    zoomInView.center = keyWindow.center
+                })
+            }
+            
+        }
     }
+    
+    //zoom image back to previous location
+    @objc func zoomOut(tapGesture: UITapGestureRecognizer) {
+        print("tapped")
+        if let zoomOutView = tapGesture.view as? UIImageView {
+            zoomOutView.clipsToBounds = true
+            zoomOutView.contentMode = .scaleAspectFill
+            
+            UIView.animate(withDuration: 0.4, delay: 0, options: .curveEaseOut, animations: {
+                self.blackBackground?.alpha = 0
+                zoomOutView.frame = self.startFrame!
+            }, completion: {(completed) in
+                zoomOutView.removeFromSuperview()
+            })
+        }
+    }
+    
     
     private func setupVideoDisplay() {
-       //set first video frame as image
+        //set first video frame as image
         if pin.videoThumbnailURL != nil {
             self.videoDisplay.loadImageUsingCache(withUrl: pin.videoThumbnailURL!)
         }
         
         //add play button
         self.videoDisplay.addSubview(playButton)
-
+        
         //center play button in parent view
         playButton.centerXAnchor.constraint(lessThanOrEqualTo: self.videoDisplay.centerXAnchor).isActive = true
         playButton.centerYAnchor.constraint(lessThanOrEqualTo: self.videoDisplay.centerYAnchor).isActive = true
         playButton.widthAnchor.constraint(equalToConstant: 50).isActive = true
         playButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
-
+        
         //add spinner
         self.videoDisplay.addSubview(spinner)
         
@@ -201,8 +247,8 @@ class PinDetailViewController: UIViewController, UICollectionViewDataSource, UIC
         self.videoDisplayHeight.constant = playerLayer.frame.height
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.playerDidFinishPlaying(sender:)), name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: nil)
-
-    
+        
+        
         player.play()
         spinner.startAnimating()
         playButton.isHidden = true
@@ -215,18 +261,18 @@ class PinDetailViewController: UIViewController, UICollectionViewDataSource, UIC
         playButton.isHidden = false
         spinner.stopAnimating()
         setupVideoDisplay()
-
+        
     }
     
     
     /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
+     // MARK: - Navigation
+     
+     // In a storyboard-based application, you will often want to do a little preparation before navigation
+     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+     // Get the new view controller using segue.destinationViewController.
+     // Pass the selected object to the new view controller.
+     }
+     */
+    
 }
