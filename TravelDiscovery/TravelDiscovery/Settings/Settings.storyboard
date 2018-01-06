@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="opb-Vg-BRJ">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="gRz-vc-MOe">
     <device id="retina4_0" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -11,23 +11,42 @@
     </dependencies>
     <scenes>
         <!--Settings-->
+        <scene sceneID="ysc-fA-0HS">
+            <objects>
+                <navigationController storyboardIdentifier="SettingsVC" id="gRz-vc-MOe" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Settings" image="settingsIcon" id="8qS-62-jiY"/>
+                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="ThZ-6F-ugI">
+                        <rect key="frame" x="0.0" y="20" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="opb-Vg-BRJ" kind="relationship" relationship="rootViewController" id="Nys-Hb-Vca"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="DpR-Fz-VdH" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1894" y="108"/>
+        </scene>
+        <!--Settings-->
         <scene sceneID="bxI-Tt-60f">
             <objects>
-                <viewController storyboardIdentifier="SettingsVC" id="opb-Vg-BRJ" customClass="SettingsViewController" customModule="TravelDiscovery" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="opb-Vg-BRJ" customClass="SettingsViewController" customModule="TravelDiscovery" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="xxA-dn-wtZ">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <viewLayoutGuide key="safeArea" id="bBD-XY-dfq"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Settings" badgeValue="⚙ " id="Jid-l4-s8N">
-                        <color key="badgeColor" red="0.98955582566376343" green="0.95142545637379039" blue="1" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
-                    </tabBarItem>
+                    <navigationItem key="navigationItem" title="Settings" id="q2y-xc-RKx"/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vmm-PN-XVA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="73" y="127"/>
+            <point key="canvasLocation" x="-1065" y="108"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="settingsIcon" width="32" height="32"/>
+    </resources>
 </document>
