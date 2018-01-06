@@ -195,7 +195,6 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
         scratchVC.parentVC = self
         scratchVC.country = name
         scratchVC.countryCode = CountriesDict.Countries[name]
-        print("Country: " + name)
         
         //only load scratchCard if there is a valid country code, and the country's image asset exists
         if scratchVC.countryCode != nil, let _ = UIImage(named: scratchVC.countryCode) {

@@ -80,6 +80,17 @@ class SettingsViewController: FormViewController {
                     Timer.scheduledTimer(timeInterval: 0.5, target: FirebaseController.self, selector: #selector(FirebaseController.saveSettingsToFirebase), userInfo: ["key": "feedRange"], repeats: false) //need to use a timer to avoid too many changes
                 })
             }
+            
+        +++ Section("About")
+            <<< LabelRow() { row in
+                row.title = "Credits"
+                row.value = "〉"
+                row.onCellSelection({cell, row in
+                    self.performSegue(withIdentifier: "creditsSegue", sender: self)
+                    
+                })
+            }
+
         
         +++ Section("Developers Corner")
             <<< SwitchRow("backgroundLocationRow"){ row in

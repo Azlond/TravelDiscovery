@@ -116,7 +116,7 @@
             </objects>
             <point key="canvasLocation" x="196.875" y="1695.4225352112676"/>
         </scene>
-        <!--Sign Up Here-->
+        <!--Sign Up-->
         <scene sceneID="OQl-mq-QFk">
             <objects>
                 <viewController id="vu3-69-O8p" customClass="EmailSignUpViewController" customModule="TravelDiscovery" customModuleProvider="target" sceneMemberID="viewController">
@@ -195,7 +195,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Xct-ix-ge7"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Sign Up Here" id="Vg0-5o-Enj">
+                    <navigationItem key="navigationItem" title="Sign Up" id="Vg0-5o-Enj">
                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="dz4-FS-LeX">
                             <connections>
                                 <action selector="cancelButton:" destination="vu3-69-O8p" id="HfP-ZS-bzq"/>
