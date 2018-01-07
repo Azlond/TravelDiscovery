@@ -271,13 +271,19 @@ class SettingsViewController: FormViewController {
         self.clearLocalData()
         do {
             try Auth.auth().signOut()
+            UserDefaults.standard.set(false, forKey: "loggedIn")
             if let bundleID = Bundle.main.bundleIdentifier {
                 UserDefaults.standard.removePersistentDomain(forName: bundleID)
+                UserDefaults.standard.synchronize()
             }
         } catch {
+            return
             //error handling logout error
         }
-        self.view.window!.rootViewController?.dismiss(animated: true, completion: nil)
+        let storyBoard: UIStoryboard = UIStoryboard(name: "Login", bundle: nil)
+        let vc = storyBoard.instantiateViewController(withIdentifier: "LoginVC")
+        self.view.window?.rootViewController = vc
+        self.view.window?.makeKeyAndVisible()
     }
     /**
      * Ask for confirmation before deletion

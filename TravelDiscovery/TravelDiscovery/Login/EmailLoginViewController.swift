@@ -82,7 +82,8 @@ class EmailLoginViewController: UIViewController, UITextFieldDelegate {
                 return
             }
             if user!.isEmailVerified {
-                // Take user to Firebase Realtime Database
+                UserDefaults.standard.set(true, forKey: "loggedIn")
+                FirebaseController.retrieveFromFirebase()
                 self.performSegue(withIdentifier: "emailLoggedIn", sender: self)
             } else {
                 let notVerifiedAltert = UIAlertController(title: "Not verified", message: "Your account is pending verification. Please check your email and verify your account.", preferredStyle: .alert)

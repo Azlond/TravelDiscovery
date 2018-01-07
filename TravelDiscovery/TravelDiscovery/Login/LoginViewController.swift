@@ -9,7 +9,7 @@
 import UIKit
 import FirebaseAuth
 
-// TODO: Beautify UI for all login screens
+// TODO: potentially make status not opaque and visible
 
 class LoginViewController: UIViewController {
 
@@ -19,19 +19,6 @@ class LoginViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        Auth.auth().addStateDidChangeListener { (auth, user) in
-            if user != nil {
-                
-                // if available, get user data from server
-                FirebaseController.retrieveFromFirebase()
-
-                //User is already logged in, no need to show login storyboard
-                let storyBoard: UIStoryboard = UIStoryboard(name: "NavigationTabBar", bundle: nil)
-                let newViewController = storyBoard.instantiateViewController(withIdentifier: "NavigationTabBarController") as! UITabBarController
-                self.present(newViewController, animated: true, completion: nil)
-            }
-        }
     }
 
     override func didReceiveMemoryWarning() {
