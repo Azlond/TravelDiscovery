@@ -26,7 +26,7 @@
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="background" translatesAutoresizingMaskIntoConstraints="NO" id="ep2-qB-jq8">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                             </imageView>
-                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tdc-UF-4AW">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tdc-UF-4AW">
                                 <rect key="frame" x="16" y="88" width="213" height="116"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Travel" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AIG-pE-Vn2">
@@ -52,7 +52,9 @@
                                 <constraints>
                                     <constraint firstItem="iAW-xp-Q0z" firstAttribute="top" secondItem="AIG-pE-Vn2" secondAttribute="bottom" constant="3" id="9qd-tA-vhK"/>
                                     <constraint firstItem="iAW-xp-Q0z" firstAttribute="leading" secondItem="tdc-UF-4AW" secondAttribute="leading" constant="35" id="CoI-F9-8Nz"/>
+                                    <constraint firstAttribute="height" constant="116" id="L1v-OJ-9PS"/>
                                     <constraint firstItem="AIG-pE-Vn2" firstAttribute="top" secondItem="tdc-UF-4AW" secondAttribute="top" constant="8" id="epG-zg-CAp"/>
+                                    <constraint firstAttribute="width" constant="213" id="gSW-kM-Kql"/>
                                     <constraint firstAttribute="trailing" secondItem="iAW-xp-Q0z" secondAttribute="trailing" constant="8" id="gmL-fN-gij"/>
                                     <constraint firstItem="AIG-pE-Vn2" firstAttribute="leading" secondItem="tdc-UF-4AW" secondAttribute="leading" constant="8" id="p6l-dc-Vtr"/>
                                     <constraint firstAttribute="trailing" secondItem="AIG-pE-Vn2" secondAttribute="trailing" constant="50" id="zJ4-iU-sma"/>
@@ -61,11 +63,11 @@
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="tdc-UF-4AW" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="SIY-Hv-H42"/>
+                            <constraint firstItem="tdc-UF-4AW" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="PEx-4d-gCc"/>
                             <constraint firstItem="ep2-qB-jq8" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="f9G-6P-e3S"/>
                             <constraint firstItem="ep2-qB-jq8" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="m7r-UD-v1j"/>
                             <constraint firstItem="ep2-qB-jq8" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="oIs-Ch-ZQJ"/>
-                            <constraint firstItem="tdc-UF-4AW" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="68" id="oPo-P2-RlK"/>
+                            <constraint firstItem="tdc-UF-4AW" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="68" id="oPo-P2-RlK" userLabel="View.top = Safe Area.top + 70"/>
                             <constraint firstItem="ep2-qB-jq8" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="r6K-TH-L0N"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>

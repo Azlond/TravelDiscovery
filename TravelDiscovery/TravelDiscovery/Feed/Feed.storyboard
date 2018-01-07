@@ -57,7 +57,7 @@
                             <outlet property="delegate" destination="d6b-JI-DJs" id="29V-ky-2qJ"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Feed" id="CRl-vH-pH5"/>
+                    <navigationItem key="navigationItem" title="Feed" largeTitleDisplayMode="never" id="CRl-vH-pH5"/>
                     <refreshControl key="refreshControl" opaque="NO" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" id="1HZ-gM-HZZ">
                         <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
                         <autoresizingMask key="autoresizingMask"/>

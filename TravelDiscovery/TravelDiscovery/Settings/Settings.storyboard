@@ -38,7 +38,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <viewLayoutGuide key="safeArea" id="bBD-XY-dfq"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Settings" id="q2y-xc-RKx"/>
+                    <navigationItem key="navigationItem" title="Settings" largeTitleDisplayMode="never" id="q2y-xc-RKx"/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <segue destination="Hcn-7x-WDR" kind="show" identifier="creditsSegue" id="Y0b-hF-nM7"/>
