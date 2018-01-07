@@ -7,11 +7,16 @@
 //
 
 import UIKit
+import Firebase
 
 class TravelDetailTableViewController: UITableViewController {
     
+    var travelId : String = ""
     var datePickerHidden = true
     var rowTag : Int = 0
+    
+    var dateStyle = DateFormatter.Style.long
+    var timeStyle = DateFormatter.Style.none
 
     @IBOutlet var infoTableView: UITableView!
     
@@ -26,9 +31,29 @@ class TravelDetailTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-       
-        datePickerChanged()
-
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = self.dateStyle
+        dateFormatter.timeStyle = self.timeStyle
+        let begin = FirebaseData.travels[self.travelId]?.begin
+        let convertedBeginDate = dateFormatter.date(from: begin!)
+        print(begin)
+        print(convertedBeginDate)
+        if (convertedBeginDate != nil) {
+            datePicker.setDate(convertedBeginDate!, animated: false)
+            self.rowTag = 0 // damit Begin Date geändert wird
+            datePickerChanged()
+        }
+        let end   = FirebaseData.travels[self.travelId]?.end
+        let convertedEndDate = dateFormatter.date(from: end!)
+        print(end)
+        print(convertedEndDate)
+        if (convertedEndDate != nil) {
+            datePicker.setDate(convertedEndDate!, animated: false)
+            self.rowTag = 1 // damit End Date geändert wird
+            datePickerChanged()
+        }
+        
        // infoTableView.estimatedRowHeight = 44.0
      //   infoTableView.rowHeight = UITableViewAutomaticDimension
         
@@ -133,10 +158,13 @@ class TravelDetailTableViewController: UITableViewController {
     
     func datePickerChanged () {
         if rowTag == 0 {
-            beginDateLabel.text = DateFormatter.localizedString(from: datePicker.date, dateStyle: DateFormatter.Style.short, timeStyle: DateFormatter.Style.short)
+            beginDateLabel.text = DateFormatter.localizedString(from: datePicker.date, dateStyle: self.dateStyle, timeStyle: self.timeStyle)
+            FirebaseData.travels[self.travelId]!.begin = beginDateLabel.text
         } else if rowTag == 1 {
-            endDateLabel.text = DateFormatter.localizedString(from: datePicker.date, dateStyle: DateFormatter.Style.short, timeStyle: DateFormatter.Style.short)
+            endDateLabel.text = DateFormatter.localizedString(from: datePicker.date, dateStyle: self.dateStyle, timeStyle: self.timeStyle)
+            FirebaseData.travels[self.travelId]!.end = endDateLabel.text
         }
+        FirebaseController.saveTravelsToFirebase()
     }
     
     func toggleDatepicker() {

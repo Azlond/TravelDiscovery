@@ -18,8 +18,8 @@ class Travel {
     var name: String
     /*optionals*/
     var pins: Dictionary<String,Pin> = [:]
-    var begin: String?
     var active: Bool?
+    var begin: String?
     var end: String?
     var steps: Int?
     var km: Double?
@@ -40,6 +40,8 @@ class Travel {
         // Initialize stored properties.
         self.id = id
         self.name = name
+        self.begin = ""
+        self.end = ""
         self.active = true
     }
     
@@ -48,6 +50,8 @@ class Travel {
     init?(dict: (Dictionary<String,Any>))  {
         self.id =  dict["id"] as! String
         self.name = dict["name"] as! String
+        self.begin = dict["begin"] as? String
+        self.end = dict["end"] as? String
         self.active = dict["active"] as? Bool
         
         //load pins
@@ -70,6 +74,8 @@ class Travel {
         
         dict = ["id":self.id,
                 "name":self.name,
+                "begin":self.begin ?? "",
+                "end":self.end ?? "",
                 "active": self.active ?? false]
         
         return dict

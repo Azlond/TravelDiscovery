@@ -62,11 +62,12 @@ class TravelsTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let row = indexPath.row
-        let cell = tableView.dequeueReusableCell(withIdentifier: "travelCell", for: indexPath)
         
         let k = Array(FirebaseData.travels.keys)[row]
+        let id = FirebaseData.travels[k]!.id
         let name = FirebaseData.travels[k]!.name
         
+        let cell = tableView.dequeueReusableCell(withIdentifier: "travelCell", for: indexPath)
         cell.textLabel?.text = name
         //cell.textLabel?.text = countries[row]
        // cell.imageView!.image = countryImages[row]
@@ -95,16 +96,15 @@ class TravelsTableViewController: UITableViewController {
         
         let action = UIAlertAction(title: "Add", style: .default) { (action) in
             
-            
             let id = "Travel_" + UUID().uuidString
             let name = textField.text!
-            let travel : Travel = Travel.init(id: id, name: name)!
-            
-            // save pin to firebase
-            FirebaseData.travels[travel.id] = travel
-            FirebaseController.saveTravelsToFirebase()
-            
-            
+            if name.isEmpty {} else {
+                let travel : Travel = Travel.init(id: id, name: name)!
+                travel.begin = DateFormatter.localizedString(from: Date(), dateStyle: .long, timeStyle: .none)
+                // save travel to firebase
+                FirebaseData.travels[travel.id] = travel
+                FirebaseController.saveTravelsToFirebase()
+            }
             
             self.tableView.reloadData()
         }
@@ -170,19 +170,22 @@ class TravelsTableViewController: UITableViewController {
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
-  /*
+  
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
        
-        if segue.identifier == "travelDetail" {
+        if segue.identifier == "sequeTravelDetail" {
             let cell = sender as! UITableViewCell
             let indexPath = self.travelsTableView.indexPath(for: cell)
-            let countryDetailView = segue.destination as! TravelDetailViewController
-            countryDetailView.setCountryName(countries[((indexPath as NSIndexPath?)?.row)!])
+            let travelDetailView = segue.destination as! TravelDetailTableViewController
+            let row = indexPath!.row
+            let k = Array(FirebaseData.travels.keys)[row]
+            travelDetailView.travelId = k
+            //travelDetailView.setCountryName(countries[((indexPath as NSIndexPath?)?.row)!])
     
         }
 
     }
- */
+ 
 }
