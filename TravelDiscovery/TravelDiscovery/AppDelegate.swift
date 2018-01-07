@@ -31,6 +31,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 print("Failed with err: \(err)")
             }
         }
+        
+        self.window = UIWindow(frame: UIScreen.main.bounds)
+        let vc: UIViewController
+        if (UserDefaults.standard.bool(forKey: "loggedIn")) {
+            let storyBoard: UIStoryboard = UIStoryboard(name: "NavigationTabBar", bundle: nil)
+            vc = storyBoard.instantiateViewController(withIdentifier: "NavigationTabBarController") as! UITabBarController
+            Auth.auth().addStateDidChangeListener { (auth, user) in
+                if user != nil {
+                    FirebaseController.retrieveFromFirebase()
+                }
+            }
+        } else {
+            let storyBoard: UIStoryboard = UIStoryboard(name: "Login", bundle: nil)
+            vc = storyBoard.instantiateViewController(withIdentifier: "LoginVC")
+        }
+        
+        self.window?.rootViewController = vc
         return true
     }
     
