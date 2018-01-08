@@ -16,9 +16,10 @@ class FeedTableViewController: UITableViewController {
         //include Nib in TableView
         let nib = UINib.init(nibName: "PinTableViewCell", bundle: nil)
         self.tableView.register(nib, forCellReuseIdentifier: "PinTableViewCell")
-
+//
         self.tableView.estimatedRowHeight = 100
         self.tableView.rowHeight = UITableViewAutomaticDimension
+        //self.tableView.rowHeight = 300
         
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -32,11 +33,6 @@ class FeedTableViewController: UITableViewController {
             selector: #selector(updateFeed),
             name: Notification.Name("updateFeed"),
             object: nil)
-//        NotificationCenter.default.addObserver(
-//            self,
-//            selector: #selector(updateCellHeights),
-//            name: Notification.Name("imageLoaded"),
-//            object: nil)
 
         self.tableView.reloadData()
         
@@ -53,11 +49,6 @@ class FeedTableViewController: UITableViewController {
         self.tableView.reloadData()
     }
     
-    //TODO: doesnt do anything: meant to trigger update of cell height
-    @objc func updateCellHeights() {
-        self.tableView.beginUpdates()
-        self.tableView.endUpdates()
-    }
     
     /**
     * refresh public pins, get new data from server
@@ -125,11 +116,11 @@ class FeedTableViewController: UITableViewController {
             }
         }
         cell.textView.text = previewText
-        
-        cell.imgView.image = cell.imgView.resizeImage(image: UIImage(named: "default2")!)
 
         if ((pin.imageURLs?.count ?? 0) > 0) {
             cell.imgView.loadImageUsingCache(withUrl: pin.imageURLs![0]) //Int(arc4random_uniform(UInt32(pin.imageURLs!.count)))])
+        } else {
+            cell.imgView.image = cell.imgView.resizeImage(image: UIImage(named: "default2")!)
         }
         
         //TODO (nice to have): if multiple images are available: show multi image preview

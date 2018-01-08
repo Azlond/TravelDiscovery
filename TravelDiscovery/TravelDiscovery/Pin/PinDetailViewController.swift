@@ -196,7 +196,6 @@ class PinDetailViewController: UIViewController, UICollectionViewDataSource, UIC
     
     //zoom image back to previous location
     @objc func zoomOut(tapGesture: UITapGestureRecognizer) {
-        print("tapped")
         if let zoomOutView = tapGesture.view as? UIImageView {
             zoomOutView.clipsToBounds = true
             zoomOutView.contentMode = .scaleAspectFill

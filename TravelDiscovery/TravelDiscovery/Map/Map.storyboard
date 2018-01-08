@@ -23,7 +23,7 @@
                         <viewLayoutGuide key="safeArea" id="GxC-pI-SKq"/>
                     </view>
                     <navigationItem key="navigationItem" title="World Map" id="PZj-8V-JeQ">
-                        <barButtonItem key="rightBarButtonItem" title="📍" id="fN2-Rz-M2o">
+                        <barButtonItem key="rightBarButtonItem" title="New Trip" id="fN2-Rz-M2o">
                             <connections>
                                 <action selector="addMarker:" destination="fSW-X2-ug8" id="7mr-3w-vrR"/>
                             </connections>

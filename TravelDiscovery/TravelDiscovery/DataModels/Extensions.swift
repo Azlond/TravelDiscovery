@@ -147,9 +147,13 @@ extension UIImageView {
     func loadImageUsingCache(withUrl urlString : String) {
         let url = URL(string: urlString)
         
+        //reset image
+        self.image = nil
+        self.setRandomBackgroundColor()
+        
         // check cached image
         if let cachedImage = FirebaseData.imageCache.object(forKey: urlString as NSString) as? UIImage {
-            self.image = self.resizeImage(image: cachedImage)
+            self.image = cachedImage
             return
         }
         
@@ -162,9 +166,9 @@ extension UIImageView {
             
             DispatchQueue.main.async {
                 if let image = UIImage(data: data!) {
-                    FirebaseData.imageCache.setObject(image, forKey: urlString as NSString)
                     self.image = self.resizeImage(image: image)
-                    //                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: "imageLoaded"), object: nil)
+                    FirebaseData.imageCache.setObject(self.image!, forKey: urlString as NSString)
+                    // NotificationCenter.default.post(name: NSNotification.Name(rawValue: "imageLoaded"), object: nil)
                 }
             }
             

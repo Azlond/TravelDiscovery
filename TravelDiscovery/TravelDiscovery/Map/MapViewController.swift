@@ -65,6 +65,13 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
         
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        //prevents button from staying highlighted
+        buttonAddPin.isEnabled = false
+        buttonAddPin.isEnabled = true
+    }
     
     @objc func handleTap(_ gesture: UITapGestureRecognizer) {
         
@@ -118,7 +125,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
     
     func mapViewDidFinishLoadingMap(_ mapView: MGLMapView) {
         let userLocation: CLLocationCoordinate2D = (mapView.userLocation?.coordinate)!
-        
+
         //animate camera to zoom and center to user location
         let camera = MGLMapCamera(lookingAtCenter: userLocation, fromEyeCoordinate: mapView.centerCoordinate, eyeAltitude: 10000000)
         mapView.setCamera(camera, withDuration: 2, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut), completionHandler: {
@@ -128,7 +135,29 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
         UserDefaults.standard.set(userLocation.longitude, forKey: "longitude")
     }
     
+    // MARK: Add markers/Pins
     
+    /*
+     * performs segue to the NewPinScene / PinViewController while setting the current location
+     */
+    @IBAction func addMarker(_ sender: UIBarButtonItem) {
+        // add Pin to current active Travel if one exists
+        if (FirebaseData.getActiveTravel() != nil) {
+            //save current location in user defaults
+            let userLocation: CLLocationCoordinate2D = (mapView.userLocation?.coordinate)!
+            UserDefaults.standard.set(userLocation.longitude, forKey: "longitude")
+            UserDefaults.standard.set(userLocation.latitude, forKey: "latitude")
+            
+            performSegue(withIdentifier: "addPin", sender: nil)
+        }
+        else {
+            //openAddTravelView()
+        }
+    }
+    
+    /*
+     * adds the user's pins to the map
+     */
     @objc func displayPinsOnMap() {
         // set Navigation Bar Button item
         buttonAddPin!.title = (FirebaseData.getActiveTravel() != nil) ? "📍" : "New Trip"
@@ -151,6 +180,9 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
         }
     }
     
+    /*
+     * creates markers / pins for the map with colors according to longitude
+     */
     func mapView(_ mapView: MGLMapView, viewFor annotation: MGLAnnotation) -> MGLAnnotationView? {
         guard annotation is MGLPointAnnotation else {
             return nil
@@ -275,21 +307,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
                                            options: [.defaultValue : MGLConstantStyleValue<NSNumber>(rawValue: 1.5)])
         style.addLayer(layer)
     }
-    
-    @IBAction func addMarker(_ sender: UIBarButtonItem) {
-        // add Pin to current active Travel if one exists
-        if (FirebaseData.getActiveTravel() != nil) {
-            //save current location in user defaults
-            let userLocation: CLLocationCoordinate2D = (mapView.userLocation?.coordinate)!
-            UserDefaults.standard.set(userLocation.longitude, forKey: "longitude")
-            UserDefaults.standard.set(userLocation.latitude, forKey: "latitude")
-            
-            performSegue(withIdentifier: "addPin", sender: nil)
-        }
-        else {
-            //openAddTravelView()
-        }
-    }
+  
     
     @objc func animateTravel() {
         currentIndex = 1
@@ -318,8 +336,6 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
     
     func updatePolylineWithCoordinates(coordinates: [CLLocationCoordinate2D]) {
         var mutableCoordinates = coordinates
-        
-        // TODO ? Only add coordinates if they differ from previous coordinates
         
         let polyline = MGLPolylineFeature(coordinates: &mutableCoordinates, count: UInt(mutableCoordinates.count))
         

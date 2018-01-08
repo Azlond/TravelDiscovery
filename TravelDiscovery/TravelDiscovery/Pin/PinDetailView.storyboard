@@ -32,8 +32,8 @@
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="300"/>
                                         <color key="backgroundColor" red="0.29803922770000002" green="0.29803922770000002" blue="0.29803922770000002" alpha="1" colorSpace="calibratedRGB"/>
                                     </imageView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZP3-6f-pj7">
-                                        <rect key="frame" x="8" y="125" width="359" height="41"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZP3-6f-pj7">
+                                        <rect key="frame" x="16" y="125" width="343" height="41"/>
                                         <attributedString key="attributedText">
                                             <fragment content="PIN NAME ">
                                                 <attributes>
@@ -117,8 +117,10 @@
                                     <constraint firstAttribute="trailing" secondItem="BJE-hL-rPO" secondAttribute="trailing" id="LTc-TG-vBA"/>
                                     <constraint firstAttribute="bottom" secondItem="FCF-4z-BS9" secondAttribute="bottom" constant="-312" id="Sya-oj-8vn"/>
                                     <constraint firstAttribute="bottom" secondItem="INb-h7-k9Y" secondAttribute="bottom" constant="230" id="TSL-dp-V0u"/>
+                                    <constraint firstItem="ZP3-6f-pj7" firstAttribute="leading" secondItem="kaz-pE-pk5" secondAttribute="leading" constant="16" id="Tof-dm-C3g"/>
                                     <constraint firstItem="INb-h7-k9Y" firstAttribute="leading" secondItem="kaz-pE-pk5" secondAttribute="leading" constant="16" id="VKK-l7-ce5"/>
                                     <constraint firstItem="jqe-6T-f8u" firstAttribute="leading" secondItem="uy6-U4-isX" secondAttribute="leading" id="bE4-eH-Rcu"/>
+                                    <constraint firstAttribute="trailing" secondItem="ZP3-6f-pj7" secondAttribute="trailing" constant="16" id="bdO-e7-8Qz"/>
                                     <constraint firstItem="fiz-eP-YFI" firstAttribute="leading" secondItem="kaz-pE-pk5" secondAttribute="leading" constant="16" id="buQ-f4-4tU"/>
                                     <constraint firstItem="uy6-U4-isX" firstAttribute="top" secondItem="kaz-pE-pk5" secondAttribute="top" id="c3N-bm-mn8"/>
                                     <constraint firstItem="INb-h7-k9Y" firstAttribute="top" secondItem="BJE-hL-rPO" secondAttribute="bottom" constant="23" id="cev-Np-WTv"/>
