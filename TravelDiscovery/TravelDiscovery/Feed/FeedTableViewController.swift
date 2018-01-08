@@ -16,10 +16,9 @@ class FeedTableViewController: UITableViewController {
         //include Nib in TableView
         let nib = UINib.init(nibName: "PinTableViewCell", bundle: nil)
         self.tableView.register(nib, forCellReuseIdentifier: "PinTableViewCell")
-
-//        self.tableView.estimatedRowHeight = 100
-//        self.tableView.rowHeight = UITableViewAutomaticDimension
-        self.tableView.rowHeight = 300
+//
+        self.tableView.estimatedRowHeight = 320
+        self.tableView.rowHeight = UITableViewAutomaticDimension
         
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -95,7 +94,6 @@ class FeedTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
         return FirebaseData.publicPins.count
     }
 
@@ -120,7 +118,7 @@ class FeedTableViewController: UITableViewController {
         if ((pin.imageURLs?.count ?? 0) > 0) {
             cell.imgView.loadImageUsingCache(withUrl: pin.imageURLs![0]) //Int(arc4random_uniform(UInt32(pin.imageURLs!.count)))])
         } else {
-            cell.imgView.image = cell.imgView.resizeImage(image: UIImage(named: "default2")!)
+            cell.imgView.image = UIImage(named: "default2")
         }
         
         //TODO (nice to have): if multiple images are available: show multi image preview
@@ -128,13 +126,13 @@ class FeedTableViewController: UITableViewController {
         return cell
     }
     
-//    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-//        return UITableViewAutomaticDimension
-//    }
-//
-//    override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-//        return 300
-//    }
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableViewAutomaticDimension
+    }
+
+    override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 320
+    }
 
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

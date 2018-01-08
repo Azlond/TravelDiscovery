@@ -166,7 +166,7 @@ extension UIImageView {
             
             DispatchQueue.main.async {
                 if let image = UIImage(data: data!) {
-                    self.image = self.resizeImage(image: image)
+                    self.image = image //self.resizeImage(image: image)
                     FirebaseData.imageCache.setObject(self.image!, forKey: urlString as NSString)
                     // NotificationCenter.default.post(name: NSNotification.Name(rawValue: "imageLoaded"), object: nil)
                 }
@@ -200,16 +200,18 @@ extension UIImageView {
     }
     
     /**
-     * returns image with reduces saturation
+     * returns image with reduced saturation
      */
     func reduceSaturation(){
-        let context = CIContext(options: nil)
-        
-        let filter = CIFilter(name: "CIPhotoEffectFade")
-        filter!.setValue(CIImage(image: self.image!), forKey: kCIInputImageKey)
-        let output = filter!.outputImage
-        let cgimg = context.createCGImage(output!,from: output!.extent)
-        self.image = UIImage(cgImage: cgimg!)
+        if self.image != nil {
+            let context = CIContext(options: nil)
+            
+            let filter = CIFilter(name: "CIPhotoEffectFade")
+            filter!.setValue(CIImage(image: self.image!), forKey: kCIInputImageKey)
+            let output = filter!.outputImage
+            let cgimg = context.createCGImage(output!,from: output!.extent)
+            self.image = UIImage(cgImage: cgimg!)
+        }
         
     }
     
@@ -225,6 +227,6 @@ extension UIImageView {
         
         
         self.backgroundColor = UIColor(red: red, green: green, blue: blue, alpha: 1)
-
+        
     }
 }

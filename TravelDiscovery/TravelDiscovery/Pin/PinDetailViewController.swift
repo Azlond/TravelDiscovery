@@ -97,19 +97,6 @@ class PinDetailViewController: UIViewController, UICollectionViewDataSource, UIC
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if (pin.imageURLs?.count ?? 0) == 1 {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "detailCell", for: indexPath as IndexPath)
-            let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.width))
-            imageView.loadImageUsingCache(withUrl: pin.imageURLs![indexPath.row])
-            if imageView.image != nil {
-                imageView.frame = CGRect(x: 0, y: 0, width: (imageView.image?.size.width)!, height: (imageView.image?.size.height)!)
-            }
-            imageView.isUserInteractionEnabled = true
-            imageView.addGestureRecognizer(UITapGestureRecognizer(target:self, action: #selector(zoomIn)))
-            
-            cell.contentView.addSubview(imageView)
-            return cell
-        }
         if (pin.imageURLs?.count ?? 0) > 0 {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "detailCell", for: indexPath as IndexPath)
             let cellSize = getCellSize(itemCount: pin.imageURLs!.count)
