@@ -142,7 +142,15 @@ class ScratchcardViewController: UIViewController, ScratchUIViewDelegate {
             selector: #selector(dismissToPrevious),
             name: Notification.Name("dismissScratch"),
             object: nil)
-        scratchCard.autoScratch(sleepTime: sleepTime)
+        
+        var sleepyTime = sleepTime
+        
+        if (UIDevice.current.modelName == "iPhone 6" || UIDevice.current.modelName == "iPhone 6 Plus" || UIDevice.current.modelName == "Simulator") {
+            scratchCard.scratchView.setScratchWidth(width: CGFloat(160))
+            sleepyTime = sleepyTime * 3
+        }
+        
+        scratchCard.autoScratch(sleepTime: sleepyTime)
     }
     
     /**
