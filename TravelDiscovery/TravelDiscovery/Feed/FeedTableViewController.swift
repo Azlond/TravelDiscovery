@@ -16,10 +16,10 @@ class FeedTableViewController: UITableViewController {
         //include Nib in TableView
         let nib = UINib.init(nibName: "PinTableViewCell", bundle: nil)
         self.tableView.register(nib, forCellReuseIdentifier: "PinTableViewCell")
-//
-        self.tableView.estimatedRowHeight = 100
-        self.tableView.rowHeight = UITableViewAutomaticDimension
-        //self.tableView.rowHeight = 300
+
+//        self.tableView.estimatedRowHeight = 100
+//        self.tableView.rowHeight = UITableViewAutomaticDimension
+        self.tableView.rowHeight = 300
         
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -128,13 +128,13 @@ class FeedTableViewController: UITableViewController {
         return cell
     }
     
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableViewAutomaticDimension
-    }
-
-    override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 100
-    }
+//    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+//        return UITableViewAutomaticDimension
+//    }
+//
+//    override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+//        return 300
+//    }
 
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
