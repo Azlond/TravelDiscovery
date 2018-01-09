@@ -23,6 +23,14 @@ class PinDetailViewController: UIViewController, UICollectionViewDataSource, UIC
     @IBOutlet weak var primaryImageHeight: NSLayoutConstraint!
     @IBOutlet weak var videoDisplayHeight: NSLayoutConstraint!
     
+    override var prefersStatusBarHidden: Bool {
+        if showStatusBar {
+            return false
+        }
+        return true
+    }
+    
+    var showStatusBar = true
     var pin: Pin!
     let playButton: UIButton = {
         let button = UIButton()
@@ -190,7 +198,8 @@ class PinDetailViewController: UIViewController, UICollectionViewDataSource, UIC
                 //animate image to fill the screen with black background
                 UIView.animate(withDuration: 0.4, delay: 0, options: .curveEaseOut, animations: {
                     self.blackBackground!.alpha = 1
-                    
+                    self.showStatusBar = false
+                    self.setNeedsStatusBarAppearanceUpdate()
                     let height = img.size.height / img.size.width * keyWindow.frame.width
                     zoomInView.frame = CGRect(x: 0, y: 0, width: keyWindow.frame.width, height: height)
                     zoomInView.center = keyWindow.center
@@ -209,6 +218,8 @@ class PinDetailViewController: UIViewController, UICollectionViewDataSource, UIC
             UIView.animate(withDuration: 0.4, delay: 0, options: .curveEaseOut, animations: {
                 self.blackBackground?.alpha = 0
                 zoomOutView.frame = self.startFrame!
+                self.showStatusBar = true
+                self.setNeedsStatusBarAppearanceUpdate()
             }, completion: {(completed) in
                 zoomOutView.removeFromSuperview()
             })
@@ -268,7 +279,6 @@ class PinDetailViewController: UIViewController, UICollectionViewDataSource, UIC
         setupVideoDisplay()
         
     }
-    
     
     /*
      // MARK: - Navigation
