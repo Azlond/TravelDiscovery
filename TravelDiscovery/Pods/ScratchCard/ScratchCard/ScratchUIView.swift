@@ -67,7 +67,7 @@ open class ScratchUIView: UIView, ScratchViewDelegate {
     }
     
     @objc func delegateScratch(_ timer: Timer) {
-        if (self.getScratchPercent() <= 1) {
+        if (self.getScratchPercent() < 1) {
             let startPoint = timer.userInfo as! CGPoint
             self.scratchView.renderLineFromPoint(startPoint, end: startPoint)
             NotificationCenter.default.post(name: Notification.Name("dismissScratch"), object: nil)

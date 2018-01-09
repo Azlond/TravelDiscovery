@@ -175,6 +175,11 @@ class PinDetailViewController: UIViewController, UICollectionViewDataSource, UIC
             zoomInView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(zoomOut)))
             
             if let keyWindow = UIApplication.shared.keyWindow {
+                
+                guard let img = imageView.image else {
+                    return
+                }
+                
                 blackBackground = UIView(frame: keyWindow.frame)
                 blackBackground!.backgroundColor = UIColor.black
                 blackBackground!.alpha = 0
@@ -186,7 +191,7 @@ class PinDetailViewController: UIViewController, UICollectionViewDataSource, UIC
                 UIView.animate(withDuration: 0.4, delay: 0, options: .curveEaseOut, animations: {
                     self.blackBackground!.alpha = 1
                     
-                    let height = imageView.image!.size.height / imageView.image!.size.width * keyWindow.frame.width
+                    let height = img.size.height / img.size.width * keyWindow.frame.width
                     zoomInView.frame = CGRect(x: 0, y: 0, width: keyWindow.frame.width, height: height)
                     zoomInView.center = keyWindow.center
                 })
