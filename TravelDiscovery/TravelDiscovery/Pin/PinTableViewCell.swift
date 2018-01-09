@@ -26,4 +26,10 @@ class PinTableViewCell: UITableViewCell {
         
     }
     
+    override func prepareForReuse() {
+        imgView.image = nil
+        imgView.setRandomBackgroundColor()
+        super.prepareForReuse()
+    }
+    
 }

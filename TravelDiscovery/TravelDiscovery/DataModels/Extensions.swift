@@ -152,7 +152,7 @@ extension UIImageView {
         self.setRandomBackgroundColor()
         
         // check cached image
-        if let cachedImage = FirebaseData.imageCache.object(forKey: urlString as NSString) as? UIImage {
+        if let cachedImage = FirebaseData.imageCache.object(forKey: url!.lastPathComponent as NSString) as? UIImage {
             self.image = cachedImage
             return
         }
@@ -167,7 +167,7 @@ extension UIImageView {
             DispatchQueue.main.async {
                 if let image = UIImage(data: data!) {
                     self.image = image //self.resizeImage(image: image)
-                    FirebaseData.imageCache.setObject(self.image!, forKey: urlString as NSString)
+                    FirebaseData.imageCache.setObject(self.image!, forKey: url!.lastPathComponent as NSString)
                     // NotificationCenter.default.post(name: NSNotification.Name(rawValue: "imageLoaded"), object: nil)
                 }
             }

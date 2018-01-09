@@ -21,6 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         FirebaseApp.configure()
         Database.database().isPersistenceEnabled = true
         UIApplication.shared.isStatusBarHidden = false
+        FirebaseController.populateCache()
         let userSettings = UserDefaults.standard
         let enableBackgroundLocationUpdates = userSettings.bool(forKey: "backgroundLocationUpdates")
         if (enableBackgroundLocationUpdates) {

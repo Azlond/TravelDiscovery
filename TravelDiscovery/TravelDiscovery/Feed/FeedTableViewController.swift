@@ -116,8 +116,12 @@ class FeedTableViewController: UITableViewController {
         cell.textView.text = previewText
 
         if ((pin.imageURLs?.count ?? 0) > 0) {
+            cell.imgView.image = nil
+            cell.imgView.setRandomBackgroundColor()
             cell.imgView.loadImageUsingCache(withUrl: pin.imageURLs![0]) //Int(arc4random_uniform(UInt32(pin.imageURLs!.count)))])
         } else {
+            cell.imgView.image = nil
+            cell.imgView.setRandomBackgroundColor()
             cell.imgView.image = UIImage(named: "default2")
         }
         
