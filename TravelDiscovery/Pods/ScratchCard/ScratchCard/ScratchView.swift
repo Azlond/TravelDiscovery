@@ -47,6 +47,14 @@ open class ScratchView: UIView {
         return contentLayer
     }
     
+    public func getScratchWidth() -> CGFloat {
+        return scratchWidth
+    }
+    public func setScratchWidth(width: CGFloat) {
+        scratchWidth = width
+        alphaPixels.setLineWidth(width)
+    }
+    
     init(frame: CGRect, CouponImage: String, ScratchWidth: CGFloat) {
         super.init(frame: frame)
         couponImage = CouponImage

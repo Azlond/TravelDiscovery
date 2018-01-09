@@ -35,35 +35,6 @@ class ScratchcardViewController: UIViewController, ScratchUIViewDelegate {
         let cardWidth = scratchView.bounds.width-10
         let cardHeight = scratchView.bounds.height-navigationBar.bounds.height-10
         
-        //image to be scratched free is not distorted to fit the screen with this code
-      /*  let image = UIImage(named: countryCode)
-        
-        let cardWidth = scratchView.bounds.width
-        let cardHeight = scratchView.bounds.height-navigationBar.bounds.height-10
-        let imgWidth = image!.size.width
-        let imgHeight = image!.size.height
-        
-        if  (cardWidth / cardHeight) < (imgWidth / imgHeight) {
-            let scaleFactor = cardWidth / imgWidth
-            scratchCard  = ScratchUIView(frame: CGRect(x:5, y:navigationBar.bounds.height+5,
-                                                       width:cardWidth,
-                                                       height:imgHeight * scaleFactor),
-                                         Coupon: countryCode,
-                                         MaskImage: "mask.png",
-                                         ScratchWidth: CGFloat(40))
-        }
-        else {
-            let scaleFactor = cardHeight / imgHeight
-            scratchCard  = ScratchUIView(frame: CGRect(x:5, y:navigationBar.bounds.height+5,
-                                                       width:imgWidth * scaleFactor,
-                                                       height:cardHeight),
-                                         Coupon: countryCode,
-                                         MaskImage: "mask.png",
-                                         ScratchWidth: CGFloat(40))
-    
-        }
-         **/
-        
         scratchCard  = ScratchUIView(frame: CGRect(x:5, y:navigationBar.bounds.height+5,
                                                    width:cardWidth,
                                                    height:cardHeight),
@@ -142,7 +113,15 @@ class ScratchcardViewController: UIViewController, ScratchUIViewDelegate {
             selector: #selector(dismissToPrevious),
             name: Notification.Name("dismissScratch"),
             object: nil)
-        scratchCard.autoScratch(sleepTime: sleepTime)
+        
+        var sleepyTime = sleepTime
+        
+        if (UIDevice.current.modelName == "iPhone 6" || UIDevice.current.modelName == "iPhone 6 Plus" || UIDevice.current.modelName == "Simulator") {
+            scratchCard.scratchView.setScratchWidth(width: CGFloat(160))
+            sleepyTime = sleepyTime * 3
+        }
+        
+        scratchCard.autoScratch(sleepTime: sleepyTime)
     }
     
     /**
