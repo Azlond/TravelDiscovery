@@ -23,17 +23,17 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="867"/>
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="default2" translatesAutoresizingMaskIntoConstraints="NO" id="uy6-U4-isX">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="300"/>
+                                        <rect key="frame" x="0.0" y="-20" width="375" height="320"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="300" id="hwH-cR-MxJ"/>
+                                            <constraint firstAttribute="height" constant="320" id="hwH-cR-MxJ"/>
                                         </constraints>
                                     </imageView>
-                                    <imageView userInteractionEnabled="NO" alpha="0.29999999999999999" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="jqe-6T-f8u">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="300"/>
+                                    <imageView userInteractionEnabled="NO" alpha="0.29999999999999999" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="jqe-6T-f8u" userLabel="gray layer">
+                                        <rect key="frame" x="0.0" y="-20" width="375" height="320"/>
                                         <color key="backgroundColor" red="0.29803922770000002" green="0.29803922770000002" blue="0.29803922770000002" alpha="1" colorSpace="calibratedRGB"/>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZP3-6f-pj7">
-                                        <rect key="frame" x="16" y="125" width="343" height="41"/>
+                                        <rect key="frame" x="16" y="115" width="343" height="41"/>
                                         <attributedString key="attributedText">
                                             <fragment content="PIN NAME ">
                                                 <attributes>
@@ -64,8 +64,8 @@
                                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                     </textView>
-                                    <imageView autoresizesSubviews="NO" opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FCF-4z-BS9" userLabel="VideoFrame">
-                                        <rect key="frame" x="0.0" y="576" width="375" height="603"/>
+                                    <imageView autoresizesSubviews="NO" opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="FCF-4z-BS9" userLabel="VideoFrame">
+                                        <rect key="frame" x="0.0" y="567.5" width="375" height="865"/>
                                         <color key="backgroundColor" cocoaTouchSystemColor="tableCellGroupedBackgroundColor"/>
                                     </imageView>
                                     <imageView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="INb-h7-k9Y">
@@ -108,6 +108,7 @@
                                     <constraint firstItem="jqe-6T-f8u" firstAttribute="width" secondItem="uy6-U4-isX" secondAttribute="width" id="4Dj-TE-JHz"/>
                                     <constraint firstItem="BJE-hL-rPO" firstAttribute="top" secondItem="fiz-eP-YFI" secondAttribute="bottom" constant="8" id="9Nc-8c-HeX"/>
                                     <constraint firstItem="jqe-6T-f8u" firstAttribute="centerY" secondItem="uy6-U4-isX" secondAttribute="centerY" id="9n1-Ar-dv6"/>
+                                    <constraint firstItem="uy6-U4-isX" firstAttribute="top" secondItem="kaz-pE-pk5" secondAttribute="top" constant="-20" id="DRn-D8-jpv"/>
                                     <constraint firstItem="uy6-U4-isX" firstAttribute="centerY" secondItem="ZP3-6f-pj7" secondAttribute="centerY" constant="4.5" id="Dmd-lg-zax"/>
                                     <constraint firstItem="fiz-eP-YFI" firstAttribute="leading" secondItem="BJE-hL-rPO" secondAttribute="leading" constant="16" id="EbX-Ul-mfY"/>
                                     <constraint firstAttribute="trailing" secondItem="uy6-U4-isX" secondAttribute="trailing" id="IMt-sX-t91"/>
@@ -122,7 +123,6 @@
                                     <constraint firstItem="jqe-6T-f8u" firstAttribute="leading" secondItem="uy6-U4-isX" secondAttribute="leading" id="bE4-eH-Rcu"/>
                                     <constraint firstAttribute="trailing" secondItem="ZP3-6f-pj7" secondAttribute="trailing" constant="16" id="bdO-e7-8Qz"/>
                                     <constraint firstItem="fiz-eP-YFI" firstAttribute="leading" secondItem="kaz-pE-pk5" secondAttribute="leading" constant="16" id="buQ-f4-4tU"/>
-                                    <constraint firstItem="uy6-U4-isX" firstAttribute="top" secondItem="kaz-pE-pk5" secondAttribute="top" id="c3N-bm-mn8"/>
                                     <constraint firstItem="INb-h7-k9Y" firstAttribute="top" secondItem="BJE-hL-rPO" secondAttribute="bottom" constant="23" id="cev-Np-WTv"/>
                                     <constraint firstAttribute="trailing" secondItem="INb-h7-k9Y" secondAttribute="trailing" constant="16" id="fjH-Ub-3bk"/>
                                     <constraint firstItem="jqe-6T-f8u" firstAttribute="height" secondItem="uy6-U4-isX" secondAttribute="height" id="nQm-S0-2qs"/>

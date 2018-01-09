@@ -9,7 +9,7 @@
 import UIKit
 import AVKit
 
-class PinDetailViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+class PinDetailViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UIScrollViewDelegate {
     
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var usernameLabel: UILabel!
@@ -72,6 +72,8 @@ class PinDetailViewController: UIViewController, UICollectionViewDataSource, UIC
         imagesCV.delegate = self
         imagesCV.reloadData()
         
+        scrollView.delegate = self
+        
         self.navigationController?.navigationBar.prefersLargeTitles = false
     }
     
@@ -86,6 +88,17 @@ class PinDetailViewController: UIViewController, UICollectionViewDataSource, UIC
         self.navigationController?.navigationBar.prefersLargeTitles = true
     }
     
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let yPos: CGFloat = -scrollView.contentOffset.y
+        
+//        if (yPos > 0) {
+//            var imgRect: CGRect = self.imageView.frame
+//            imgRect.origin.y = scrollView.contentOffset.y
+//            imgRect.size.height = kHeaderHeight+yPos
+//            self.imageView.frame = imgRect
+//        }
+        
+    }
     
     // MARK: Image Collection View
     
@@ -157,9 +170,10 @@ class PinDetailViewController: UIViewController, UICollectionViewDataSource, UIC
             
             let zoomInView = UIImageView(frame: startFrame!)
             zoomInView.image = imageView.image
+            zoomInView.contentMode = .scaleAspectFill
             zoomInView.isUserInteractionEnabled = true
             zoomInView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(zoomOut)))
-
+            
             if let keyWindow = UIApplication.shared.keyWindow {
                 blackBackground = UIView(frame: keyWindow.frame)
                 blackBackground!.backgroundColor = UIColor.black
@@ -167,7 +181,7 @@ class PinDetailViewController: UIViewController, UICollectionViewDataSource, UIC
                 
                 keyWindow.addSubview(blackBackground!)
                 keyWindow.addSubview(zoomInView)
-            
+                
                 //animate image to fill the screen with black background
                 UIView.animate(withDuration: 0.4, delay: 0, options: .curveEaseOut, animations: {
                     self.blackBackground!.alpha = 1
