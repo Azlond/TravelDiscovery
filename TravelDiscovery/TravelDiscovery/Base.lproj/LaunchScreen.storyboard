@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
-    <device id="retina4_0" orientation="portrait">
+    <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
@@ -9,76 +9,84 @@
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
-    <customFonts key="customFonts">
-        <array key="SnellRoundhand.ttc">
-            <string>SnellRoundhand</string>
-        </array>
-    </customFonts>
     <scenes>
         <!--View Controller-->
         <scene sceneID="EHf-IW-A2E">
             <objects>
                 <viewController id="01J-lp-oVM" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Ze5-6b-2t3">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="background" translatesAutoresizingMaskIntoConstraints="NO" id="ep2-qB-jq8">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bg2" translatesAutoresizingMaskIntoConstraints="NO" id="ep2-qB-jq8">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                             </imageView>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tdc-UF-4AW">
-                                <rect key="frame" x="16" y="88" width="213" height="116"/>
-                                <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Travel" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AIG-pE-Vn2">
-                                        <rect key="frame" x="8" y="8" width="155" height="45"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="45" id="ybH-f1-Ouz"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" name="SnellRoundhand" family="Snell Roundhand" pointSize="45"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Discovery" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iAW-xp-Q0z">
-                                        <rect key="frame" x="35" y="56" width="170" height="51"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="51" id="bRv-UK-PtT"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" name="SnellRoundhand" family="Snell Roundhand" pointSize="45"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                </subviews>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="08J-Y7-mwn">
+                                <rect key="frame" x="27" y="444" width="321" height="43.5"/>
                                 <constraints>
-                                    <constraint firstItem="iAW-xp-Q0z" firstAttribute="top" secondItem="AIG-pE-Vn2" secondAttribute="bottom" constant="3" id="9qd-tA-vhK"/>
-                                    <constraint firstItem="iAW-xp-Q0z" firstAttribute="leading" secondItem="tdc-UF-4AW" secondAttribute="leading" constant="35" id="CoI-F9-8Nz"/>
-                                    <constraint firstAttribute="height" constant="116" id="L1v-OJ-9PS"/>
-                                    <constraint firstItem="AIG-pE-Vn2" firstAttribute="top" secondItem="tdc-UF-4AW" secondAttribute="top" constant="8" id="epG-zg-CAp"/>
-                                    <constraint firstAttribute="width" constant="213" id="gSW-kM-Kql"/>
-                                    <constraint firstAttribute="trailing" secondItem="iAW-xp-Q0z" secondAttribute="trailing" constant="8" id="gmL-fN-gij"/>
-                                    <constraint firstItem="AIG-pE-Vn2" firstAttribute="leading" secondItem="tdc-UF-4AW" secondAttribute="leading" constant="8" id="p6l-dc-Vtr"/>
-                                    <constraint firstAttribute="trailing" secondItem="AIG-pE-Vn2" secondAttribute="trailing" constant="50" id="zJ4-iU-sma"/>
+                                    <constraint firstAttribute="height" constant="43.5" id="uls-lR-IDR"/>
                                 </constraints>
-                            </view>
+                                <attributedString key="attributedText">
+                                    <fragment content="UNCOVERED">
+                                        <attributes>
+                                            <color key="NSColor" red="1" green="1" blue="1" alpha="0.9121628852739726" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <font key="NSFont" size="37" name="Skia-Regular"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="truncatingTail" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                        </attributes>
+                                    </fragment>
+                                </attributedString>
+                                <nil key="highlightedColor"/>
+                                <size key="shadowOffset" width="0.0" height="-2"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="rbE-Rs-nt6">
+                                <rect key="frame" x="27" y="485" width="321" height="45"/>
+                                <attributedString key="attributedText">
+                                    <fragment content="been there. done that.">
+                                        <attributes>
+                                            <color key="NSColor" red="1" green="1" blue="1" alpha="0.7129441352739726" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <font key="NSFont" size="28" name="Noteworthy-Light"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="truncatingTail" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                        </attributes>
+                                    </fragment>
+                                </attributedString>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView opaque="NO" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="NNL-Z2-cX6">
+                                <rect key="frame" x="87.5" y="233.5" width="200" height="200"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="200" id="24V-PM-K7s"/>
+                                    <constraint firstAttribute="width" constant="200" id="3Fi-7m-mlq"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="tdc-UF-4AW" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="PEx-4d-gCc"/>
+                            <constraint firstItem="08J-Y7-mwn" firstAttribute="centerY" secondItem="ep2-qB-jq8" secondAttribute="centerY" constant="132" id="05T-UI-sw5"/>
+                            <constraint firstItem="08J-Y7-mwn" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="27" id="FGk-uH-Wl0"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="ep2-qB-jq8" secondAttribute="trailing" id="Fh5-dh-PbS"/>
+                            <constraint firstItem="rbE-Rs-nt6" firstAttribute="top" secondItem="08J-Y7-mwn" secondAttribute="bottom" constant="-2.5" id="GJi-y6-GCV"/>
+                            <constraint firstItem="rbE-Rs-nt6" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="27" id="LIi-70-z9s"/>
                             <constraint firstItem="ep2-qB-jq8" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="f9G-6P-e3S"/>
                             <constraint firstItem="ep2-qB-jq8" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="m7r-UD-v1j"/>
+                            <constraint firstItem="NNL-Z2-cX6" firstAttribute="centerY" secondItem="6Tk-OE-BBY" secondAttribute="centerY" constant="-10" id="mVO-jS-J8v"/>
+                            <constraint firstItem="NNL-Z2-cX6" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="nxF-qW-bwz"/>
                             <constraint firstItem="ep2-qB-jq8" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="oIs-Ch-ZQJ"/>
-                            <constraint firstItem="tdc-UF-4AW" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="68" id="oPo-P2-RlK" userLabel="View.top = Safe Area.top + 70"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="ep2-qB-jq8" secondAttribute="bottom" id="oUd-G4-jvc"/>
                             <constraint firstItem="ep2-qB-jq8" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="r6K-TH-L0N"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="08J-Y7-mwn" secondAttribute="trailing" constant="27" id="rFe-co-Bcr"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="rbE-Rs-nt6" secondAttribute="trailing" constant="27" id="zK5-iE-llW"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="50.625" y="373.94366197183098"/>
+            <point key="canvasLocation" x="50.399999999999999" y="373.76311844077964"/>
         </scene>
     </scenes>
     <resources>
-        <image name="background" width="1824" height="2736"/>
+        <image name="bg2" width="438" height="640"/>
+        <image name="logo" width="340" height="340"/>
     </resources>
+    <color key="tintColor" red="0.21960784310000001" green="0.63921568630000003" blue="0.66274509800000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
 </document>

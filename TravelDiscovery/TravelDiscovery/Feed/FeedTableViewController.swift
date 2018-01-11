@@ -16,15 +16,9 @@ class FeedTableViewController: UITableViewController {
         //include Nib in TableView
         let nib = UINib.init(nibName: "PinTableViewCell", bundle: nil)
         self.tableView.register(nib, forCellReuseIdentifier: "PinTableViewCell")
-//
+
         self.tableView.estimatedRowHeight = 320
         self.tableView.rowHeight = UITableViewAutomaticDimension
-        
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
         
         self.refreshControl?.addTarget(self, action: #selector(self.handleRefresh), for: UIControlEvents.valueChanged)
         NotificationCenter.default.addObserver(
@@ -118,7 +112,7 @@ class FeedTableViewController: UITableViewController {
         if ((pin.imageURLs?.count ?? 0) > 0) {
             cell.imgView.image = nil
             cell.imgView.setRandomBackgroundColor()
-            cell.imgView.loadImageUsingCache(withUrl: pin.imageURLs![0]) //Int(arc4random_uniform(UInt32(pin.imageURLs!.count)))])
+            cell.imgView.loadImageUsingCache(withUrl: pin.imageURLs![0])
         } else {
             cell.imgView.image = nil
             cell.imgView.setRandomBackgroundColor()

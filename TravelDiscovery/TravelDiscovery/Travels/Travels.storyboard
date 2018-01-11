@@ -227,4 +227,5 @@
     <resources>
         <image name="travelIcon" width="32" height="32"/>
     </resources>
+    <color key="tintColor" red="0.21960784310000001" green="0.63921568630000003" blue="0.66274509800000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
 </document>

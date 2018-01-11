@@ -5,16 +5,17 @@
 //  Created by admin on 03.01.18.
 //  Copyright © 2018 Jan. All rights reserved.
 //
-
 import UIKit
 import AVKit
+import CoreLocation
+import SwiftLocation
 
-class PinDetailViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UIScrollViewDelegate {
+class PinDetailViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
-    @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var usernameLabel: UILabel!
     @IBOutlet weak var primaryImageView: UIImageView!
     @IBOutlet weak var pinNameLabel: UILabel!
+    @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var textView: UITextView!
     @IBOutlet weak var imagesCV: UICollectionView!
     @IBOutlet weak var videoDisplay: UIImageView!
@@ -32,6 +33,7 @@ class PinDetailViewController: UIViewController, UICollectionViewDataSource, UIC
     
     var showStatusBar = true
     var pin: Pin!
+    
     let playButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -46,11 +48,18 @@ class PinDetailViewController: UIViewController, UICollectionViewDataSource, UIC
         return aiv
     }()
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        //set location as title
+        setTitleFromLocationOfPin(pin: pin)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.title = pin.date
         usernameLabel.text = "by " + pin.username
+        dateLabel.text = "- " + pin.date
         pinNameLabel.text = pin.name
         
         textView.text = ""
@@ -79,9 +88,8 @@ class PinDetailViewController: UIViewController, UICollectionViewDataSource, UIC
         imagesCV.dataSource = self
         imagesCV.delegate = self
         imagesCV.reloadData()
-        
-        scrollView.delegate = self
-        
+                
+        //navigationBar design
         self.navigationController?.navigationBar.prefersLargeTitles = false
     }
     
@@ -91,21 +99,25 @@ class PinDetailViewController: UIViewController, UICollectionViewDataSource, UIC
         // Dispose of any resources that can be recreated.
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        self.navigationController?.navigationBar.prefersLargeTitles = true
-    }
     
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let yPos: CGFloat = -scrollView.contentOffset.y
+    func setTitleFromLocationOfPin(pin: Pin) {
+        let geoCoder = CLGeocoder()
+        let location: CLLocation = CLLocation.init(latitude: pin.latitude, longitude: pin.longitude)
         
-//        if (yPos > 0) {
-//            var imgRect: CGRect = self.imageView.frame
-//            imgRect.origin.y = scrollView.contentOffset.y
-//            imgRect.size.height = kHeaderHeight+yPos
-//            self.imageView.frame = imgRect
-//        }
-        
+        geoCoder.reverseGeocodeLocation(location, completionHandler: { placemarks, error in
+            if let placemark = placemarks?[0]  {
+                // get city name from placemark and set title
+                if let city = placemark.locality {
+                    //let region = placemark.administrativeArea //Staat
+                    if let area = placemark.subLocality { // Stadtviertel
+                        self.title = area
+                    }
+                    else {
+                        self.title = city
+                    }
+                }
+            }
+        })
     }
     
     // MARK: Image Collection View

@@ -14,7 +14,9 @@
         <scene sceneID="ysc-fA-0HS">
             <objects>
                 <navigationController storyboardIdentifier="SettingsVC" id="gRz-vc-MOe" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Settings" image="settingsIcon" id="8qS-62-jiY"/>
+                    <tabBarItem key="tabBarItem" title="Settings" image="settingsIcon" id="8qS-62-jiY">
+                        <inset key="largeContentSizeImageInsets" minX="0.0" minY="1" maxX="0.0" maxY="0.0"/>
+                    </tabBarItem>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="ThZ-6F-ugI">
                         <rect key="frame" x="0.0" y="20" width="320" height="44"/>
@@ -90,4 +92,5 @@
     <resources>
         <image name="settingsIcon" width="32" height="32"/>
     </resources>
+    <color key="tintColor" red="0.21960784310000001" green="0.63921568630000003" blue="0.66274509800000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
 </document>
