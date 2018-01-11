@@ -60,6 +60,11 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
             selector: #selector(displayPinsOnMap),
             name:Notification.Name("updatePins"),
             object: nil)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(showUploadErrorAlert),
+            name:Notification.Name("uploadError"),
+            object: nil)
         
         FirebaseController.retrieveTravelsFromFirebase()
         
@@ -271,6 +276,13 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    @objc func showUploadErrorAlert(_ notification: NSNotification) {
+        let type = notification.userInfo?["type"] as? String
+        let alert = UIAlertController(title: "Uploading Error", message: "An error occurred during " + type! + " upload", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        self.present(alert, animated: true, completion: nil)
     }
     
     /*

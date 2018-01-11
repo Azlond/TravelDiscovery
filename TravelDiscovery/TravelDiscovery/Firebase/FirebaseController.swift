@@ -206,14 +206,14 @@ class FirebaseController {
                             
                             if let uploadData = UIImageJPEGRepresentation(image, 1) {
                                 // upload image
-                                //TODO: start spinning animation
                                 storageRef.putData(uploadData, metadata:nil, completion: {
                                     (metadata, error) in
                                     if error != nil {
                                         print(error!)
                                         self.uploadingImages = false
+                                        //notify of error
+                                        NotificationCenter.default.post(name: Notification.Name("uploadError"), object: nil, userInfo: ["type":"image"])
                                         return
-                                        //TODO fehlermanagement uploading error
                                     }
                                     
                                     //UPLOAD SUCCESS
@@ -245,8 +245,10 @@ class FirebaseController {
                             if error != nil {
                                 print(error!)
                                 self.uploadingVideo = false
+                                //alert uploading error
+                                NotificationCenter.default.post(name: Notification.Name("uploadError"), object: nil, userInfo: ["type":"video"])
                                 return
-                                //TODO fehlermanagement uploading error
+                                
                             }
                             //UPLOAD SUCCESS
                             //retrieve URL of uploaded video
@@ -267,6 +269,7 @@ class FirebaseController {
                                 if error != nil {
                                     print("Error Uploading: ",error!)
                                     self.uploadingVideoThumbnail = false
+                                    NotificationCenter.default.post(name: Notification.Name("uploadError"), object: nil, userInfo: ["type":"video thumbnail"])
                                     return
                                 }
                                 //UPLOAD SUCCESS
