@@ -126,7 +126,33 @@ class Pin {
     }
     
     
-    
-    
-    
+    func saveImageToDocuments(withUrl urlString : String) {
+        let url = URL(string: urlString)
+        // check cached image
+        if (FirebaseData.imageCache.object(forKey: url!.lastPathComponent as NSString) as? UIImage) != nil {
+            return
+        }
+        
+        // if not, download image from url
+        URLSession.shared.dataTask(with: url!, completionHandler: { (data, response, error) in
+            if error != nil {
+                print(error!)
+                return
+            }
+            if let image = UIImage(data: data!) {
+                if let data = UIImageJPEGRepresentation(image, 0.8) {
+                    let fileManager = FileManager.default
+                    do {
+                        let documentDirectory = try fileManager.url(for: .documentDirectory, in: .userDomainMask, appropriateFor:nil, create:false)
+                        let fileURL = documentDirectory.appendingPathComponent(url!.lastPathComponent)
+                        try data.write(to: fileURL)
+                    } catch {
+                        print(error)
+                    }
+                    
+                }
+                FirebaseData.imageCache.setObject(image, forKey: url!.lastPathComponent as NSString)
+            }
+        }).resume()
+    }
 }

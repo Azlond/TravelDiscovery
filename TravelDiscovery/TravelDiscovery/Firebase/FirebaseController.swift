@@ -83,6 +83,8 @@ class FirebaseController {
                 FirebaseData.locationData.removeAll()
                 FirebaseData.locationData = lD
             })
+            
+           retrievePublicPinsFromFirebase()
         }
     }
     
@@ -368,13 +370,16 @@ class FirebaseController {
                 }
                 
                 do {
-                    //create json object from data
+                    //create json object from data, preload images
                     if let json = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? [String: Any] {
                         var pinsArray = [Pin]()
                         for element in json {
                             let value = element.value as! Dictionary<String, Any>
                             let pin = Pin.init(dict: value)
                             pinsArray.append(pin!)
+                            if ((pin!.imageURLs?.count ?? 0) > 0) {
+                                pin!.saveImageToDocuments(withUrl: pin!.imageURLs![0])
+                            }
                         }
                         FirebaseData.publicPins = pinsArray
                         DispatchQueue.main.async {
@@ -455,5 +460,23 @@ class FirebaseController {
             }
             FirebaseData.ref.child("users").child(user.uid).child("travels").child(travelid).removeValue()
         }
+    }
+    
+    public static func populateCache() {
+        let fileManager = FileManager.default
+        let documentsURL = fileManager.urls(for: .documentDirectory, in: .userDomainMask)[0]
+        do {
+            let fileURLs = try fileManager.contentsOfDirectory(at: documentsURL, includingPropertiesForKeys: nil)
+            for fileName in fileURLs {
+                guard let data = try? Data(contentsOf: fileName) else {
+                   continue
+                }
+                FirebaseData.imageCache.setObject(UIImage(data: data)!, forKey: fileName.lastPathComponent as NSString)
+                
+            }
+        } catch {
+            print("Error while enumerating files \(documentsURL.path): \(error.localizedDescription)")
+        }
+        
     }
 }

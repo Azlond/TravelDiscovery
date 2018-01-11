@@ -20,7 +20,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         FirebaseApp.configure()
         Database.database().isPersistenceEnabled = true
-        
+        UIApplication.shared.isStatusBarHidden = false
+        FirebaseController.populateCache()
         let userSettings = UserDefaults.standard
         let enableBackgroundLocationUpdates = userSettings.bool(forKey: "backgroundLocationUpdates")
         if (enableBackgroundLocationUpdates) {

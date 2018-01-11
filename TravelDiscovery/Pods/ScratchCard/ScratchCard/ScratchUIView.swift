@@ -37,19 +37,18 @@ open class ScratchUIView: UIView, ScratchViewDelegate {
         let viewSize = scratchView.getContentLayer().bounds
         let screenWidth = Int(viewSize.width)
         let screenHeight = Int(viewSize.height)
-        var xyArray = [(Int,Int)]()
+        var xyArray = [(Double,Double)]()
         
         let lineWidth: CGFloat!
-        lineWidth = 20
+        lineWidth = scratchView.getScratchWidth() / 2
         
         scratchView.overrideLineWidth(lineWidth: lineWidth)
         
-        for x in 0 ..< (screenWidth / Int(lineWidth)) + 1  {
-            for y in 0 ..< (screenHeight / Int(lineWidth)) + 1 {
-                xyArray.append((x * Int(lineWidth), y * Int(lineWidth)))
+        for x in 0 ..< (screenWidth / Int(lineWidth)) + 2  {
+            for y in 0 ..< (screenHeight / Int(lineWidth)) + 2 {
+                xyArray.append(((Double(x)-0.5) * Double(lineWidth), (Double(y)-0.5) * Double(lineWidth)))
             }
         }
-                    
         for index in 0 ..< xyArray.count {
             if self.interrupted {
                 return
