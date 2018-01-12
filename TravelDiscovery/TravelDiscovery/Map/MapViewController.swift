@@ -185,6 +185,22 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
         }
     }
     
+    func mapView(_ mapView: MGLMapView, annotation: MGLAnnotation, calloutAccessoryControlTapped control: UIControl) {
+        for travelEntry in FirebaseData.travels {
+            let travel = travelEntry.value            
+            for pinEntry in travel.pins{
+                let pin = pinEntry.value
+                if (annotation.coordinate.latitude == pin.latitude && annotation.coordinate.longitude == pin.longitude && annotation.title!! == pin.name) {
+                    let storyBoard = UIStoryboard(name: "PinDetailView", bundle: nil)
+                    let pinDetailVC = storyBoard.instantiateViewController(withIdentifier: "PinDetail") as! PinDetailViewController
+                    pinDetailVC.pin = pin
+                    navigationController?.pushViewController(pinDetailVC, animated: true)
+                    return
+                }
+            }
+        }
+    }
+    
     /*
      * creates markers / pins for the map with colors according to longitude
      */
