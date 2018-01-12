@@ -112,7 +112,7 @@ class FeedTableViewController: UITableViewController {
         if ((pin.imageURLs?.count ?? 0) > 0) {
             cell.imgView.image = nil
             cell.imgView.setRandomBackgroundColor()
-            cell.imgView.loadImageUsingCache(withUrl: pin.imageURLs![0])
+            cell.imgView.loadImageUsingCache(withUrl: pin.imageURLs![0], tableview: tableView, indexPath: indexPath)
         } else {
             cell.imgView.image = nil
             cell.imgView.setRandomBackgroundColor()

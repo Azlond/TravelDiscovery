@@ -144,6 +144,50 @@ extension NSMutableAttributedString {
 }
 /*extension for downloading, caching and resizing images*/
 extension UIImageView {
+    func loadImageUsingCache(withUrl urlString : String, tableview: UITableView, indexPath: IndexPath) {
+        let url = URL(string: urlString)
+        
+        //reset image
+        self.image = nil
+        self.setRandomBackgroundColor()
+        
+        // check cached image
+        if let cachedImage = FirebaseData.imageCache.object(forKey: url!.lastPathComponent as NSString) as? UIImage {
+            if let visibleCellIndices = tableview.indexPathsForVisibleRows {
+                if (!visibleCellIndices.contains(indexPath)) {
+                    return
+                }
+            } else {
+                return
+            }
+            self.image = cachedImage
+            return
+        }
+        
+        // if not, download image from url
+        URLSession.shared.dataTask(with: url!, completionHandler: { (data, response, error) in
+            if error != nil {
+                print(error!)
+                return
+            }
+            
+            DispatchQueue.main.async {
+                if let image = UIImage(data: data!) {
+                    FirebaseData.imageCache.setObject(image, forKey: url!.lastPathComponent as NSString)
+                    if let visibleCellIndices = tableview.indexPathsForVisibleRows {
+                        if (!visibleCellIndices.contains(indexPath)) {
+                            return
+                        }
+                    } else {
+                        return
+                    }
+                    self.image = image //self.resizeImage(image: image)
+                }
+            }
+            
+        }).resume()
+    }
+    
     func loadImageUsingCache(withUrl urlString : String) {
         let url = URL(string: urlString)
         
