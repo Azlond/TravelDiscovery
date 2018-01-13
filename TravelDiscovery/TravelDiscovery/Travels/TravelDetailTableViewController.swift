@@ -15,9 +15,6 @@ class TravelDetailTableViewController: UITableViewController {
     var datePickerHidden = true
     var rowTag : Int = 0
     
-    var dateStyle = DateFormatter.Style.long
-    var timeStyle = DateFormatter.Style.none
-
     @IBOutlet var infoTableView: UITableView!
     
     //@IBOutlet weak var beginDataLabel: UILabel!
@@ -38,8 +35,8 @@ class TravelDetailTableViewController: UITableViewController {
         self.title = FirebaseData.travels[self.travelId]?.name
         
         let dateFormatter = DateFormatter()
-        dateFormatter.dateStyle = self.dateStyle
-        dateFormatter.timeStyle = self.timeStyle
+        dateFormatter.dateStyle = Travel.dateStyle
+        dateFormatter.timeStyle = Travel.timeStyle
         let begin = FirebaseData.travels[self.travelId]?.begin
         let convertedBeginDate = dateFormatter.date(from: begin!)
         if (convertedBeginDate != nil) {
@@ -184,10 +181,10 @@ class TravelDetailTableViewController: UITableViewController {
     
     func datePickerChanged () {
         if rowTag == 0 {
-            beginDateLabel.text = DateFormatter.localizedString(from: datePicker.date, dateStyle: self.dateStyle, timeStyle: self.timeStyle)
+            beginDateLabel.text = DateFormatter.localizedString(from: datePicker.date, dateStyle: Travel.dateStyle, timeStyle: Travel.timeStyle)
             FirebaseData.travels[self.travelId]!.begin = beginDateLabel.text
         } else if rowTag == 1 {
-            endDateLabel.text = DateFormatter.localizedString(from: datePicker.date, dateStyle: self.dateStyle, timeStyle: self.timeStyle)
+            endDateLabel.text = DateFormatter.localizedString(from: datePicker.date, dateStyle: Travel.dateStyle, timeStyle: Travel.timeStyle)
             FirebaseData.travels[self.travelId]!.end = endDateLabel.text
         }
         FirebaseController.saveTravelsToFirebase()

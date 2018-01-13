@@ -13,6 +13,7 @@ class TravelsTableViewController: UITableViewController {
    // @IBOutlet var travelsTableView: UITableView!
     
     
+    @IBOutlet weak var addButton: UIBarButtonItem!
     
     //var detailVC = TravelDetailTableViewController()
     
@@ -34,6 +35,7 @@ class TravelsTableViewController: UITableViewController {
         tableView.reloadData()
         
         handleRefresh()
+        self.updateAddButton()
     }
 
     /**
@@ -133,42 +135,58 @@ class TravelsTableViewController: UITableViewController {
         let row = indexPath.row
         let k = Array(FirebaseData.travels.keys)[row]
         let name = FirebaseData.travels[k]!.name
-        print(name)
     }
 
     
     // MAR: Add New Countries
     
     @IBAction func addButtonPressed() {
-        
+        if (FirebaseData.getActiveTravel() == nil) {
+            // no active travel => adding a new travel and switch button
+            self.addNewTravel()
+            self.addButton.title = "End Travel"
+        }
+        else {
+            // there is an active travel => end the current travel and switch button
+            FirebaseData.getActiveTravel()?.endTrip()
+            FirebaseController.saveTravelsToFirebase()
+            self.addButton.title = "New Travel"
+        }
+        self.reloadInputViews()
+    }
+    
+    func updateAddButton() {
+        if (FirebaseData.getActiveTravel() == nil) {
+            self.addButton.title = "New Travel"
+        }
+        else {
+            self.addButton.title = "End Travel"
+        }
+    }
+    
+    func addNewTravel() {
         var textField = UITextField()
-        
-        let alert = UIAlertController(title: "Add New Travels", message: "", preferredStyle: .alert)
-        
+        let alert = UIAlertController(title: "Add New Travel", message: "", preferredStyle: .alert)
         let action = UIAlertAction(title: "Add", style: .default) { (action) in
             
             let id = "Travel_" + UUID().uuidString
             let name = textField.text!
             if name.isEmpty {} else {
                 let travel : Travel = Travel.init(id: id, name: name)!
-                travel.begin = DateFormatter.localizedString(from: Date(), dateStyle: .long, timeStyle: .none)
+                travel.begin = DateFormatter.localizedString(from: Date(), dateStyle: Travel.dateStyle, timeStyle: Travel.timeStyle)
                 // save travel to firebase
                 FirebaseData.travels[travel.id] = travel
                 FirebaseController.saveTravelsToFirebase()
             }
-            
-            self.tableView.reloadData()
         }
         
         alert.addTextField { (alertTextField) in
             alertTextField.placeholder = "Create new travel"
             textField = alertTextField
-            
         }
         
         alert.addAction(action)
         present(alert, animated: true, completion: nil)
-        
     }
  
     

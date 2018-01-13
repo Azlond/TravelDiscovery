@@ -10,6 +10,8 @@ import Foundation
 import UIKit
 
 class Travel {
+    public static var dateStyle = DateFormatter.Style.long
+    public static var timeStyle = DateFormatter.Style.none
     
     //MARK: Properties
     
@@ -66,6 +68,9 @@ class Travel {
     
     func endTrip(){
         self.active = false
+        if (self.end == "") {
+            self.end = DateFormatter.localizedString(from: Date(), dateStyle: Travel.dateStyle, timeStyle: Travel.timeStyle)
+        }
     }
     
     
@@ -80,6 +85,5 @@ class Travel {
         
         return dict
     }
-    
     
 }
