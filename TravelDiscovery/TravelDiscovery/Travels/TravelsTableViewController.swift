@@ -83,7 +83,8 @@ class TravelsTableViewController: UITableViewController {
         cell.travelImageView.setRadius(borderWidth: (travel!.active ? 3 : 0))
         //  cell.travelImageView.layoutSubviews()
         cell.travelNameLabel.text = travel!.name
-        cell.travelDateLabel.text = travel!.begin! + "    " + travel!.end!
+        cell.travelBeginDateLabel.text = travel!.begin! + "  " + travel!.end!
+       
        
         // set images
         cell.travelImageView.image = UIImage(named: "default2")

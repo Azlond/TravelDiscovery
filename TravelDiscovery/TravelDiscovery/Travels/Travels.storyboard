@@ -61,8 +61,8 @@
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Date" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nG4-As-dTM">
-                                            <rect key="frame" x="104" y="45" width="110" height="15"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nG4-As-dTM">
+                                            <rect key="frame" x="104" y="45" width="255" height="15"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
@@ -76,12 +76,6 @@
                                                 <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="63" id="s9X-ep-c4a"/>
                                             </constraints>
                                         </imageView>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Date" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VuG-Nr-NTE">
-                                            <rect key="frame" x="249" y="45" width="110" height="15"/>
-                                            <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
-                                            <nil key="textColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
                                     </subviews>
                                     <constraints>
                                         <constraint firstItem="nG4-As-dTM" firstAttribute="leading" secondItem="wYd-Fr-hnz" secondAttribute="trailing" constant="25" id="22N-w6-V0B"/>
@@ -89,12 +83,8 @@
                                         <constraint firstItem="wYd-Fr-hnz" firstAttribute="leading" secondItem="EVQ-lp-IzA" secondAttribute="leadingMargin" id="H3w-Ry-K2k"/>
                                         <constraint firstItem="nG4-As-dTM" firstAttribute="leading" secondItem="wYd-Fr-hnz" secondAttribute="trailing" constant="25" id="HUR-Ns-k7c"/>
                                         <constraint firstItem="nG4-As-dTM" firstAttribute="top" secondItem="mcA-BE-mqB" secondAttribute="bottom" constant="9" id="NhL-9G-iYl"/>
-                                        <constraint firstAttribute="bottomMargin" secondItem="VuG-Nr-NTE" secondAttribute="bottom" constant="14" id="RzY-Do-gJz"/>
                                         <constraint firstItem="nG4-As-dTM" firstAttribute="leading" secondItem="EVQ-lp-IzA" secondAttribute="leadingMargin" constant="88" id="cgQ-6h-ET5"/>
                                         <constraint firstItem="wYd-Fr-hnz" firstAttribute="bottom" secondItem="EVQ-lp-IzA" secondAttribute="bottomMargin" id="fAc-3w-e9R"/>
-                                        <constraint firstItem="VuG-Nr-NTE" firstAttribute="leading" secondItem="nG4-As-dTM" secondAttribute="trailing" constant="35" id="hac-2w-u3l"/>
-                                        <constraint firstItem="VuG-Nr-NTE" firstAttribute="leading" secondItem="nG4-As-dTM" secondAttribute="trailing" constant="35" id="hhN-fZ-aGE"/>
-                                        <constraint firstItem="VuG-Nr-NTE" firstAttribute="trailing" secondItem="EVQ-lp-IzA" secondAttribute="trailingMargin" id="ist-Db-QGC"/>
                                         <constraint firstItem="nG4-As-dTM" firstAttribute="top" secondItem="mcA-BE-mqB" secondAttribute="bottom" constant="9" id="mCl-8f-2BX"/>
                                         <constraint firstItem="nG4-As-dTM" firstAttribute="trailing" secondItem="EVQ-lp-IzA" secondAttribute="trailingMargin" id="oqy-62-CNV"/>
                                         <constraint firstItem="mcA-BE-mqB" firstAttribute="trailing" secondItem="EVQ-lp-IzA" secondAttribute="trailingMargin" id="rOr-Vp-SY3"/>
@@ -104,7 +94,7 @@
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <outlet property="travelDateLabel" destination="nG4-As-dTM" id="5xY-kA-n3o"/>
+                                    <outlet property="travelBeginDateLabel" destination="nG4-As-dTM" id="zkN-QU-aT5"/>
                                     <outlet property="travelImageView" destination="wYd-Fr-hnz" id="SEG-vZ-oiy"/>
                                     <outlet property="travelNameLabel" destination="mcA-BE-mqB" id="ulS-im-afA"/>
                                     <segue destination="pHF-Io-7Gs" kind="show" identifier="sequeTravelDetail" id="wpS-6L-0GH"/>
