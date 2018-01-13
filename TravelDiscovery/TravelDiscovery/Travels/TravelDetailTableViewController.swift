@@ -35,13 +35,13 @@ class TravelDetailTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.title = FirebaseData.travels[self.travelId]?.name
+        
         let dateFormatter = DateFormatter()
         dateFormatter.dateStyle = self.dateStyle
         dateFormatter.timeStyle = self.timeStyle
         let begin = FirebaseData.travels[self.travelId]?.begin
         let convertedBeginDate = dateFormatter.date(from: begin!)
-        print(begin)
-        print(convertedBeginDate)
         if (convertedBeginDate != nil) {
             datePicker.setDate(convertedBeginDate!, animated: false)
             self.rowTag = 0 // damit Begin Date geändert wird
@@ -49,8 +49,6 @@ class TravelDetailTableViewController: UITableViewController {
         }
         let end   = FirebaseData.travels[self.travelId]?.end
         let convertedEndDate = dateFormatter.date(from: end!)
-        print(end)
-        print(convertedEndDate)
         if (convertedEndDate != nil) {
             datePicker.setDate(convertedEndDate!, animated: false)
             self.rowTag = 1 // damit End Date geändert wird

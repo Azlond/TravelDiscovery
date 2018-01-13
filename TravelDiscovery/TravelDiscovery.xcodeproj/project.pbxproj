@@ -207,11 +207,11 @@
 		3D7830ED1FC8E99A00305D1D /* Travels */ = {
 			isa = PBXGroup;
 			children = (
-				CE13B70E200A339200D89AA5 /* TravelsTableViewCell.swift */,
 				3D7830FE1FC8EC5B00305D1D /* TravelsTableViewController.swift */,
 				CED716991FED660D0039C0A0 /* TravelsDateViewController.swift */,
 				CE4356031FE9912B009E560C /* TravelDetailTableViewController.swift */,
 				3D7830F21FC8E9FD00305D1D /* Travels.storyboard */,
+				CE13B70E200A339200D89AA5 /* TravelsTableViewCell.swift */,
 			);
 			path = Travels;
 			sourceTree = "<group>";
