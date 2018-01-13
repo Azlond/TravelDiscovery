@@ -44,9 +44,9 @@
 		C26B89F81FDB236F00549D7D /* FirebaseData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C26B89F71FDB236F00549D7D /* FirebaseData.swift */; };
 		C26B89FB1FDB259900549D7D /* FirebaseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C26B89FA1FDB259900549D7D /* FirebaseController.swift */; };
 		C276B8151FFEE95700F981DF /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C276B8141FFEE95700F981DF /* Extensions.swift */; };
-		CE13B70F200A339300D89AA5 /* TravelsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE13B70E200A339200D89AA5 /* TravelsTableViewCell.swift */; };
 		CE13B711200A5D0600D89AA5 /* TravelPinsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE13B710200A5D0600D89AA5 /* TravelPinsTableViewController.swift */; };
 		CE4356041FE9912B009E560C /* TravelDetailTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4356031FE9912B009E560C /* TravelDetailTableViewController.swift */; };
+		CE89CA28200AA041006FC32D /* TravelsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE89CA27200AA041006FC32D /* TravelsTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -104,9 +104,9 @@
 		C26B89F71FDB236F00549D7D /* FirebaseData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseData.swift; sourceTree = "<group>"; };
 		C26B89FA1FDB259900549D7D /* FirebaseController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseController.swift; sourceTree = "<group>"; };
 		C276B8141FFEE95700F981DF /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
-		CE13B70E200A339200D89AA5 /* TravelsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TravelsTableViewCell.swift; path = "../../../../../Downloads/TravelDiscovery-master 5/TravelDiscovery/TravelDiscovery/Travels/TravelsTableViewCell.swift"; sourceTree = "<group>"; };
 		CE13B710200A5D0600D89AA5 /* TravelPinsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TravelPinsTableViewController.swift; sourceTree = "<group>"; };
 		CE4356031FE9912B009E560C /* TravelDetailTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TravelDetailTableViewController.swift; sourceTree = "<group>"; };
+		CE89CA27200AA041006FC32D /* TravelsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TravelsTableViewCell.swift; sourceTree = "<group>"; };
 		F68A9D7ED9532E30AFC203B8 /* Pods_TravelDiscoveryTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TravelDiscoveryTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FC9C25524CA74ED489C2405E /* Pods-TravelDiscovery.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TravelDiscovery.release.xcconfig"; path = "Pods/Target Support Files/Pods-TravelDiscovery/Pods-TravelDiscovery.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -207,10 +207,10 @@
 		3D7830ED1FC8E99A00305D1D /* Travels */ = {
 			isa = PBXGroup;
 			children = (
+				CE89CA27200AA041006FC32D /* TravelsTableViewCell.swift */,
 				3D7830FE1FC8EC5B00305D1D /* TravelsTableViewController.swift */,
 				CE4356031FE9912B009E560C /* TravelDetailTableViewController.swift */,
 				3D7830F21FC8E9FD00305D1D /* Travels.storyboard */,
-				CE13B70E200A339200D89AA5 /* TravelsTableViewCell.swift */,
 				CE13B710200A5D0600D89AA5 /* TravelPinsTableViewController.swift */,
 			);
 			path = Travels;
@@ -574,10 +574,10 @@
 				845157431FE161A400691E4E /* PinViewController.swift in Sources */,
 				C2170F9C200050F50030DA4B /* CreditsViewController.swift in Sources */,
 				C255EDAC1FEC46C000BBDF69 /* FeedTableViewCell.swift in Sources */,
-				CE13B70F200A339300D89AA5 /* TravelsTableViewCell.swift in Sources */,
 				845157571FFD3AC600691E4E /* PinDetailViewController.swift in Sources */,
 				C276B8151FFEE95700F981DF /* Extensions.swift in Sources */,
 				3D7830FD1FC8EC1900305D1D /* FeedTableViewController.swift in Sources */,
+				CE89CA28200AA041006FC32D /* TravelsTableViewCell.swift in Sources */,
 				3D7830FF1FC8EC5B00305D1D /* TravelsTableViewController.swift in Sources */,
 				845157511FEFCA9E00691E4E /* CustomAnnotationView.swift in Sources */,
 				8451574D1FEC2EC100691E4E /* PinTableViewCell.swift in Sources */,

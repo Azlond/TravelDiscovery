@@ -94,7 +94,7 @@
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <outlet property="travelBeginDateLabel" destination="nG4-As-dTM" id="zkN-QU-aT5"/>
+                                    <outlet property="travelDateLabel" destination="nG4-As-dTM" id="yqJ-rV-jB9"/>
                                     <outlet property="travelImageView" destination="wYd-Fr-hnz" id="SEG-vZ-oiy"/>
                                     <outlet property="travelNameLabel" destination="mcA-BE-mqB" id="ulS-im-afA"/>
                                     <segue destination="pHF-Io-7Gs" kind="show" identifier="sequeTravelDetail" id="wpS-6L-0GH"/>
