@@ -17,7 +17,7 @@ class TravelsTableViewController: UITableViewController {
     
     //var detailVC = TravelDetailTableViewController()
     
-   
+   var travelId : String = ""
    
     override func viewDidLoad() {
         
@@ -36,6 +36,8 @@ class TravelsTableViewController: UITableViewController {
         
         handleRefresh()
         self.updateAddButton()
+        
+    
     }
 
     /**
@@ -78,14 +80,25 @@ class TravelsTableViewController: UITableViewController {
         //let photos = FirebaseData.pins[pKey]!.photos
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "travelCell2", for: indexPath) as! TravelsTableViewCell
-        cell.travelImageView.setRadius()
+        cell.travelImageView.setRadius(borderWidth: (travel!.active ? 3 : 0))
         //  cell.travelImageView.layoutSubviews()
         cell.travelNameLabel.text = travel!.name
         cell.travelDateLabel.text = travel!.begin! + "    " + travel!.end!
        
         // set images
-         cell.travelImageView.image = UIImage(named: "default2")!
+        cell.travelImageView.image = UIImage(named: "default2")
+        if (travel!.pins.count > 0) {
+            let pinKey = Array(travel!.pins.keys)[0]
+            let pin = travel!.pins[pinKey]
+            if ((pin!.imageURLs?.count ?? 0) > 0) {
+                cell.travelImageView.loadImageUsingCache(withUrl: pin!.imageURLs![0], tableview: tableView, indexPath: indexPath)
+            }
+        }
+        
+        
+        //cell.travelImageView.image = UIImage(named: "default2")!
 
+        
         /*
         if ((pin.imageURLs?.count ?? 0) > 0) {
             primaryImageView.loadImageUsingCache(withUrl: pin.imageURLs![0])
@@ -256,11 +269,13 @@ class TravelsTableViewController: UITableViewController {
 }
 
 extension UIImageView {
-    func setRadius(radius: CGFloat? = nil) {
+    func setRadius(radius: CGFloat? = nil, borderWidth: CGFloat? = nil) {
         self.layer.cornerRadius = radius ?? self.frame.width / 2;
-        //self.layer.borderWidth = 2;
-       // self.layer.borderColor = UIColor.gray.cgColor
+        self.layer.borderWidth = borderWidth ?? 1;
+        //self.layer.borderColor = UIColor.green.cgColor
+        self.layer.borderColor = UIColor(red: 85/255, green: 170/255, blue: 153/255, alpha: 0.8).cgColor
         self.layer.masksToBounds = true;
+        
     }
 
 }
