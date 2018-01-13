@@ -156,19 +156,9 @@ class TravelDetailTableViewController: UITableViewController {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
         
-        if segue.identifier == "pinDetail" {
-            let cell = sender as! UITableViewCell
-            let indexPath = self.tableView.indexPath(for: cell)
-            let pinDetailView = segue.destination as! PinDetailViewController
-            let row = indexPath!.row
-            let k = Array(FirebaseData.travels.keys)[row]
-            let id = FirebaseData.travels[k]!.id
-            let pinK = FirebaseData.travels[k]!.pins
-            for pinEntry in pinK{
-                pinDetailView.pin = pinEntry.value
-            }
-         
-            
+        if segue.identifier == "sequeTravelPins" {
+            let travelPinsView = segue.destination as! TravelPinsTableViewController
+            travelPinsView.travelId = self.travelId
         }
         
     }
