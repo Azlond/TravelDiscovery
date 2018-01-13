@@ -29,6 +29,9 @@ class TravelDetailTableViewController: UITableViewController {
     
     @IBOutlet weak var datePicker: UIDatePicker!
     
+    @IBOutlet weak var kmLabel: UILabel!
+    @IBOutlet weak var stepsLabel: UILabel!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -53,6 +56,8 @@ class TravelDetailTableViewController: UITableViewController {
             self.rowTag = 1 // damit End Date geändert wird
             datePickerChanged()
         }
+        
+        
         
        // infoTableView.estimatedRowHeight = 44.0
      //   infoTableView.rowHeight = UITableViewAutomaticDimension
@@ -151,6 +156,29 @@ class TravelDetailTableViewController: UITableViewController {
         // Pass the selected object to the new view controller.
     }
     */
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Get the new view controller using segue.destinationViewController.
+        // Pass the selected object to the new view controller.
+        
+        if segue.identifier == "pinDetail" {
+            let cell = sender as! UITableViewCell
+            let indexPath = self.tableView.indexPath(for: cell)
+            let pinDetailView = segue.destination as! PinDetailViewController
+            let row = indexPath!.row
+            let k = Array(FirebaseData.travels.keys)[row]
+            let id = FirebaseData.travels[k]!.id
+            let pinK = FirebaseData.travels[k]!.pins
+            for pinEntry in pinK{
+                pinDetailView.pin = pinEntry.value
+            }
+         
+            
+        }
+        
+    }
+    
+    
 
     @IBAction func beginDatePickerValue(_ sender: UIDatePicker) {
         datePickerChanged()

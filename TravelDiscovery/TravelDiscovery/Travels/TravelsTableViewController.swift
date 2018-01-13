@@ -10,11 +10,20 @@ import UIKit
 import Firebase
 
 class TravelsTableViewController: UITableViewController {
-    @IBOutlet var travelsTableView: UITableView!
+   // @IBOutlet var travelsTableView: UITableView!
+    
+    
+    
+    //var detailVC = TravelDetailTableViewController()
+    
+   
    
     override func viewDidLoad() {
         
         super.viewDidLoad()
+        tableView.estimatedRowHeight = 100
+        tableView.rowHeight = UITableViewAutomaticDimension
+        
         self.navigationItem.leftBarButtonItem = self.editButtonItem
         self.refreshControl?.addTarget(self, action: #selector(self.handleRefresh), for: UIControlEvents.valueChanged)
         NotificationCenter.default.addObserver(
@@ -22,7 +31,7 @@ class TravelsTableViewController: UITableViewController {
             selector: #selector(updateTravels),
             name: Notification.Name("updateTravels"),
             object: nil)
-        self.tableView.reloadData()
+        tableView.reloadData()
         
         handleRefresh()
     }
@@ -31,14 +40,14 @@ class TravelsTableViewController: UITableViewController {
      * reload data view, end refresh
      */
     @objc func updateTravels() {
-        self.tableView.reloadData()
+        tableView.reloadData()
     }
     
     /**
      * refresh public pins, get new data from server
      */
     @objc func handleRefresh() {
-        self.tableView.reloadData()
+        tableView.reloadData()
         FirebaseController.retrieveTravelsFromFirebase()
         //timeout in case no data can be retrieved
         Timer.scheduledTimer(timeInterval: 10, target: self, selector: #selector(updateTravels), userInfo: nil, repeats: false)
@@ -64,18 +73,60 @@ class TravelsTableViewController: UITableViewController {
         let row = indexPath.row
         
         let k = Array(FirebaseData.travels.keys)[row]
+        //let pKey = Array(FirebaseData.pins.keys)[row]
+        
         let id = FirebaseData.travels[k]!.id
         let name = FirebaseData.travels[k]!.name
+        let begin = FirebaseData.travels[k]!.begin
+        let end = FirebaseData.travels[k]!.end
+        let pin = FirebaseData.travels[k]!.pins
+        //let photos = FirebaseData.pins[pKey]!.photos
+        let cell = tableView.dequeueReusableCell(withIdentifier: "travelCell2", for: indexPath) as! TravelsTableViewCell
+        cell.travelImageView.setRadius()
+      //  cell.travelImageView.layoutSubviews()
+    
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: "travelCell", for: indexPath)
-        cell.textLabel?.text = name
+        cell.travelNameLabel.text = name
+        cell.travelDateLabel.text = begin! + "    " + end!
+       
+        // set images
+         cell.travelImageView.image = UIImage(named: "default2")!
+
+        /*
+        if ((pin.imageURLs?.count ?? 0) > 0) {
+            primaryImageView.loadImageUsingCache(withUrl: pin.imageURLs![0])
+            primaryImageView.reduceSaturation()
+        } else {
+            imagesCVHeight.constant = 0
+        }
+        */
+        
+   
+        
+        /*
+            travelImageView.resizeImage(image: UIImage(named: "default2")!)
+        if ((pin.imageURLs?.count ?? 0) > 0) {
+            primaryImageView.loadImageUsingCache(withUrl: pin.imageURLs![0])
+            primaryImageView.reduceSaturation()
+        } else {
+            imagesCVHeight.constant = 0
+        }
+        
+ 
+        cell.travelImageView.image = photos?[1]
+        
+        */
+        
+        //cell.textLabel?.text = name
         //cell.textLabel?.text = countries[row]
        // cell.imageView!.image = countryImages[row]
         
         return cell
     }
-    
 
+
+
+    
     // MARK: Tableview Delegate Methods
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -84,7 +135,7 @@ class TravelsTableViewController: UITableViewController {
         let name = FirebaseData.travels[k]!.name
         print(name)
     }
-    
+
     
     // MAR: Add New Countries
     
@@ -163,8 +214,9 @@ class TravelsTableViewController: UITableViewController {
     }
     */
    
+    
     override func viewDidAppear(_ animated: Bool) {
-        travelsTableView.reloadData()
+        self.tableView.reloadData()
     }
     
     // MARK: - Navigation
@@ -177,15 +229,27 @@ class TravelsTableViewController: UITableViewController {
        
         if segue.identifier == "sequeTravelDetail" {
             let cell = sender as! UITableViewCell
-            let indexPath = self.travelsTableView.indexPath(for: cell)
+            let indexPath = self.tableView.indexPath(for: cell)
             let travelDetailView = segue.destination as! TravelDetailTableViewController
             let row = indexPath!.row
             let k = Array(FirebaseData.travels.keys)[row]
             travelDetailView.travelId = k
             //travelDetailView.setCountryName(countries[((indexPath as NSIndexPath?)?.row)!])
+            
+            
     
         }
 
     }
  
+}
+
+extension UIImageView {
+    func setRadius(radius: CGFloat? = nil) {
+        self.layer.cornerRadius = radius ?? self.frame.width / 2;
+        //self.layer.borderWidth = 2;
+       // self.layer.borderColor = UIColor.gray.cgColor
+        self.layer.masksToBounds = true;
+    }
+
 }
