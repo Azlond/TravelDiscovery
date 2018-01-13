@@ -86,9 +86,9 @@ class EmailLoginViewController: UIViewController, UITextFieldDelegate {
                 FirebaseController.retrieveFromFirebase()
                 self.performSegue(withIdentifier: "emailLoggedIn", sender: self)
             } else {
-                let notVerifiedAltert = UIAlertController(title: "Not verified", message: "Your account is pending verification. Please check your email and verify your account.", preferredStyle: .alert)
-                notVerifiedAltert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-                self.present(notVerifiedAltert, animated: true, completion: nil)
+                let notVerifiedAlert = UIAlertController(title: "Not verified", message: "Your account is pending verification. Please check your email and verify your account.", preferredStyle: .alert)
+                notVerifiedAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                self.present(notVerifiedAlert, animated: true, completion: nil)
                 do {
                     try Auth.auth().signOut()
                 } catch {

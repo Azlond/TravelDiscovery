@@ -107,7 +107,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
                 alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in
                     FirebaseData.visitedCountries.removeValue(forKey: country)
                     self.updateMap()
-                    FirebaseController.saveCountriesToFirebase()
+                    FirebaseController.countryToFirebase(countryName: country, add: false)
                 }))
                 self.present(alert, animated: true, completion: nil)
             }
@@ -233,7 +233,6 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
     }
     
     func mapView(_ mapView: MGLMapView, rightCalloutAccessoryViewFor annotation: MGLAnnotation) -> UIView? {
-        //TODO: on tap: perform segue to pin detail view
         return UIButton(type: .detailDisclosure) 
     }
     
@@ -264,7 +263,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
         if name.count > 0 {
             FirebaseData.visitedCountries[name] = true
             updateMap()
-            FirebaseController.saveCountriesToFirebase()
+            FirebaseController.countryToFirebase(countryName: name, add: true)
         }
     }
     /**

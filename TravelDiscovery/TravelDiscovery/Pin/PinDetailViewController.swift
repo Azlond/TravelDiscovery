@@ -70,7 +70,7 @@ class PinDetailViewController: UIViewController, UICollectionViewDataSource, UIC
         // set images
         primaryImageView.image = primaryImageView.resizeImage(image: UIImage(named: "default2")!)
         if ((pin.imageURLs?.count ?? 0) > 0) {
-            primaryImageView.loadImageUsingCache(withUrl: pin.imageURLs![0])
+            primaryImageView.loadImageUsingCache(withUrl: pin.imageURLs![0], tableview: nil, indexPath: nil)
             primaryImageView.reduceSaturation()
         } else {
             imagesCVHeight.constant = 0
@@ -134,7 +134,7 @@ class PinDetailViewController: UIViewController, UICollectionViewDataSource, UIC
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "detailCell", for: indexPath as IndexPath)
             let cellSize = getCellSize(itemCount: pin.imageURLs!.count)
             let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: cellSize.width, height: cellSize.height))
-            imageView.loadImageUsingCache(withUrl: pin.imageURLs![indexPath.row])
+            imageView.loadImageUsingCache(withUrl: pin.imageURLs![indexPath.row], tableview: nil, indexPath: nil)
             imageView.clipsToBounds = true
             imageView.contentMode = .scaleAspectFill
             imageView.isUserInteractionEnabled = true
@@ -242,7 +242,7 @@ class PinDetailViewController: UIViewController, UICollectionViewDataSource, UIC
     private func setupVideoDisplay() {
         //set first video frame as image
         if pin.videoThumbnailURL != nil {
-            self.videoDisplay.loadImageUsingCache(withUrl: pin.videoThumbnailURL!)
+            self.videoDisplay.loadImageUsingCache(withUrl: pin.videoThumbnailURL!, tableview: nil, indexPath: nil)
         }
         
         //add play button
@@ -283,7 +283,7 @@ class PinDetailViewController: UIViewController, UICollectionViewDataSource, UIC
     }
     
     @objc func playerDidFinishPlaying(sender: Notification){
-        for var subview in videoDisplay.subviews {
+        for subview in videoDisplay.subviews {
             subview.removeFromSuperview()
         }
         playButton.isHidden = false

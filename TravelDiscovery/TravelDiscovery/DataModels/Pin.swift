@@ -65,7 +65,7 @@ class Pin {
         self.latitude = dict["lat"] as! Double
         self.visibilityPublic = dict["visibilityPublic"] as! Bool
         self.date = dict["date"] as! String
-        self.number = 0 //dict["number"] as! Int
+        self.number = 0 //dict["number"] as! Int TODO:
         self.username = dict["username"] as? String ?? "Anonymous"
         
         if let text = dict["text"] as? String {
@@ -125,7 +125,9 @@ class Pin {
         return dict
     }
     
-    
+    /**
+     * saving the first image of the pin to local documents for better caching
+     */
     func saveImageToDocuments(withUrl urlString : String) {
         let url = URL(string: urlString)
         // check cached image

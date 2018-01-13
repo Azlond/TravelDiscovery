@@ -45,7 +45,7 @@ extension UITextView {
     }
 }
 
-/*Adds a preference for adding a done button to the keyboard when using UITextView*/
+/*Adds a preference for adding a done button to the keyboard when using UITextField*/
 extension UITextField {
     /*Expose preference to storyboard*/
     @IBInspectable var doneAccessory: Bool{
@@ -94,7 +94,7 @@ extension UIViewController {
 }
 
 
-// MARK: Extension ImagePickerController
+/* MARK: Extension ImagePickerController*/
 
 extension PinViewController: NohanaImagePickerControllerDelegate {
     
@@ -103,7 +103,6 @@ extension PinViewController: NohanaImagePickerControllerDelegate {
     }
     
     func nohanaImagePicker(_ picker: NohanaImagePickerController, didFinishPickingPhotoKitAssets pickedAssts :[PHAsset]) {
-        //print("🐷Completed🙆\n\tpickedAssets = \(pickedAssts)")
         picker.dismiss(animated: true, completion: nil)
         
         thumbnails = [UIImage]()
@@ -114,7 +113,7 @@ extension PinViewController: NohanaImagePickerControllerDelegate {
             
             let image = getUIImageFromAsset(asset: asset)
             guard let jpgImage = compressImage(image: image) else {
-                //if image compression fails use original image
+                /*if image compression fails use original image*/
                 print("image compression failed")
                 selectedPhotos.append(image)
                 continue
@@ -125,7 +124,9 @@ extension PinViewController: NohanaImagePickerControllerDelegate {
         
     }
 }
-
+/**
+ * Extensions to easily bold a string
+ */
 extension NSMutableAttributedString {
     @discardableResult func bold(_ text: String) -> NSMutableAttributedString {
         let attrs: [NSAttributedStringKey: Any] = [.font: UIFont(name: "AvenirNext-Medium", size: 20)!]
@@ -144,27 +145,25 @@ extension NSMutableAttributedString {
 }
 /*extension for downloading, caching and resizing images*/
 extension UIImageView {
-    func loadImageUsingCache(withUrl urlString : String, tableview: UITableView, indexPath: IndexPath) {
+    func loadImageUsingCache(withUrl urlString : String, tableview: UITableView?, indexPath: IndexPath?) {
         let url = URL(string: urlString)
         
-        //reset image
+        /*reset image*/
         self.image = nil
         self.setRandomBackgroundColor()
         
-        // check cached image
+        /*check cached image*/
         if let cachedImage = FirebaseData.imageCache.object(forKey: url!.lastPathComponent as NSString) as? UIImage {
-            if let visibleCellIndices = tableview.indexPathsForVisibleRows {
-                if (!visibleCellIndices.contains(indexPath)) {
+            if let visibleCellIndices = tableview?.indexPathsForVisibleRows {
+                if (!visibleCellIndices.contains(indexPath!)) {
                     return
                 }
-            } else {
-                return
             }
             self.image = cachedImage
             return
         }
         
-        // if not, download image from url
+        /* if it is not in cache, download image from url*/
         URLSession.shared.dataTask(with: url!, completionHandler: { (data, response, error) in
             if error != nil {
                 print(error!)
@@ -174,67 +173,34 @@ extension UIImageView {
             DispatchQueue.main.async {
                 if let image = UIImage(data: data!) {
                     FirebaseData.imageCache.setObject(image, forKey: url!.lastPathComponent as NSString)
-                    if let visibleCellIndices = tableview.indexPathsForVisibleRows {
-                        if (!visibleCellIndices.contains(indexPath)) {
+                    if let visibleCellIndices = tableview?.indexPathsForVisibleRows {
+                        if (!visibleCellIndices.contains(indexPath!)) {
                             return
                         }
-                    } else {
-                        return
                     }
-                    self.image = image //self.resizeImage(image: image)
+                    self.image = image
                 }
             }
             
         }).resume()
     }
-    
-    func loadImageUsingCache(withUrl urlString : String) {
-        let url = URL(string: urlString)
-        
-        //reset image
-        self.image = nil
-        self.setRandomBackgroundColor()
-        
-        // check cached image
-        if let cachedImage = FirebaseData.imageCache.object(forKey: url!.lastPathComponent as NSString) as? UIImage {
-            self.image = cachedImage
-            return
-        }
-        
-        // if not, download image from url
-        URLSession.shared.dataTask(with: url!, completionHandler: { (data, response, error) in
-            if error != nil {
-                print(error!)
-                return
-            }
-            
-            DispatchQueue.main.async {
-                if let image = UIImage(data: data!) {
-                    self.image = image //self.resizeImage(image: image)
-                    FirebaseData.imageCache.setObject(self.image!, forKey: url!.lastPathComponent as NSString)
-                    // NotificationCenter.default.post(name: NSNotification.Name(rawValue: "imageLoaded"), object: nil)
-                }
-            }
-            
-        }).resume()
-    }
-    
+
     /**
      * resize downloaded image to fit into the UIImageView
      */
     func resizeImage(image: UIImage) -> UIImage? {
         let size = image.size
         
-        //scale image to screenWidth
+        /*scale image to screenWidth*/
         let screenWidth = UIScreen.main.bounds.width
         let scaleFactor = screenWidth / size.width
         
         let targetSize = CGSize(width: screenWidth, height: size.height * scaleFactor)
         
-        // This is the rect that we've calculated out and this is what is actually used below
+        /* This is the rect that we've calculated out and this is what is actually used below*/
         let rect = CGRect(x: 0, y: 0, width: targetSize.width, height: targetSize.height)
         
-        // Actually do the resizing to the rect using the ImageContext stuff
+        /* Actually do the resizing to the rect using the ImageContext stuff*/
         UIGraphicsBeginImageContextWithOptions(targetSize, false, UIScreen.main.scale)
         image.draw(in: rect)
         let newImage = UIGraphicsGetImageFromCurrentImageContext()
@@ -258,7 +224,9 @@ extension UIImageView {
         }
         
     }
-    
+    /**
+     * Set background to random color
+     */
     func setRandomBackgroundColor(){
         var red: CGFloat = CGFloat(arc4random() % 256 ) / 256
         var green: CGFloat = CGFloat(arc4random() % 256 ) / 256
@@ -274,7 +242,9 @@ extension UIImageView {
         
     }
 }
-
+/**
+ * Extension used to find out which device the user is using
+ */
 extension UIDevice {
     
     var modelName: String {

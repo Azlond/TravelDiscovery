@@ -23,10 +23,10 @@ class SettingsViewController: FormViewController {
         
         form +++ Section("Account Details")
             <<< EmailRow(){ row in
-                row.title = "E-Mail Address"
+                row.title = "E-Mail"
                 row.disabled = true
                 row.placeholder = "traveldiscovery@example.com"
-                row.value = FirebaseController.getMailAdress()
+                row.value = FirebaseController.getMailAddress()
             }
             <<< ButtonRow(){ row in
                 row.title = "Logout"
@@ -211,7 +211,7 @@ class SettingsViewController: FormViewController {
                 
                 let startDate = userCalendar.date(from: dateComponentsStart)
                 
-                let dateCompononentEnd = DateComponents()
+                let dateComponentEnd = DateComponents()
                 let endDate = Date()
                 
                 let predicate = HKQuery.predicateForSamples(withStart: startDate, end: endDate, options: .strictStartDate)
@@ -301,12 +301,7 @@ class SettingsViewController: FormViewController {
                     print(err.localizedDescription)
                     return
                 }
-                self.view.window!.rootViewController?.dismiss(animated: true, completion: {
-                    /*TODO: Doesn't display so far, find out why not.*/
-                    let deletedConfirmationAlert = UIAlertController(title: "Account deleted", message: "Your account has been deleted.", preferredStyle: .alert)
-                    deletedConfirmationAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-                    self.present(deletedConfirmationAlert, animated: true, completion: nil)
-                })
+                self.view.window!.rootViewController?.dismiss(animated: true, completion: nil)
             })
         }))
         deleteConfirmationAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
@@ -322,7 +317,7 @@ class SettingsViewController: FormViewController {
     func clearLocalData() {
         FirebaseData.visitedCountries.removeAll()
         FirebaseData.locationData.removeAll()
-        FirebaseData.pins.removeAll()
+        //FirebaseData.pins.removeAll()
         FirebaseData.publicPins.removeAll()
         FirebaseData.ref = nil
         FirebaseData.user = nil

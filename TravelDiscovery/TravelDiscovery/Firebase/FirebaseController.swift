@@ -20,17 +20,20 @@ class FirebaseController {
     static var uploadingVideo: Bool = false
     static var uploadingVideoThumbnail: Bool = false
     
-    
-    public static func saveCountriesToFirebase() {
+    /**
+     * saving/removing the scratched country to/from the Firebase database
+     * replacing '.' with the string DOT, as Firebase keys cannot have '.'
+     */
+    public static func countryToFirebase(countryName: String, add: Bool) {
         if let user = Auth.auth().currentUser {
             initDatabase()
-            var vC : Dictionary<String, Bool> = [:]
             let regex = try! NSRegularExpression(pattern: "\\.")
-            for country in FirebaseData.visitedCountries {
-                let key = regex.stringByReplacingMatches(in: country.key, options: [], range: NSRange(0..<country.key.utf16.count), withTemplate: "DOT")
-                vC[key] = true
+            let country = regex.stringByReplacingMatches(in: countryName, options: [], range: NSRange(0..<countryName.utf16.count), withTemplate: "DOT")
+            if (add) {
+                FirebaseData.ref.child("users").child(user.uid).child("visitedCountries").child(country).setValue(true)
+            } else {
+                FirebaseData.ref.child("users").child(user.uid).child("visitedCountries").child(country).removeValue()
             }
-            FirebaseData.ref.child("users").child(user.uid).child("visitedCountries").setValue(vC)
         }
     }
     
@@ -69,7 +72,10 @@ class FirebaseController {
                 Timer.scheduledTimer(timeInterval: 0.01, target: self, selector: #selector(self.sendSettingsNotification), userInfo: nil, repeats: false) //need to use a timer to avoid too many changes
             })
             
-            /*locationData*/
+            /*
+             * locationData
+             * TODO: locationData is going to be saved with a travel, not globally. Once done, this listener minght no longer be needed
+             */
             FirebaseData.ref.child("users").child(user.uid).child("activeTravelLocations").observe(.value, with: { (snapshot) in
                 var lD : Dictionary<Int, CLLocationCoordinate2D> = [:]
                 let value = snapshot.value as? NSArray ?? []
@@ -88,10 +94,9 @@ class FirebaseController {
         }
     }
     
-    @objc private static func sendSettingsNotification() {
-        NotificationCenter.default.post(name: Notification.Name("updateSettings"), object: nil)
-    }
-    
+    /**
+     * save user settings to Firebase database
+     */
     @objc public static func saveSettingsToFirebase(timer:Timer) {
         if let user = Auth.auth().currentUser {
             initDatabase()
@@ -102,26 +107,9 @@ class FirebaseController {
         }
     }
     
-    public static func getMailAdress() -> String {
-        if let user = Auth.auth().currentUser {
-            return user.email ?? "traveldiscovery@example.com"
-        }
-        return "traveldiscovery@example.com"
-    }
-    
-    private static func initDatabase() {
-        if (FirebaseData.ref == nil) {
-            // initialize database
-            FirebaseData.ref = Database.database().reference()
-            FirebaseData.ref.keepSynced(true)
-        }
-    }
-    
-    public static func removeObservers() {
-        initDatabase()
-        FirebaseData.ref.removeAllObservers()
-    }
-    
+    /**
+     * remove all userdata, for when a user deletes the account
+     */
     public static func removeUserData() {
         if let user = Auth.auth().currentUser {
             FirebaseData.ref.child("users").child(user.uid).removeValue()
@@ -131,16 +119,16 @@ class FirebaseController {
         }
     }
     
-    
+    /**
+     * saves background location updates to firebase
+     * TODO: storage location on firebase needs to be changed to active travel, as location data should not be saved globally, but dependent of travels
+     */
     @objc public static func handleBackgroundLocationData(location: CLLocation) {
         if let user = Auth.auth().currentUser {
-            if (FirebaseData.ref == nil) {
-                // initialize database
-                FirebaseData.ref = Database.database().reference()
-            }
+            initDatabase()
             
             if (!FirebaseData.locationData.isEmpty) {
-                //if current location is too close to last location, don't record it
+                /*if current location is too close to last location, don't record it, as this can make the map look weird*/
                 let lastLocation: CLLocation = CLLocation(latitude: (FirebaseData.locationData[FirebaseData.locationData.count-1]?.latitude)!, longitude: (FirebaseData.locationData[FirebaseData.locationData.count-1]?.longitude)!)
                 if (location.distance(from: lastLocation) < 1000) {
                     return
@@ -155,8 +143,11 @@ class FirebaseController {
                 FirebaseData.ref.child("users").child(user.uid).child("activeTravelLocations").child(String(loc.key)).setValue(["coordinates": locDict])
             }
             
-            /* Send push message with location name*/
-            let userSettings = UserDefaults.standard
+            /*
+             * Send push message with location name
+             * TODO: delete if no longer needed, which is likely
+             */
+            /*let userSettings = UserDefaults.standard
             if (userSettings.bool(forKey: "locationNotification")) {
                 Locator.location(fromCoordinates: location.coordinate, onSuccess: { places in
                     print(places)
@@ -176,18 +167,19 @@ class FirebaseController {
                 }, onFail: { err in
                     print("\(err)")
                 })
-            }
+            }*/
         } else {
             print("oops")
         }
     }
     
+    /**
+     * upload images and videos if necessary
+     */
     public static func savePinsToFirebaseOfTravel(travel: Travel) {
         if let user = Auth.auth().currentUser {
-            if (FirebaseData.ref == nil) {
-                // initialize database
-                FirebaseData.ref = Database.database().reference()
-            }
+            initDatabase()
+            
             // loop over pins
             let pinsCopy = travel.pins
             for pinEntry in pinsCopy {
@@ -196,7 +188,7 @@ class FirebaseController {
                 // check if images or videos have to be uploaded
                 if  ((pin.imageURLs?.isEmpty ?? true) && !(pin.photos?.isEmpty ?? true)) || (pin.videoUploadURL != nil && pin.videoDownloadURL == nil) {
                     
-                    // IMGAGE UPLOAD: if a pin doesn't have imageURL entries but has photos -> upload images
+                    // IMAGE UPLOAD: if a pin doesn't have imageURL entries but has photos -> upload images
                     if ((pin.imageURLs?.isEmpty ?? true) && !(pin.photos?.isEmpty ?? true)) {
                         self.uploadingImages = true
                         //loop over images
@@ -293,7 +285,9 @@ class FirebaseController {
             }
         }
     }
-    
+    /**
+     * save pins to travel
+     */
     public static func savePinToFirebase(pin: Pin, user: User, travel: Travel) {
         //check if all uploading processes are complete
         if !self.uploadingImages && !self.uploadingVideo && !self.uploadingVideoThumbnail{
@@ -307,40 +301,18 @@ class FirebaseController {
             
             //save public pin
             if (pin.visibilityPublic) {
-                print("uploading to public pins")
                 FirebaseData.ref.child("publicPins").child(pin.id).setValue(fbDict)
             }
         }
     }
     
-    public static func retrievePinsFromFirebase() {
-        if let user = Auth.auth().currentUser {
-            if (FirebaseData.ref == nil) {
-                // initialize database
-                FirebaseData.ref = Database.database().reference()
-            }
-            
-            FirebaseData.ref.child("users").child(user.uid).child("pins").observeSingleEvent(of: .value, with: { (snapshot) in
-                let fbD = snapshot.value as? Dictionary<String, Any> ?? [:]
-                
-                //create Pin Dictionary from firebase data
-                var pinsDict: Dictionary<String, Pin> = [:]
-                for pinEntry in fbD {
-                    let value = pinEntry.value as! Dictionary<String, Any>
-                    let pin = Pin.init(dict: value)
-                    pinsDict[pinEntry.key] = pin
-                }
-                FirebaseData.pins = pinsDict
-                
-                NotificationCenter.default.post(name: Notification.Name("updatePins"), object: nil)
-            }) { (error) in
-                print(error.localizedDescription)
-            }
-        }
-    }
-    
+    /**
+     * Get all public pins based on current area.
+     * Filtering of public pins is done on the server side
+     * if the pins first image is not yet cached, the image is downloaded
+     */
     public static func retrievePublicPinsFromFirebase(){
-        //TODO: change/add feed UI based on error message, e.g. no network, no location data
+        //TODO: send user short message about error, e.g. no network, no location data
         Locator.currentPosition(accuracy: .neighborhood, timeout: .delayed(7.0), onSuccess: { location in
             let url = URL(string: "https://us-central1-traveldiscovery-63134.cloudfunctions.net/getPublicPins")!
             var request = URLRequest(url: url)
@@ -349,12 +321,12 @@ class FirebaseController {
             request.httpMethod = "POST"
             let postParams = ["range":String(UserDefaults.standard.float(forKey: "feedRange")), "lat":String(location.coordinate.latitude), "long":String(location.coordinate.longitude)]
             do {
-                request.httpBody = try JSONSerialization.data(withJSONObject: postParams, options: .prettyPrinted) // pass dictionary to nsdata object and set it as request body
+                request.httpBody = try JSONSerialization.data(withJSONObject: postParams, options: .prettyPrinted)
             } catch let error {
                 print(error.localizedDescription)
             }
             let task = URLSession.shared.dataTask(with: request) { data, response, error in
-                guard let data = data, error == nil else {                                                 // check for fundamental networking error
+                guard let data = data, error == nil else {
                     print("error=\(String(describing: error))")
                     FirebaseData.publicPins.removeAll()
                     DispatchQueue.main.async {
@@ -363,20 +335,20 @@ class FirebaseController {
                     return
                 }
                 
-                if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {           // check for http errors
+                if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {
                     print("statusCode should be 200, but is \(httpStatus.statusCode)")
                     print("response = \(String(describing: response))")
                     //TODO: If statuscode == 400, no location or range was sent to the server. Tell user about it.
                 }
                 
                 do {
-                    //create json object from data, preload images
                     if let json = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? [String: Any] {
                         var pinsArray = [Pin]()
                         for element in json {
                             let value = element.value as! Dictionary<String, Any>
                             let pin = Pin.init(dict: value)
                             pinsArray.append(pin!)
+                            /*Download firs timage of pin to display in feed if necessary*/
                             if ((pin!.imageURLs?.count ?? 0) > 0) {
                                 pin!.saveImageToDocuments(withUrl: pin!.imageURLs![0])
                             }
@@ -404,12 +376,13 @@ class FirebaseController {
         })
     }
     
+    /**
+     * saving travels to firebase
+     */
     public static func saveTravelsToFirebase() {
         if let user = Auth.auth().currentUser {
-            if (FirebaseData.ref == nil) {
-                // initialize database
-                FirebaseData.ref = Database.database().reference()
-            }
+            initDatabase()
+            
             // loop over travels
             let travelsCopy = FirebaseData.travels
             for travelEntry in travelsCopy {
@@ -425,6 +398,9 @@ class FirebaseController {
         }
     }
     
+    /**
+     * retrieving travels from firebase
+     */
     public static func retrieveTravelsFromFirebase() {
         if let user = Auth.auth().currentUser {
             if (FirebaseData.ref == nil) {
@@ -451,7 +427,9 @@ class FirebaseController {
             }
         }
     }
-    
+    /**
+     * deleting travel
+     */
     public static func removeTravelFromFirebase(travelid: String) {
         if let user = Auth.auth().currentUser {
             if (FirebaseData.ref == nil) {
@@ -462,6 +440,47 @@ class FirebaseController {
         }
     }
     
+   // MARK: Helper functions
+    
+    /**
+     * send notification to update settings UI
+     */
+    @objc private static func sendSettingsNotification() {
+        NotificationCenter.default.post(name: Notification.Name("updateSettings"), object: nil)
+    }
+    
+    /**
+     * get the current users email address
+     */
+    public static func getMailAddress() -> String {
+        if let user = Auth.auth().currentUser {
+            return user.email ?? "traveldiscovery@example.com"
+        }
+        return "traveldiscovery@example.com"
+    }
+    
+    /**
+     * initialize the database reference, if this hasn't been done already
+     * keep local database synced to online database
+     */
+    private static func initDatabase() {
+        if (FirebaseData.ref == nil) {
+            FirebaseData.ref = Database.database().reference()
+            FirebaseData.ref.keepSynced(true)
+        }
+    }
+    
+    /**
+     * removes all database observers
+     */
+    public static func removeObservers() {
+        initDatabase()
+        FirebaseData.ref.removeAllObservers()
+    }
+    
+    /**
+     * adding downloaded images to local cache on app start
+     */
     public static func populateCache() {
         let fileManager = FileManager.default
         let documentsURL = fileManager.urls(for: .documentDirectory, in: .userDomainMask)[0]
@@ -469,7 +488,7 @@ class FirebaseController {
             let fileURLs = try fileManager.contentsOfDirectory(at: documentsURL, includingPropertiesForKeys: nil)
             for fileName in fileURLs {
                 guard let data = try? Data(contentsOf: fileName) else {
-                   continue
+                    continue
                 }
                 FirebaseData.imageCache.setObject(UIImage(data: data)!, forKey: fileName.lastPathComponent as NSString)
                 
@@ -479,4 +498,6 @@ class FirebaseController {
         }
         
     }
+    
+    
 }

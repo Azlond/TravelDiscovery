@@ -16,12 +16,12 @@ class FirebaseData {
     public static var user : User?
     public static var ref: DatabaseReference!
     public static let defaultSettings: Dictionary<String, String> = ["feedRange":"1","username":"","visibility":"0","scratchPercent":"90"]
-    public static var locationData : Dictionary<Int, CLLocationCoordinate2D> = [:]  
-    public static var pins: Dictionary<String, Pin> = [:]
+    public static var locationData : Dictionary<Int, CLLocationCoordinate2D> = [:]  /*TODO: Might no longer be needed once locationData is saved to travel*/
     public static var publicPins = [Pin]()
     public static var travels: Dictionary<String, Travel> = [:]
     public static let imageCache = NSCache<NSString, AnyObject>()
     
+    /*TODO: does this belong to FirebaseData or FirebaseController? */
     static func getActiveTravel() -> Travel? {
         for travelEntry in FirebaseData.travels{
             let travel = travelEntry.value

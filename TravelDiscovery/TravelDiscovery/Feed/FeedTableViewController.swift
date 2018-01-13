@@ -118,9 +118,7 @@ class FeedTableViewController: UITableViewController {
             cell.imgView.setRandomBackgroundColor()
             cell.imgView.image = UIImage(named: "default2")
         }
-        
-        //TODO (nice to have): if multiple images are available: show multi image preview
-        
+                
         return cell
     }
     
