@@ -18,6 +18,8 @@ class Travel {
     /*required*/
     var id: String
     var name: String
+    var sortIndex: Int
+    
     /*optionals*/
     var pins: Dictionary<String,Pin> = [:]
     var active: Bool?
@@ -33,7 +35,7 @@ class Travel {
     
     //MARK: Initialization
     
-    init?(id: String, name: String) {
+    init?(id: String, name: String, sortIndex: Int) {
         // Initialization should fail if there is no name
         guard !name.isEmpty else {
             return nil
@@ -42,6 +44,7 @@ class Travel {
         // Initialize stored properties.
         self.id = id
         self.name = name
+        self.sortIndex = sortIndex
         self.begin = ""
         self.end = ""
         self.active = true
@@ -52,6 +55,7 @@ class Travel {
     init?(dict: (Dictionary<String,Any>))  {
         self.id =  dict["id"] as! String
         self.name = dict["name"] as! String
+        self.sortIndex = dict["sortIndex"] as! Int
         self.begin = dict["begin"] as? String
         self.end = dict["end"] as? String
         self.active = dict["active"] as? Bool
@@ -81,7 +85,8 @@ class Travel {
                 "name":self.name,
                 "begin":self.begin ?? "",
                 "end":self.end ?? "",
-                "active": self.active ?? false]
+                "active": self.active ?? false,
+                "sortIndex": self.sortIndex]
         
         return dict
     }

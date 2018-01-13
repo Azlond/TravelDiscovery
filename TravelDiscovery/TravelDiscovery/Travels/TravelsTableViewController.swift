@@ -73,23 +73,15 @@ class TravelsTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let row = indexPath.row
-        
-        let k = Array(FirebaseData.travels.keys)[row]
-        //let pKey = Array(FirebaseData.pins.keys)[row]
-        
-        let id = FirebaseData.travels[k]!.id
-        let name = FirebaseData.travels[k]!.name
-        let begin = FirebaseData.travels[k]!.begin
-        let end = FirebaseData.travels[k]!.end
-        let pin = FirebaseData.travels[k]!.pins
+        let travel = FirebaseData.travels[Array(FirebaseData.travels.keys)[row]]
+        //let pin = travel!.pins
         //let photos = FirebaseData.pins[pKey]!.photos
+        
         let cell = tableView.dequeueReusableCell(withIdentifier: "travelCell2", for: indexPath) as! TravelsTableViewCell
         cell.travelImageView.setRadius()
-      //  cell.travelImageView.layoutSubviews()
-    
-        
-        cell.travelNameLabel.text = name
-        cell.travelDateLabel.text = begin! + "    " + end!
+        //  cell.travelImageView.layoutSubviews()
+        cell.travelNameLabel.text = travel!.name
+        cell.travelDateLabel.text = travel!.begin! + "    " + travel!.end!
        
         // set images
          cell.travelImageView.image = UIImage(named: "default2")!
@@ -172,7 +164,7 @@ class TravelsTableViewController: UITableViewController {
             let id = "Travel_" + UUID().uuidString
             let name = textField.text!
             if name.isEmpty {} else {
-                let travel : Travel = Travel.init(id: id, name: name)!
+                let travel : Travel = Travel.init(id: id, name: name, sortIndex: (FirebaseData.getHighestSortIndex()+1))!
                 travel.begin = DateFormatter.localizedString(from: Date(), dateStyle: Travel.dateStyle, timeStyle: Travel.timeStyle)
                 // save travel to firebase
                 FirebaseData.travels[travel.id] = travel
@@ -221,6 +213,7 @@ class TravelsTableViewController: UITableViewController {
         print("position ändern fehlt")
         //countries.remove(at: (fromIndexPath as NSIndexPath).row)
         //countries.insert(countryToMove, at: (to as NSIndexPath).row)
+        
     }
     
 

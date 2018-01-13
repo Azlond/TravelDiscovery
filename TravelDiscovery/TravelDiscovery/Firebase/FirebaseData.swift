@@ -31,4 +31,14 @@ class FirebaseData {
         }
         return nil
     }
+    static func getHighestSortIndex() -> Int {
+        var highestIndex = 0
+        for travelEntry in FirebaseData.travels{
+            let travel = travelEntry.value
+            if(travel.sortIndex > highestIndex){
+                highestIndex = travel.sortIndex
+            }
+        }
+        return highestIndex
+    }
 }
