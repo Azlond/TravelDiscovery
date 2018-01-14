@@ -11,6 +11,10 @@ import FirebaseAuth
 import FirebaseDatabase
 import CoreLocation
 
+//TODO: Capitalization of first letter in "new Travel Popup" and "Pin name"
+//TODO: Change "new trip/Pin" button when travel is created
+//TODO: Decide whether itS' called new Travel or new Trip
+
 class FirebaseData {
     public static var visitedCountries : Dictionary<String, Bool> = [:]
     public static var user : User?

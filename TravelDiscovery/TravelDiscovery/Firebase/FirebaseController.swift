@@ -75,22 +75,27 @@ class FirebaseController {
             
             /*
              * locationData
-             * TODO: locationData is going to be saved with a travel, not globally. Once done, this listener minght no longer be needed
+             * TODO: locationData is going to be saved with a travel, not globally. Once done, this listener might no longer be needed
              */
-            FirebaseData.ref.child("users").child(user.uid).child("activeTravelLocations").observe(.value, with: { (snapshot) in
-                var lD : Dictionary<Int, CLLocationCoordinate2D> = [:]
-                let value = snapshot.value as? NSArray ?? []
-                for element in value {
-                    let coordinates : Dictionary<String, Dictionary<String, Double>> = element as! Dictionary<String, Dictionary<String, Double>>
-                    let lat : Double = coordinates["coordinates"]!["latitude"]!
-                    let long: Double = coordinates["coordinates"]!["longitude"]!
-                    let coordinate : CLLocationCoordinate2D = CLLocationCoordinate2D.init(latitude: lat, longitude: long)
-                    lD[lD.count] = coordinate
-                }
-                FirebaseData.locationData.removeAll()
-                FirebaseData.locationData = lD
-            })
+            let userSettings = UserDefaults.standard
+            let travelID = userSettings.string(forKey: "activeTravelID") ?? ""
             
+            if (travelID.count > 0) {
+                FirebaseData.ref.child("users").child(user.uid).child("travels").child(travelID).child("routeData").observe(.value, with: { (snapshot) in
+                    var lD : Dictionary<Int, CLLocationCoordinate2D> = [:]
+                    let value = snapshot.value as? NSArray ?? []
+                    for element in value {
+                        print(element)
+                        let coordinates : Dictionary<String, Dictionary<String, Double>> = element as! Dictionary<String, Dictionary<String, Double>>
+                        let lat : Double = coordinates["coordinates"]!["latitude"]!
+                        let long: Double = coordinates["coordinates"]!["longitude"]!
+                        let coordinate : CLLocationCoordinate2D = CLLocationCoordinate2D.init(latitude: lat, longitude: long)
+                        lD[lD.count] = coordinate
+                    }
+                    FirebaseData.locationData.removeAll()
+                    FirebaseData.locationData = lD
+                })
+           }
            retrievePublicPinsFromFirebase()
         }
     }
@@ -123,27 +128,32 @@ class FirebaseController {
     /**
      * saves background location updates to firebase
      * TODO: storage location on firebase needs to be changed to active travel, as location data should not be saved globally, but dependent of travels
+     * TODO: activeTravelID in usersettings needs to be set to "" when deleting an active travel
      */
     @objc public static func handleBackgroundLocationData(location: CLLocation) {
+        print("handling background location")
         if let user = Auth.auth().currentUser {
             initDatabase()
             
             if (!FirebaseData.locationData.isEmpty) {
-                /*if current location is too close to last location, don't record it, as this can make the map look weird*/
+                /*if current location is too close to last location, don't record it, as this can make the map-route look weird*/
                 let lastLocation: CLLocation = CLLocation(latitude: (FirebaseData.locationData[FirebaseData.locationData.count-1]?.latitude)!, longitude: (FirebaseData.locationData[FirebaseData.locationData.count-1]?.longitude)!)
                 if (location.distance(from: lastLocation) < 1000) {
                     return
                 }
             }
+         
+            let userSettings = UserDefaults.standard
+            let travelID = userSettings.string(forKey: "activeTravelID") ?? ""
             
-            
-            FirebaseData.locationData[FirebaseData.locationData.count] = location.coordinate
-            
-            for loc in FirebaseData.locationData {
-                let locDict : Dictionary<String, Double> = ["latitude":loc.value.latitude, "longitude":loc.value.longitude]
-                FirebaseData.ref.child("users").child(user.uid).child("activeTravelLocations").child(String(loc.key)).setValue(["coordinates": locDict])
+            if (travelID.count < 1) {
+                return
             }
             
+            FirebaseData.locationData[FirebaseData.locationData.count] = location.coordinate
+            let locDict : Dictionary<String, Double> = ["latitude":location.coordinate.latitude, "longitude":location.coordinate.longitude]
+            FirebaseData.ref.child("users").child(user.uid).child("travels").child(travelID).child("routeData").child(String(FirebaseData.locationData.count - 1)).setValue(["coordinates": locDict])
+
             /*
              * Send push message with location name
              * TODO: delete if no longer needed, which is likely
