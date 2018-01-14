@@ -77,7 +77,7 @@ class FirebaseController {
              * locationData
              * TODO: locationData is going to be saved with a travel, not globally. Once done, this listener might no longer be needed
              */
-            let userSettings = UserDefaults.standard
+           /* let userSettings = UserDefaults.standard
             let travelID = userSettings.string(forKey: "activeTravelID") ?? ""
             
             if (travelID.count > 0) {
@@ -95,7 +95,7 @@ class FirebaseController {
                     FirebaseData.locationData.removeAll()
                     FirebaseData.locationData = lD
                 })
-           }
+           }*/
            retrievePublicPinsFromFirebase()
         }
     }
@@ -131,13 +131,17 @@ class FirebaseController {
      * TODO: activeTravelID in usersettings needs to be set to "" when deleting an active travel
      */
     @objc public static func handleBackgroundLocationData(location: CLLocation) {
-        print("handling background location")
         if let user = Auth.auth().currentUser {
             initDatabase()
             
-            if (!FirebaseData.locationData.isEmpty) {
+            guard let activeTravel = FirebaseData.getActiveTravel() else {
+                print("no active travel")
+                return
+            }
+            
+           if (!activeTravel.routeData.isEmpty) {
                 /*if current location is too close to last location, don't record it, as this can make the map-route look weird*/
-                let lastLocation: CLLocation = CLLocation(latitude: (FirebaseData.locationData[FirebaseData.locationData.count-1]?.latitude)!, longitude: (FirebaseData.locationData[FirebaseData.locationData.count-1]?.longitude)!)
+               let lastLocation: CLLocation = CLLocation(latitude: (activeTravel.routeData[String(activeTravel.routeData.count-1)]?.latitude)!, longitude: (activeTravel.routeData[String(activeTravel.routeData.count-1)]?.longitude)!)
                 if (location.distance(from: lastLocation) < 1000) {
                     return
                 }
@@ -150,9 +154,10 @@ class FirebaseController {
                 return
             }
             
-            FirebaseData.locationData[FirebaseData.locationData.count] = location.coordinate
+            activeTravel.routeData[String(activeTravel.routeData.count)] = location.coordinate
+            
             let locDict : Dictionary<String, Double> = ["latitude":location.coordinate.latitude, "longitude":location.coordinate.longitude]
-            FirebaseData.ref.child("users").child(user.uid).child("travels").child(travelID).child("routeData").child(String(FirebaseData.locationData.count - 1)).setValue(["coordinates": locDict])
+            FirebaseData.ref.child("users").child(user.uid).child("travels").child(travelID).child("routeData").child(String(activeTravel.routeData.count - 1)).setValue(["coordinates": locDict])
 
             /*
              * Send push message with location name

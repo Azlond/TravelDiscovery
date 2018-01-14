@@ -318,7 +318,6 @@ class SettingsViewController: FormViewController {
     
     func clearLocalData() {
         FirebaseData.visitedCountries.removeAll()
-        FirebaseData.locationData.removeAll()
         FirebaseData.publicPins.removeAll()
         FirebaseData.ref = nil
         FirebaseData.user = nil

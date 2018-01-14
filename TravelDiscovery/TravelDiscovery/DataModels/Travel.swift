@@ -30,7 +30,7 @@ class Travel {
     var end: String?
     var steps: Double
     var km: Double
-    
+    var routeData : Dictionary<String, CLLocationCoordinate2D> = [:]
     //var videos:
     
     
@@ -82,6 +82,16 @@ class Travel {
             let pin = Pin.init(dict: value)
             self.pins[pinEntry.key] = pin
         }
+        
+        let tmpLocs = dict["routeData"] as? NSArray ?? []
+        for locEntry in tmpLocs {
+            let coordinates : Dictionary<String, Dictionary<String, Double>> = locEntry as! Dictionary<String, Dictionary<String, Double>>
+            let lat : Double = coordinates["coordinates"]!["latitude"]!
+            let long: Double = coordinates["coordinates"]!["longitude"]!
+            let coordinate : CLLocationCoordinate2D = CLLocationCoordinate2D.init(latitude: lat, longitude: long)
+            routeData[String(routeData.count)] = coordinate
+        }
+        
         if (self.active) {
             let userSettings = UserDefaults.standard
             userSettings.set(id, forKey: "activeTravelID")
@@ -104,12 +114,18 @@ class Travel {
         Locator.completeAllLocationRequests()
         let userSettings = UserDefaults.standard
         userSettings.set("", forKey: "activeTravelID")
-        FirebaseData.locationData.removeAll()
     }
     
     
     func prepareDictForFirebase() -> Dictionary<String, Any>{
         var dict = [String:Any]()
+        
+        var routeDict: Dictionary<String, Dictionary<String, Dictionary<String, Double>>> = [:]
+        
+        for loc in routeData {
+            routeDict[loc.key] = ["coordinates": ["latitude":loc.value.latitude, "longitude":loc.value.longitude]]
+        }
+        
         dict = ["id":self.id,
                 "name":self.name,
                 "begin":self.begin ?? "",
@@ -117,7 +133,8 @@ class Travel {
                 "active": self.active,
                 "sortIndex": self.sortIndex,
                 "steps": self.steps,
-                "km": self.km]
+                "km": self.km,
+                "routeData": routeDict]
         
         return dict
     }
