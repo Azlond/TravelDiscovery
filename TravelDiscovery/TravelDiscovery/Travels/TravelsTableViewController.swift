@@ -119,37 +119,7 @@ class TravelsTableViewController: UITableViewController {
                 cell.travelImageView.loadImageUsingCache(withUrl: pin!.imageURLs![0], tableview: tableView, indexPath: indexPath)
             }
         }
-        
-        
-        /*
-        if ((pin.imageURLs?.count ?? 0) > 0) {
-            primaryImageView.loadImageUsingCache(withUrl: pin.imageURLs![0])
-            primaryImageView.reduceSaturation()
-        } else {
-            imagesCVHeight.constant = 0
-        }
-        */
-        
-   
-        
-        /*
-            travelImageView.resizeImage(image: UIImage(named: "default2")!)
-        if ((pin.imageURLs?.count ?? 0) > 0) {
-            primaryImageView.loadImageUsingCache(withUrl: pin.imageURLs![0])
-            primaryImageView.reduceSaturation()
-        } else {
-            imagesCVHeight.constant = 0
-        }
-        
- 
-        cell.travelImageView.image = photos?[1]
-        
-        */
-        
-        //cell.textLabel?.text = name
-        //cell.textLabel?.text = countries[row]
-       // cell.imageView!.image = countryImages[row]
-        
+
         return cell
     }
 
@@ -234,15 +204,29 @@ class TravelsTableViewController: UITableViewController {
     
     // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        guard editingStyle == .delete else { return }
-            // Delete the row from the data source
-            //tableView.deleteRows(at: [indexPath], with: .fade)
+        guard editingStyle == .delete else {
+            return
+        }
+        
+        
+        
+        //tableView.deleteRows(at: [indexPath], with: .fade)
         let row = indexPath.row
-        let k = Array(FirebaseData.travels.keys)[row]
-        FirebaseData.travels.removeValue(forKey: k)
-        FirebaseController.removeTravelFromFirebase(travelid: k)
-            //countries.remove(at: indexPath.row)
-        tableView.deleteRows(at: [indexPath], with: .automatic)
+        
+        // Show a confirm message before delete
+        let alert = UIAlertController(title: "Delete Trip", message: "Are you sure you want to delete your trip?", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { _ in
+            
+            // Delete the row from the data source
+            let k = Array(FirebaseData.travels.keys)[row]
+            FirebaseData.travels.removeValue(forKey: k)
+            FirebaseController.removeTravelFromFirebase(travelid: k)
+            tableView.deleteRows(at: [indexPath], with: .automatic)
+        }))
+        
+        self.present(alert, animated: true, completion: nil)
+        
         }    
 
    
