@@ -38,28 +38,11 @@ class PinViewController: UITableViewController, UICollectionViewDataSource, UICo
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        //check for current location
+        self.latitude = UserDefaults.standard.double(forKey: "latitude")
+        self.longitude = UserDefaults.standard.double(forKey: "longitude")
+        initSettings()
         
-        Locator.currentPosition(
-            accuracy: .house,
-            timeout: Timeout.delayed(10.0),
-            onSuccess: { location in
-                self.latitude = location.coordinate.latitude
-                self.longitude = location.coordinate.longitude
-                self.initSettings()
-            },
-            onFail: { error, loc in
-                print("Failed to get location: \(error). Location:\(loc.debugDescription)")
-            }
-        )
-        // fallback if location cant be detected
-        if self.latitude == 0.0 && self.longitude == 0.0 {
-            self.latitude = UserDefaults.standard.double(forKey: "latitude")
-            self.longitude = UserDefaults.standard.double(forKey: "longitude")
-            initSettings()
-        }
     }
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()

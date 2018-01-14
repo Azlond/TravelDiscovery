@@ -17,7 +17,7 @@ import CoreLocation
 //TODO: value of "share in public feed" gets reset when selecting an image/video
 //TODO: private pins are appearing in public feed - might be related to TODO above
 //TODO: maybe show pin-videos in fullscreen?
-//TODO: openning a travel deletes and reuplods pins to Firebase for some reason
+//TODO: opening a travel deletes and reuplods pins to Firebase for some reason
 //TODO: Warnings are hidden/invisible behind NavigationBar in MapView
 //TODO: Steps in the steplabel in travels are cut off at right screen
 //TODO: HealthKit-Operations are async - correct amount of steps only gets shown on second visit to travel
