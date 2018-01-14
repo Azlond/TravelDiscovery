@@ -11,7 +11,7 @@ import UIKit
 import HealthKit
 
 class Travel {
-    public static var dateStyle = DateFormatter.Style.long
+    public static var dateStyle = DateFormatter.Style.medium
     public static var timeStyle = DateFormatter.Style.none
     
     //MARK: Properties

@@ -16,11 +16,6 @@ class TravelDetailTableViewController: UITableViewController {
     var rowTag : Int = 0
     
     @IBOutlet var infoTableView: UITableView!
-    
-    //@IBOutlet weak var beginDataLabel: UILabel!
-    //@IBOutlet weak var endDataLabel: UILabel!
-
-    
     @IBOutlet weak var beginDateLabel: UILabel!
     @IBOutlet weak var endDateLabel: UILabel!
     
@@ -51,7 +46,8 @@ class TravelDetailTableViewController: UITableViewController {
             self.rowTag = 1 // damit End Date geändert wird
             datePickerChanged()
         }
-        
+       
+       
         let steps = (FirebaseData.travels[self.travelId]?.getSteps())!
         let km = (FirebaseData.travels[self.travelId]?.getKm())!
         self.stepsLabel.text = String(describing: steps)
@@ -85,7 +81,7 @@ class TravelDetailTableViewController: UITableViewController {
 */
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if datePickerHidden && indexPath.section == 1 && indexPath.row == 2 {
+        if datePickerHidden && indexPath.section == 2 && indexPath.row == 2 {
             return 0
         } else {
             return super.tableView(tableView, heightForRowAt: indexPath)
@@ -95,7 +91,7 @@ class TravelDetailTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if indexPath.section == 1 && (indexPath.row == 0 || indexPath.row == 1) {
+        if indexPath.section == 2 && (indexPath.row == 0 || indexPath.row == 1) {
             rowTag = indexPath.row
             toggleDatepicker ()
         }
@@ -175,6 +171,7 @@ class TravelDetailTableViewController: UITableViewController {
     func datePickerChanged () {
         if rowTag == 0 {
             beginDateLabel.text = DateFormatter.localizedString(from: datePicker.date, dateStyle: Travel.dateStyle, timeStyle: Travel.timeStyle)
+            
             FirebaseData.travels[self.travelId]!.begin = beginDateLabel.text
         } else if rowTag == 1 {
             endDateLabel.text = DateFormatter.localizedString(from: datePicker.date, dateStyle: Travel.dateStyle, timeStyle: Travel.timeStyle)
