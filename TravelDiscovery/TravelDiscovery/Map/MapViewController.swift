@@ -131,7 +131,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
     func mapView(_ mapView: MGLMapView, didFinishLoading style: MGLStyle) {
         updateMap()
         addLayer(to: style)
-        Timer.scheduledTimer(timeInterval: 10, target: self, selector: #selector(animateTravel), userInfo: nil, repeats: false)
+        //Timer.scheduledTimer(timeInterval: 10, target: self, selector: #selector(animateTravel), userInfo: nil, repeats: false)
         
     }
     
@@ -202,7 +202,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
             for pinEntry in travel.pins{
                 let pin = pinEntry.value
                 //annotation != nil: preventing crash in rare cases where annotation is already removed
-                if (annotation != nil && annotation.coordinate.latitude == pin.latitude && annotation.coordinate.longitude == pin.longitude && annotation.title! == pin.name) {
+                if ((annotation != nil) && annotation.coordinate.latitude == pin.latitude && annotation.coordinate.longitude == pin.longitude && annotation.title! == pin.name) {
                     let storyBoard = UIStoryboard(name: "PinDetailView", bundle: nil)
                     let pinDetailVC = storyBoard.instantiateViewController(withIdentifier: "PinDetail") as! PinDetailViewController
                     pinDetailVC.pin = pin
@@ -352,28 +352,47 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
         style.addLayer(layer)
     }
   
-    /*TODO: needs a location-array as parameter, to display specific route*/
-    @objc func animateTravel() {
+    /*
+     *
+    */
+    @objc func animateTravel(_ notification: NSNotification) {
+        guard let travelId = notification.userInfo?["travelID"] as? String else {
+            return
+        }
+        
         currentIndex = 1
-        timer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(tick), userInfo: nil, repeats: true)
+        timer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(tick), userInfo: ["travelID":travelId], repeats: true)
     }
     
     
-    @objc func tick() {
-        if currentIndex > FirebaseData.locationData.count {
+    @objc func tick(_timer: Timer) {
+        let userInfo = timer?.userInfo as! Dictionary<String, AnyObject>
+        let travelId = userInfo["travelID"] as! String
+        
+        let numberTripLocations = FirebaseData.travels[travelId]?.routeData.count
+        
+        if numberTripLocations == nil || numberTripLocations! < 1 {
+            timer?.invalidate()
+            timer = nil
+            self.view.showMessage("Not enough saved locations to draw a route", type: .warning)
+            return
+        }
+        if currentIndex > numberTripLocations! {
             timer?.invalidate()
             timer = nil
             return
         }
         var coordinates = [CLLocationCoordinate2D]()
         for index in 0..<currentIndex {
-            coordinates.append(FirebaseData.locationData[index]!)
+            coordinates.append((FirebaseData.travels[travelId]?.routeData[String(index)])!)
         }
         // Update our MGLShapeSource with the current locations.
         updatePolylineWithCoordinates(coordinates: coordinates)
         
         // follow coordinates with camera
-        //self.mapView.setCenter(coordinates[currentIndex-1], animated: true)
+        //TODO: stop following if user interacted with map
+        //TODO? make camera ride smoother
+        self.mapView.setCenter(coordinates[currentIndex-1], animated: true)
         
         currentIndex += 1
     }

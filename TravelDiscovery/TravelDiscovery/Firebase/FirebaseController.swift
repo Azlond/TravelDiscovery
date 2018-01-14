@@ -127,7 +127,6 @@ class FirebaseController {
     
     /**
      * saves background location updates to firebase
-     * TODO: storage location on firebase needs to be changed to active travel, as location data should not be saved globally, but dependent of travels
      * TODO: activeTravelID in usersettings needs to be set to "" when deleting an active travel
      */
     @objc public static func handleBackgroundLocationData(location: CLLocation) {
@@ -330,7 +329,6 @@ class FirebaseController {
      * if the pins first image is not yet cached, the image is downloaded
      */
     public static func retrievePublicPinsFromFirebase(){
-        //TODO: send user short message about error, e.g. no network, no location data
         Locator.currentPosition(accuracy: .neighborhood, timeout: .delayed(7.0), onSuccess: { location in
             let url = URL(string: "https://us-central1-traveldiscovery-63134.cloudfunctions.net/getPublicPins")!
             var request = URLRequest(url: url)
@@ -342,6 +340,9 @@ class FirebaseController {
                 request.httpBody = try JSONSerialization.data(withJSONObject: postParams, options: .prettyPrinted)
             } catch let error {
                 print(error.localizedDescription)
+                DispatchQueue.main.async {
+                    NotificationCenter.default.post(name: Notification.Name("serverError"), object: nil)
+                }
             }
             let task = URLSession.shared.dataTask(with: request) { data, response, error in
                 guard let data = data, error == nil else {

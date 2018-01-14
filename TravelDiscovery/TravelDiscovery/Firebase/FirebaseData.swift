@@ -11,8 +11,8 @@ import FirebaseAuth
 import FirebaseDatabase
 import CoreLocation
 
-//TODO: Capitalization of first letter in "new Travel Popup" and "Pin name"
-//TODO: Change "new trip/Pin" button when travel is created
+//TODO: Capitalization of first letter in "new Travel Popup"
+//TODO: Change "new trip/Pin" button when travel is created 
 //TODO: Decide whether itS' called new Travel or new Trip
 //TODO: value of "share in public feed" gets reset when selecting an image/video
 

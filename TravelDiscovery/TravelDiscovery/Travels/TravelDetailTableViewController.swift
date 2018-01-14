@@ -152,7 +152,7 @@ class TravelDetailTableViewController: UITableViewController {
     */
     
     @IBAction func drawRouteClicked(_ sender: Any) {
-        NotificationCenter.default.post(name: Notification.Name("drawLine"), object: nil)
+        NotificationCenter.default.post(name: Notification.Name("drawLine"), object: nil, userInfo: ["travelID":self.travelId])
         tabBarController?.selectedIndex = 0
     }
     

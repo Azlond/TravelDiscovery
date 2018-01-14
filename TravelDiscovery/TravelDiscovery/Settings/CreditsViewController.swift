@@ -8,6 +8,7 @@
 
 import UIKit
 //TODO: update credit links
+//TODO: scale content to full screen size
 class CreditsViewController: UIViewController {
 
     @IBOutlet weak var creditsTextView: UITextView!
@@ -37,8 +38,9 @@ class CreditsViewController: UIViewController {
         let lib4 = "Eureka (https://github.com/xmartlabs/Eureka)"
         let lib5 = "SwiftLocation (https://github.com/malcommac/SwiftLocation)"
         let lib6 = "NohanaImagePicker (https://github.com/nohana/NohanaImagePicker)"
+        let lib7 = "GSMessagesn (https://github.com/wxxsw/GSMessages)"
         
-        let libraryBullets = createBullets(bullets: [lib1, lib2, lib3, lib4, lib5, lib6])
+        let libraryBullets = createBullets(bullets: [lib1, lib2, lib3, lib4, lib5, lib6, lib7])
         creditsString.append(librariesTitleString)
         creditsString.append(libraryBullets)
 
@@ -48,7 +50,7 @@ class CreditsViewController: UIViewController {
         let img2 = "Travel icon (https://icons8.com/icon/2487)"
         let img3 = "Feed icon (https://icons8.com/icon/12555)"
         let img4 = "Settings icon (https://icons8.com/icon/364)"
-        let img5 = "Login image (https://unsplash.com/photos/jv15x2Gs5F8)"
+        let img5 = "Login image (https://pixabay.com/de/berge-wandern-ruhm-abenteuer-1264538/)"
         let img6 = "Pin default image (https://www.pexels.com/photo/ball-shaped-blur-close-up-focus-346885)"
         let img7 = "Country shapes (https://www.amcharts.com/svg-maps)"
         

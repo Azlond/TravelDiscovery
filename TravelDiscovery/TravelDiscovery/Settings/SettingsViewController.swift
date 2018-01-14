@@ -116,10 +116,6 @@ class SettingsViewController: FormViewController {
                     userSettings.set(row.value, forKey: "locationNotification")
                 })
             }
-            <<< ButtonRow(){ row in
-                row.title = "Draw Route on Map"
-                row.onCellSelection(self.drawLineOnMap)
-            }
             <<< SwitchRow("devStepData"){ row in
                 row.title = "Show Steps (req. Health Permission)"
                 row.value = false
@@ -149,7 +145,7 @@ class SettingsViewController: FormViewController {
     }
     
     /*TODO: can probably be removed soon*/
-    /*TODO: disable location updates if active travel is removed, also update 'new travel' button in travels view*/
+    /*TODO: update 'new travel' button in travels view*/
     func backgroundLocationUpdates(enabled: Bool) {
         let userSettings = UserDefaults.standard
         userSettings.set(enabled, forKey: "backgroundLocationUpdates")
