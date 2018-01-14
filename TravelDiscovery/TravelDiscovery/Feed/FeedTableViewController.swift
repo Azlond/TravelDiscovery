@@ -147,6 +147,7 @@ class FeedTableViewController: UITableViewController {
         let storyBoard = UIStoryboard(name: "PinDetailView", bundle: nil)
         let pinDetailVC = storyBoard.instantiateViewController(withIdentifier: "PinDetail") as! PinDetailViewController
         pinDetailVC.pin = pin
+        pinDetailVC.isFeedPin = true
         navigationController?.pushViewController(pinDetailVC, animated: true)
 
     }

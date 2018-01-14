@@ -9,6 +9,8 @@
 //
 
 import UIKit
+import CoreLocation
+import SwiftLocation
 
 class TravelPinsTableViewController: UITableViewController {
     var travelId : String = ""
@@ -103,7 +105,17 @@ class TravelPinsTableViewController: UITableViewController {
         let pinKey = Array((FirebaseData.travels[self.travelId]?.pins.keys)!)[indexPath.row]
         let pin = (FirebaseData.travels[self.travelId]?.pins[pinKey])!
         
-        cell.usernameLabel.text = pin.username
+        let geoCoder = CLGeocoder()
+        let location: CLLocation = CLLocation.init(latitude: pin.latitude, longitude: pin.longitude)
+        geoCoder.reverseGeocodeLocation(location, completionHandler: { placemarks, error in
+            if let placemark = placemarks?[0]  {
+                if let cityName = placemark.locality {
+                    cell.usernameLabel.text = cityName
+                } else {
+                    cell.usernameLabel.text = pin.username
+                }
+            }
+        })
         cell.pinNameLabel.text = pin.name
         
         var previewText : String = ""
@@ -144,6 +156,7 @@ class TravelPinsTableViewController: UITableViewController {
         let storyBoard = UIStoryboard(name: "PinDetailView", bundle: nil)
         let pinDetailVC = storyBoard.instantiateViewController(withIdentifier: "PinDetail") as! PinDetailViewController
         pinDetailVC.pin = pin
+        pinDetailVC.isFeedPin = false
         navigationController?.pushViewController(pinDetailVC, animated: true)
         
     }

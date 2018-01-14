@@ -157,9 +157,14 @@ class TravelsTableViewController: UITableViewController {
         }
         else {
             // there is an active travel => end the current travel and switch button
-            FirebaseData.getActiveTravel()?.endTrip()
-            FirebaseController.saveTravelsToFirebase()
-            self.addButton.title = "New Travel"
+            let alert = UIAlertController(title: "End Trip", message: "Are you sure you want to end your trip?", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+            alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { _ in
+                FirebaseData.getActiveTravel()?.endTrip()
+                FirebaseController.saveTravelsToFirebase()
+                self.addButton.title = "New Travel"
+            }))
+            self.present(alert, animated: true, completion: nil)
         }
         self.reloadInputViews()
     }
