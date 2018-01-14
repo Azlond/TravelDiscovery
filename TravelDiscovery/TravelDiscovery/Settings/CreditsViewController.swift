@@ -7,8 +7,6 @@
 //
 
 import UIKit
-//TODO: update credit links
-//TODO: scale content to full screen size
 class CreditsViewController: UIViewController {
 
     @IBOutlet weak var creditsTextView: UITextView!

@@ -186,6 +186,7 @@ class TravelsTableViewController: UITableViewController {
     
     func addNewTravel() {
         var textField = UITextField()
+        textField.autocapitalizationType = .words
         let alert = UIAlertController(title: "Add New Travel", message: "", preferredStyle: .alert)
         let action = UIAlertAction(title: "Add", style: .default) { (action) in
             

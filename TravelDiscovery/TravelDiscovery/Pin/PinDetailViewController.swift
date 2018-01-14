@@ -7,6 +7,7 @@
 //
 import UIKit
 import AVKit
+import AVFoundation
 import CoreLocation
 import SwiftLocation
 
@@ -266,34 +267,25 @@ class PinDetailViewController: UIViewController, UICollectionViewDataSource, UIC
         spinner.widthAnchor.constraint(equalToConstant: 50).isActive = true
         spinner.heightAnchor.constraint(equalToConstant: 50).isActive = true
         
+        self.videoDisplay.addGestureRecognizer(UITapGestureRecognizer(target:self, action: #selector(playVideo)))
+       
     }
     
     @objc func playVideo() {
-        let player = AVPlayer(url: URL(string: pin.videoDownloadURL!)!)
-        
-        let playerLayer = AVPlayerLayer(player: player)
-        playerLayer.frame = videoDisplay.bounds //CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)//
-        playerLayer.videoGravity = .resizeAspectFill
-        self.videoDisplay.layer.addSublayer(playerLayer)
-        self.videoDisplayHeight.constant = playerLayer.frame.height
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(self.playerDidFinishPlaying(sender:)), name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: nil)
-        
-        
-        player.play()
         spinner.startAnimating()
         playButton.isHidden = true
+        
+        let player = AVPlayer(url: URL(string: pin.videoDownloadURL!)!)
+        let playerVC = AVPlayerViewController()
+        playerVC.player = player
+        self.present(playerVC, animated: true) {
+            playerVC.player!.play()
+            
+            self.playButton.isHidden = false
+            self.spinner.stopAnimating()
+        }
     }
     
-    @objc func playerDidFinishPlaying(sender: Notification){
-        for subview in videoDisplay.subviews {
-            subview.removeFromSuperview()
-        }
-        playButton.isHidden = false
-        spinner.stopAnimating()
-        setupVideoDisplay()
-        
-    }
     
     /*
      // MARK: - Navigation

@@ -72,30 +72,6 @@ class FirebaseController {
                 userSettings.set(scratchPercentValue, forKey: "scratchPercent")
                 Timer.scheduledTimer(timeInterval: 0.01, target: self, selector: #selector(self.sendSettingsNotification), userInfo: nil, repeats: false) //need to use a timer to avoid too many changes
             })
-            
-            /*
-             * locationData
-             * TODO: locationData is going to be saved with a travel, not globally. Once done, this listener might no longer be needed
-             */
-           /* let userSettings = UserDefaults.standard
-            let travelID = userSettings.string(forKey: "activeTravelID") ?? ""
-            
-            if (travelID.count > 0) {
-                FirebaseData.ref.child("users").child(user.uid).child("travels").child(travelID).child("routeData").observe(.value, with: { (snapshot) in
-                    var lD : Dictionary<Int, CLLocationCoordinate2D> = [:]
-                    let value = snapshot.value as? NSArray ?? []
-                    for element in value {
-                        print(element)
-                        let coordinates : Dictionary<String, Dictionary<String, Double>> = element as! Dictionary<String, Dictionary<String, Double>>
-                        let lat : Double = coordinates["coordinates"]!["latitude"]!
-                        let long: Double = coordinates["coordinates"]!["longitude"]!
-                        let coordinate : CLLocationCoordinate2D = CLLocationCoordinate2D.init(latitude: lat, longitude: long)
-                        lD[lD.count] = coordinate
-                    }
-                    FirebaseData.locationData.removeAll()
-                    FirebaseData.locationData = lD
-                })
-           }*/
            retrievePublicPinsFromFirebase()
         }
     }
@@ -127,7 +103,6 @@ class FirebaseController {
     
     /**
      * saves background location updates to firebase
-     * TODO: activeTravelID in usersettings needs to be set to "" when deleting an active travel
      */
     @objc public static func handleBackgroundLocationData(location: CLLocation) {
         if let user = Auth.auth().currentUser {
@@ -157,32 +132,6 @@ class FirebaseController {
             
             let locDict : Dictionary<String, Double> = ["latitude":location.coordinate.latitude, "longitude":location.coordinate.longitude]
             FirebaseData.ref.child("users").child(user.uid).child("travels").child(travelID).child("routeData").child(String(activeTravel.routeData.count - 1)).setValue(["coordinates": locDict])
-
-            /*
-             * Send push message with location name
-             * TODO: delete if no longer needed, which is likely
-             */
-            /*let userSettings = UserDefaults.standard
-            if (userSettings.bool(forKey: "locationNotification")) {
-                Locator.location(fromCoordinates: location.coordinate, onSuccess: { places in
-                    print(places)
-                    let content = UNMutableNotificationContent()
-                    content.title = "New Location Update"
-                    content.body = "You're somewhere new: \(places)"
-                    content.sound = UNNotificationSound.default()
-                    
-                    let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 10, repeats: false)
-                    let identifier = "UYLLocalNotification"
-                    let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
-                    UNUserNotificationCenter.current().add(request, withCompletionHandler: { (error) in
-                        if let error = error {
-                            print("\(error)")
-                        }
-                    })
-                }, onFail: { err in
-                    print("\(err)")
-                })
-            }*/
         } else {
             print("oops")
         }

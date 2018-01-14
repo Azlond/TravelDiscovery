@@ -140,15 +140,22 @@ class Travel {
     }
     
     func getSteps() -> Double {
-        if (self.active) {
+        //if (self.active) {
             self.stepCounter() // update steps
-        }
+       // }
         return self.steps
     }
     
     func getKm() -> Double {
-        if (self.active) {
-            // Eventually we need to calculate the km of the active travel
+        if (self.active && self.routeData.count > 0) {
+            var distance: Double = 0.0
+            for index in 1 ..< self.routeData.count {
+                let previousLocation: CLLocation = CLLocation(latitude: (routeData[String(index-1)]!.latitude), longitude: (routeData[String(index-1)]!.longitude))
+                let currentLocation: CLLocation = CLLocation(latitude: (routeData[String(index)]!.latitude), longitude: (routeData[String(index)]!.longitude))
+                let m = currentLocation.distance(from: previousLocation)
+                distance += m / 1000
+            }
+            self.km = distance
         }
         return self.km
     }
@@ -176,18 +183,31 @@ class Travel {
             }
             if (success) {
                 let userCalendar = Calendar.current // user calendar
+                let dateFormatter = DateFormatter()
+                dateFormatter.dateStyle = Travel.dateStyle
+                dateFormatter.timeStyle = Travel.timeStyle
+                let beginDate = dateFormatter.date(from: self.begin!)
                 
                 var dateComponentsStart = DateComponents()
-                dateComponentsStart.year = 2017
-                dateComponentsStart.month = 1
-                dateComponentsStart.day = 1
+                dateComponentsStart.year = userCalendar.component(.year, from: beginDate!)
+                dateComponentsStart.month = userCalendar.component(.month, from: beginDate!)
+                dateComponentsStart.day = userCalendar.component(.day, from: beginDate!)
                 dateComponentsStart.timeZone = TimeZone(abbreviation: "CET") // Central European Time
-                dateComponentsStart.hour = 0
+                dateComponentsStart.hour = 1
                 
                 let startDate = userCalendar.date(from: dateComponentsStart)
-                
-                let dateComponentEnd = DateComponents()
-                let endDate = Date()
+                let endDate: Date
+                if let finalDate = dateFormatter.date(from: self.end!) {
+                    var dateComponentEnd = DateComponents()
+                    dateComponentEnd.year = userCalendar.component(.year, from: finalDate)
+                    dateComponentEnd.month = userCalendar.component(.month, from: finalDate)
+                    dateComponentEnd.day = userCalendar.component(.day, from: finalDate)
+                    dateComponentEnd.timeZone = TimeZone(abbreviation: "CET") // Central European Time
+                    dateComponentEnd.hour = 1
+                    endDate = userCalendar.date(from: dateComponentEnd)!
+                } else {
+                    endDate = Date()
+                }
                 
                 let predicate = HKQuery.predicateForSamples(withStart: startDate, end: endDate, options: .strictStartDate)
                 
