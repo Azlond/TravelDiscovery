@@ -19,7 +19,7 @@ class TravelsTableViewController: UITableViewController {
     //var detailVC = TravelDetailTableViewController()
     
    var travelId : String = ""
-   
+    var travels: [Travel] = []
     override func viewDidLoad() {
         
         super.viewDidLoad()
@@ -35,6 +35,16 @@ class TravelsTableViewController: UITableViewController {
             selector: #selector(updateTravels),
             name: Notification.Name("updateTravels"),
             object: nil)
+        
+        outer: for index in 0 ..< FirebaseData.travels.count {
+            for travel in FirebaseData.travels {
+                if (travel.value.sortIndex == index) {
+                    travels.append(travel.value)
+                    continue outer
+                }
+            }
+        }
+        
         tableView.reloadData()
         
         handleRefresh()
@@ -79,9 +89,11 @@ class TravelsTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let row = indexPath.row
         let travel = FirebaseData.travels[Array(FirebaseData.travels.keys)[row]]
+        //let travel = travels[row] //TODO: use this line and comment out the two lines above once deleting travels is no longer possible / we're updating the sortIndex for all travels
+
         //let pin = travel!.pins
         //let photos = FirebaseData.pins[pKey]!.photos
-        
+
         let cell = tableView.dequeueReusableCell(withIdentifier: "travelCell", for: indexPath) as! TravelsTableViewCell
         cell.travelImageView.setRadius(borderWidth: (travel!.active ? 3 : 0))
         //  cell.travelImageView.layoutSubviews()
