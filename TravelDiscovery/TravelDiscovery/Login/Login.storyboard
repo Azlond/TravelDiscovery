@@ -357,6 +357,7 @@
                         <outlet property="appName" destination="Z9K-iC-HM5" id="reM-6x-Qsj"/>
                         <outlet property="loginOptionsView" destination="qgy-vU-xWf" id="PYE-hb-Ek6"/>
                         <outlet property="logo" destination="T5H-ls-EcY" id="bmJ-xC-HHv"/>
+                        <outlet property="logoHeight" destination="kkl-kU-Rbg" id="8Om-m5-aqL"/>
                         <outlet property="subText" destination="gQQ-Tq-QB9" id="M96-iO-nrg"/>
                     </connections>
                 </viewController>
