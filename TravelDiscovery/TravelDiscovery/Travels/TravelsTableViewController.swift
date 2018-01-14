@@ -79,13 +79,19 @@ class TravelsTableViewController: UITableViewController {
         //let pin = travel!.pins
         //let photos = FirebaseData.pins[pKey]!.photos
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: "travelCell2", for: indexPath) as! TravelsTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "travelCell", for: indexPath) as! TravelsTableViewCell
         cell.travelImageView.setRadius(borderWidth: (travel!.active ? 3 : 0))
         //  cell.travelImageView.layoutSubviews()
         cell.travelNameLabel.text = travel!.name
-        cell.travelDateLabel.text = travel!.begin! + "   " + travel!.end!
+        let beginDate = "From " + travel!.begin! + " "
        
        
+        if(travel!.end! != ""){
+              cell.travelDateLabel.text = beginDate + "⇨ To " + travel!.end!
+        } else {
+             cell.travelDateLabel.text = beginDate
+        }
+        
         // set images
         cell.travelImageView.image = UIImage(named: "default2")
         if (travel!.pins.count > 0) {
@@ -96,9 +102,6 @@ class TravelsTableViewController: UITableViewController {
             }
         }
         
-        
-        //cell.travelImageView.image = UIImage(named: "default2")!
-
         
         /*
         if ((pin.imageURLs?.count ?? 0) > 0) {

@@ -137,7 +137,14 @@ class PinViewController: UITableViewController, UICollectionViewDataSource, UICo
             return
         }
         
+        //calculate number of pin in active travel
+        var pinNumber = 0
+        if let travel = FirebaseData.getActiveTravel() {
+            pinNumber = travel.pins.count + 1
+        }
+        
         let pin : Pin = Pin.init(id: id,
+                                 number: pinNumber,
                                  name: name!,
                                  longitude: longitude,
                                  latitude: latitude,

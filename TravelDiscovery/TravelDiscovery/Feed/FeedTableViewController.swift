@@ -21,10 +21,16 @@ class FeedTableViewController: UITableViewController {
         self.tableView.rowHeight = UITableViewAutomaticDimension
         
         self.refreshControl?.addTarget(self, action: #selector(self.handleRefresh), for: UIControlEvents.valueChanged)
+        
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(updateFeed),
             name: Notification.Name("updateFeed"),
+            object: nil)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(showServerErrorMessage),
+            name:Notification.Name("serverError"),
             object: nil)
 
         self.tableView.reloadData()
@@ -40,6 +46,10 @@ class FeedTableViewController: UITableViewController {
             self.refreshControl?.endRefreshing()
         }
         self.tableView.reloadData()
+    }
+    
+    @objc func showServerErrorMessage() {
+        self.showMessage("Server error: no location or range sent", type: .error, options: [.autoHideDelay(3.5)])
     }
     
     

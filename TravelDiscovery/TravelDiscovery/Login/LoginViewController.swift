@@ -10,7 +10,6 @@ import UIKit
 import FirebaseAuth
 
 // TODO: potentially make status not opaque and visible
-// TODO: buttons are currently overlaying appname
 
 class LoginViewController: UIViewController {
     
@@ -20,6 +19,9 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var subText: UILabel!
     @IBOutlet weak var loginOptionsView: UIView!
     
+    @IBOutlet weak var logoHeight: NSLayoutConstraint!
+    
+    
     override var prefersStatusBarHidden: Bool {
         return true
     }
@@ -27,20 +29,26 @@ class LoginViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        //init alpha values (start values of animation)
         subText.alpha = 1.0
         loginOptionsView.alpha = 0
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         
-        UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseInOut, animations: {
+        // new location of constraint for app name and logo
+        self.logoHeight.constant = 160
+        
+        UIView.animate(withDuration: 1.3, delay: 0, options: .curveEaseInOut, animations: {
             self.subText.alpha = 0
-            
-        }, completion: {(completed) in
-            UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseOut, animations: {
-                self.appName.center.y -= 50
-                self.logo.center.y -= 50
-                self.loginOptionsView.center.y -= 10
-                self.loginOptionsView.alpha = 1
-            })
+            self.view.layoutIfNeeded() // animates the constraint change
         })
+        
+        UIView.animate(withDuration: 1.2, delay: 0.5, options: .curveEaseInOut, animations: {
+            self.loginOptionsView.alpha = 1
+        })
+        
     }
     
     override func didReceiveMemoryWarning() {

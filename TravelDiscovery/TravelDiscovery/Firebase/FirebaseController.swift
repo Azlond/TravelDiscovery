@@ -13,6 +13,7 @@ import SwiftLocation
 import CoreLocation
 import UserNotifications
 import FirebaseStorage
+import GSMessages
 
 class FirebaseController {
     //locks for uploads
@@ -229,6 +230,7 @@ class FirebaseController {
                                         if index == (pin.photos!.count-1) {
                                             self.uploadingImages = false
                                             self.savePinToFirebase(pin: pin, user: user, travel: travel)
+                                            NotificationCenter.default.post(name: Notification.Name("uploadSuccess"), object: nil, userInfo: ["type":"Image"])
                                         }
                                     }
                                 })
@@ -282,6 +284,7 @@ class FirebaseController {
                                     pin.videoThumbnailURL = imageURL
                                     self.uploadingVideoThumbnail = false
                                     self.savePinToFirebase(pin: pin, user: user, travel: travel)
+                                    NotificationCenter.default.post(name: Notification.Name("uploadSuccess"), object: nil, userInfo: ["type":"Video"])
                                 }
                             })
                         }
@@ -348,7 +351,12 @@ class FirebaseController {
                 if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {
                     print("statusCode should be 200, but is \(httpStatus.statusCode)")
                     print("response = \(String(describing: response))")
-                    //TODO: If statuscode == 400, no location or range was sent to the server. Tell user about it.
+                    // If statuscode == 400, no location or range was sent to the server. Tell user about it.
+                    if httpStatus.statusCode == 400 {
+                        DispatchQueue.main.async {
+                            NotificationCenter.default.post(name: Notification.Name("serverError"), object: nil)
+                        }
+                    }
                 }
                 
                 do {
