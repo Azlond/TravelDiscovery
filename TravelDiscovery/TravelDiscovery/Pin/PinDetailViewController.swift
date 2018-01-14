@@ -32,6 +32,7 @@ class PinDetailViewController: UIViewController, UICollectionViewDataSource, UIC
     }
     
     var showStatusBar = true
+    var isFeedPin = false
     var pin: Pin!
     
     let playButton: UIButton = {
@@ -109,10 +110,9 @@ class PinDetailViewController: UIViewController, UICollectionViewDataSource, UIC
                 // get city name from placemark and set title
                 if let city = placemark.locality {
                     //let region = placemark.administrativeArea //Staat
-                    if let area = placemark.subLocality { // Stadtviertel
-                        self.title = area
-                    }
-                    else {
+                    if self.isFeedPin && placemark.subLocality != nil {
+                        self.title = placemark.subLocality // Stadtviertel
+                    } else {
                         self.title = city
                     }
                 }
@@ -210,11 +210,12 @@ class PinDetailViewController: UIViewController, UICollectionViewDataSource, UIC
                 //animate image to fill the screen with black background
                 UIView.animate(withDuration: 0.4, delay: 0, options: .curveEaseOut, animations: {
                     self.blackBackground!.alpha = 1
-                    self.showStatusBar = false
-                    self.setNeedsStatusBarAppearanceUpdate()
                     let height = img.size.height / img.size.width * keyWindow.frame.width
                     zoomInView.frame = CGRect(x: 0, y: 0, width: keyWindow.frame.width, height: height)
                     zoomInView.center = keyWindow.center
+                }, completion: {(completed) in
+                    self.showStatusBar = false
+                    self.setNeedsStatusBarAppearanceUpdate()
                 })
             }
             
@@ -227,11 +228,13 @@ class PinDetailViewController: UIViewController, UICollectionViewDataSource, UIC
             zoomOutView.clipsToBounds = true
             zoomOutView.contentMode = .scaleAspectFill
             
+            self.showStatusBar = true
+            self.setNeedsStatusBarAppearanceUpdate()
+            
             UIView.animate(withDuration: 0.4, delay: 0, options: .curveEaseOut, animations: {
                 self.blackBackground?.alpha = 0
                 zoomOutView.frame = self.startFrame!
-                self.showStatusBar = true
-                self.setNeedsStatusBarAppearanceUpdate()
+                
             }, completion: {(completed) in
                 zoomOutView.removeFromSuperview()
             })
