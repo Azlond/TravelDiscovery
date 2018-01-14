@@ -159,7 +159,7 @@ class TravelsTableViewController: UITableViewController {
         if (FirebaseData.getActiveTravel() == nil) {
             // no active travel => adding a new travel and switch button
             self.addNewTravel()
-            self.addButton.title = "End Travel"
+            self.addButton.title = "End Trip"
         }
         else {
             // there is an active travel => end the current travel and switch button
@@ -168,7 +168,7 @@ class TravelsTableViewController: UITableViewController {
             alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { _ in
                 FirebaseData.getActiveTravel()?.endTrip()
                 FirebaseController.saveTravelsToFirebase()
-                self.addButton.title = "New Travel"
+                self.addButton.title = "New Trip"
             }))
             self.present(alert, animated: true, completion: nil)
         }
@@ -177,17 +177,17 @@ class TravelsTableViewController: UITableViewController {
     
     func updateAddButton() {
         if (FirebaseData.getActiveTravel() == nil) {
-            self.addButton.title = "New Travel"
+            self.addButton.title = "New Trip"
         }
         else {
-            self.addButton.title = "End Travel"
+            self.addButton.title = "End Trip"
         }
     }
     
     func addNewTravel() {
         var textField = UITextField()
         textField.autocapitalizationType = .words
-        let alert = UIAlertController(title: "Add New Travel", message: "", preferredStyle: .alert)
+        let alert = UIAlertController(title: "Add New Trip", message: "", preferredStyle: .alert)
         let action = UIAlertAction(title: "Add", style: .default) { (action) in
             
             let id = "Travel_" + UUID().uuidString
@@ -202,7 +202,7 @@ class TravelsTableViewController: UITableViewController {
         }
         
         alert.addTextField { (alertTextField) in
-            alertTextField.placeholder = "Create new travel"
+            alertTextField.placeholder = "Create New Trip"
             textField = alertTextField
         }
         
