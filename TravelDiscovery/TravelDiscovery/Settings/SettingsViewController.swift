@@ -149,6 +149,7 @@ class SettingsViewController: FormViewController {
     }
     
     /*TODO: can probably be removed soon*/
+    /*TODO: disable location updates if active travel is removed, also update 'new travel' button in travels view*/
     func backgroundLocationUpdates(enabled: Bool) {
         let userSettings = UserDefaults.standard
         userSettings.set(enabled, forKey: "backgroundLocationUpdates")

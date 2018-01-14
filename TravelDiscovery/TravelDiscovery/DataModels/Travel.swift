@@ -9,6 +9,8 @@
 import Foundation
 import UIKit
 import HealthKit
+import SwiftLocation
+import CoreLocation
 
 class Travel {
     public static var dateStyle = DateFormatter.Style.long
@@ -28,7 +30,7 @@ class Travel {
     var end: String?
     var steps: Double
     var km: Double
-
+    
     //var videos:
     
     
@@ -51,6 +53,14 @@ class Travel {
         self.active = true
         self.steps = 0.0
         self.km = 0.0
+        
+        let userSettings = UserDefaults.standard
+        userSettings.set(id, forKey: "activeTravelID")
+        Locator.subscribeSignificantLocations(onUpdate: { location in
+            FirebaseController.handleBackgroundLocationData(location: location)
+        }) { (err, lastLocation) -> (Void) in
+            print("Failed with err: \(err)")
+        }
     }
     
     
@@ -72,7 +82,15 @@ class Travel {
             let pin = Pin.init(dict: value)
             self.pins[pinEntry.key] = pin
         }
-        
+        if (self.active) {
+            let userSettings = UserDefaults.standard
+            userSettings.set(id, forKey: "activeTravelID")
+            Locator.subscribeSignificantLocations(onUpdate: { location in
+                FirebaseController.handleBackgroundLocationData(location: location)
+            }) { (err, lastLocation) -> (Void) in
+                print("Failed with err: \(err)")
+            }
+        }
     }
     
     func endTrip(){
@@ -82,6 +100,11 @@ class Travel {
         }
         self.getSteps()
         self.getKm()
+        
+        Locator.completeAllLocationRequests()
+        let userSettings = UserDefaults.standard
+        userSettings.set("", forKey: "activeTravelID")
+        FirebaseData.locationData.removeAll()
     }
     
     
@@ -95,6 +118,7 @@ class Travel {
                 "sortIndex": self.sortIndex,
                 "steps": self.steps,
                 "km": self.km]
+        
         return dict
     }
     

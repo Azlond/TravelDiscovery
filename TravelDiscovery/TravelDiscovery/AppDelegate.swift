@@ -23,11 +23,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UIApplication.shared.isStatusBarHidden = false
         FirebaseController.populateCache()
         let userSettings = UserDefaults.standard
-        let enableBackgroundLocationUpdates = userSettings.bool(forKey: "backgroundLocationUpdates")
-        if (enableBackgroundLocationUpdates) {
+        let travelID = userSettings.string(forKey: "activeTravelID") ?? ""
+        if (travelID.count > 0) {
             Locator.subscribeSignificantLocations(onUpdate: { location in
-                //short delay to make sure all other location data is loaded correctly
-                Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(self.sendBackgroundLocationData), userInfo: location, repeats: false)
+                /*short delay to make sure all other location data is loaded correctly*/
+                Timer.scheduledTimer(timeInterval: 10, target: self, selector: #selector(self.sendBackgroundLocationData), userInfo: location, repeats: false)
             }) { (err, lastLocation) -> (Void) in
                 print("Failed with err: \(err)")
             }
