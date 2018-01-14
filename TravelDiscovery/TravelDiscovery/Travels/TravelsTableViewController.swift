@@ -9,6 +9,7 @@
 import UIKit
 import Firebase
 
+
 class TravelsTableViewController: UITableViewController {
    // @IBOutlet var travelsTableView: UITableView!
     
@@ -22,8 +23,10 @@ class TravelsTableViewController: UITableViewController {
     override func viewDidLoad() {
         
         super.viewDidLoad()
-        tableView.estimatedRowHeight = 100
-        tableView.rowHeight = UITableViewAutomaticDimension
+       
+       
+         tableView.estimatedRowHeight = 80
+         tableView.rowHeight = UITableViewAutomaticDimension
         
         self.navigationItem.leftBarButtonItem = self.editButtonItem
         self.refreshControl?.addTarget(self, action: #selector(self.handleRefresh), for: UIControlEvents.valueChanged)
@@ -83,13 +86,16 @@ class TravelsTableViewController: UITableViewController {
         cell.travelImageView.setRadius(borderWidth: (travel!.active ? 3 : 0))
         //  cell.travelImageView.layoutSubviews()
         cell.travelNameLabel.text = travel!.name
-        let beginDate = "From " + travel!.begin! + " "
-       
-       
+        let beginDate = "From " + travel!.begin! + "  "
+        let onTraveling = "⇨   On traveling ✈️"
+   
+        
+        
+        
         if(travel!.end! != ""){
-              cell.travelDateLabel.text = beginDate + "⇨ To " + travel!.end!
+              cell.travelDateLabel.text = beginDate + "⇨   To " + travel!.end!
         } else {
-             cell.travelDateLabel.text = beginDate
+             cell.travelDateLabel.text = beginDate + onTraveling
         }
         
         // set images
