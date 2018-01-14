@@ -185,6 +185,9 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
         }
     }
     
+    /**
+     * Show pin details on annotation (i) click
+     */
     func mapView(_ mapView: MGLMapView, annotation: MGLAnnotation, calloutAccessoryControlTapped control: UIControl) {
         for travelEntry in FirebaseData.travels {
             let travel = travelEntry.value            
@@ -335,7 +338,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
         style.addLayer(layer)
     }
   
-    
+    /*TODO: needs a location-array as parameter, to display specific route*/
     @objc func animateTravel() {
         currentIndex = 1
         timer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(tick), userInfo: nil, repeats: true)

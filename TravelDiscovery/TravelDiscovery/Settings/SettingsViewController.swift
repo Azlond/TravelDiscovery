@@ -91,7 +91,7 @@ class SettingsViewController: FormViewController {
                 })
             }
 
-        
+            /*TODO: remove developers corner, move options to correct places*/
         +++ Section("Developers Corner")
             <<< SwitchRow("backgroundLocationRow"){ row in
                 row.title = "Background Location Updates"
@@ -148,6 +148,7 @@ class SettingsViewController: FormViewController {
         // Do any additional setup after loading the view.
     }
     
+    /*TODO: can probably be removed soon*/
     func backgroundLocationUpdates(enabled: Bool) {
         let userSettings = UserDefaults.standard
         userSettings.set(enabled, forKey: "backgroundLocationUpdates")
@@ -173,7 +174,7 @@ class SettingsViewController: FormViewController {
             Locator.completeAllLocationRequests()
         }
     }
-    
+    /*TODO: can probably be removed*/
     func stepCounter() {
         
         guard let healthStore: HKHealthStore? = {
@@ -309,7 +310,7 @@ class SettingsViewController: FormViewController {
         self.present(deleteConfirmationAlert, animated: true, completion: nil)
     }
     
-    
+    /*TODO: needs to be moved/removed*/
     func drawLineOnMap(cell: ButtonCellOf<String>, row: ButtonRow) {
         NotificationCenter.default.post(name: Notification.Name("drawLine"), object: nil)        
     }
@@ -317,7 +318,6 @@ class SettingsViewController: FormViewController {
     func clearLocalData() {
         FirebaseData.visitedCountries.removeAll()
         FirebaseData.locationData.removeAll()
-        //FirebaseData.pins.removeAll()
         FirebaseData.publicPins.removeAll()
         FirebaseData.ref = nil
         FirebaseData.user = nil
