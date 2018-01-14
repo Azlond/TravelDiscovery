@@ -48,7 +48,7 @@ class TravelDetailTableViewController: UITableViewController {
         }
        
        
-        let steps = (FirebaseData.travels[self.travelId]?.getSteps())!
+        let steps = Int((FirebaseData.travels[self.travelId]?.getSteps())!)
         let km = (FirebaseData.travels[self.travelId]?.getKm())!
         self.stepsLabel.text = String(describing: steps)
         self.kmLabel.text = String(describing: km)
