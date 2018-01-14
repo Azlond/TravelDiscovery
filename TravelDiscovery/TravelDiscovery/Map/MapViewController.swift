@@ -371,10 +371,12 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
         
         let numberTripLocations = FirebaseData.travels[travelId]?.routeData.count
         
-        if numberTripLocations == nil || numberTripLocations! < 1 {
+        if numberTripLocations == nil || numberTripLocations! < 2 {
             timer?.invalidate()
             timer = nil
-            self.view.showMessage("Not enough saved locations to draw a route", type: .warning)
+            let alert = UIAlertController(title: "Unable to draw route", message: "You don't have enough locations saved to draw a route", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
             return
         }
         if currentIndex > numberTripLocations! {

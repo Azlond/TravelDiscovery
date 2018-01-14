@@ -18,7 +18,6 @@ import CoreLocation
 //TODO: private pins are appearing in public feed - might be related to TODO above
 //TODO: maybe show pin-videos in fullscreen?
 //TODO: openning a travel deletes and reuplods pins to Firebase for some reason
-//TODO: Warnings are hidden/invisible behind NavigationBar in MapView
 class FirebaseData {
     public static var visitedCountries : Dictionary<String, Bool> = [:]
     public static var user : User?
