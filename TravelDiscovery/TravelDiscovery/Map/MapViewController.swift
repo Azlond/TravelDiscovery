@@ -8,6 +8,7 @@
 
 import UIKit
 import Mapbox
+import GSMessages
 
 class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecognizerDelegate {
     
@@ -65,6 +66,12 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
             selector: #selector(showUploadErrorAlert),
             name:Notification.Name("uploadError"),
             object: nil)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(showUploadSuccessMessage),
+            name:Notification.Name("uploadSuccess"),
+            object: nil)
+        
         
         FirebaseController.retrieveTravelsFromFirebase()
         
@@ -298,9 +305,14 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
     
     @objc func showUploadErrorAlert(_ notification: NSNotification) {
         let type = notification.userInfo?["type"] as? String
-        let alert = UIAlertController(title: "Uploading Error", message: "An error occurred during " + type! + " upload", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-        self.present(alert, animated: true, completion: nil)
+        let message = "An error occurred during " + type! + " upload"
+        self.showMessage(message, type: .error)
+    }
+    
+    @objc func showUploadSuccessMessage(_ notification: NSNotification) {
+        let type = notification.userInfo?["type"] as? String
+        let message = type! + " upload complete"
+        self.showMessage(message, type: .success, options: [.autoHideDelay(2.0)])
     }
     
     /*

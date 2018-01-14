@@ -22,6 +22,7 @@ class Pin {
     var visibilityPublic: Bool
     var date: String
     var username: String
+    
     /*optionals*/
     var text: String?
     var photos: [UIImage]? = []
@@ -34,7 +35,7 @@ class Pin {
     
     //MARK: Initialization
     
-    init?(id: String, name: String, longitude: Double, latitude: Double, visibilityPublic: Bool, date: String, photos: [UIImage]?, videoURL: URL?, videoThumbnail: UIImage?, text: String?) {
+    init?(id: String, number: Int, name: String, longitude: Double, latitude: Double, visibilityPublic: Bool, date: String, photos: [UIImage]?, videoURL: URL?, videoThumbnail: UIImage?, text: String?) {
         // Initialization should fail if there is no name
         guard !name.isEmpty else {
             return nil
@@ -51,8 +52,7 @@ class Pin {
         self.videoUploadURL = videoURL
         self.videoThumbnail = videoThumbnail
         self.text = text
-        
-        self.number = 0 // TODO: init with number of pins in Travel list/dict
+        self.number = number
         self.username = UserDefaults.standard.string(forKey: "username") ?? "Anonymous"
         
     }
@@ -65,7 +65,7 @@ class Pin {
         self.latitude = dict["lat"] as! Double
         self.visibilityPublic = dict["visibilityPublic"] as! Bool
         self.date = dict["date"] as! String
-        self.number = 0 //dict["number"] as! Int TODO:
+        self.number = dict["number"] as! Int
         self.username = dict["username"] as? String ?? "Anonymous"
         
         if let text = dict["text"] as? String {
@@ -121,7 +121,6 @@ class Pin {
             dict["videoThumbnailURL"] = self.videoThumbnailURL
         }
         
-        
         return dict
     }
     
@@ -151,7 +150,6 @@ class Pin {
                     } catch {
                         print(error)
                     }
-                    
                 }
                 FirebaseData.imageCache.setObject(image, forKey: url!.lastPathComponent as NSString)
             }
