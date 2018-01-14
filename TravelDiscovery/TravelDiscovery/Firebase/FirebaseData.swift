@@ -22,6 +22,7 @@ import CoreLocation
 //TODO: Steps in the steplabel in travels are cut off at right screen, same for KM
 //TODO: HealthKit-Operations are async - correct amount of steps only gets shown on second visit to travel
 //TODO: Build logic for DatePickers in Travels or replace them with textLabels
+// TODO: activeTravelID in usersettings needs to be set to "" when deleting an active travel
 
 class FirebaseData {
     public static var visitedCountries : Dictionary<String, Bool> = [:]

@@ -68,9 +68,8 @@
                                     <navigationItem title="Credits" id="qYe-Oi-seU"/>
                                 </items>
                             </navigationBar>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="4w3-nP-egW">
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="4w3-nP-egW">
                                 <rect key="frame" x="0.0" y="64" width="320" height="455"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -78,6 +77,12 @@
                             </textView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="4w3-nP-egW" firstAttribute="top" secondItem="jW1-ai-O8X" secondAttribute="top" id="AIj-Qb-Mq4"/>
+                            <constraint firstItem="4w3-nP-egW" firstAttribute="bottom" secondItem="jW1-ai-O8X" secondAttribute="bottom" id="Hcq-EY-Vfw"/>
+                            <constraint firstItem="4w3-nP-egW" firstAttribute="trailing" secondItem="jW1-ai-O8X" secondAttribute="trailing" id="PMe-DB-jVk"/>
+                            <constraint firstItem="4w3-nP-egW" firstAttribute="leading" secondItem="jW1-ai-O8X" secondAttribute="leading" id="WSD-le-XSP"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="jW1-ai-O8X"/>
                     </view>
                     <connections>
