@@ -163,7 +163,8 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
             performSegue(withIdentifier: "addPin", sender: nil)
         }
         else {
-            //openAddTravelView()
+            //go to Travels Tab
+            tabBarController?.selectedIndex = 1
         }
     }
     
@@ -200,7 +201,8 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
             let travel = travelEntry.value            
             for pinEntry in travel.pins{
                 let pin = pinEntry.value
-                if (annotation.coordinate.latitude == pin.latitude && annotation.coordinate.longitude == pin.longitude && annotation.title!! == pin.name) {
+                //annotation != nil: preventing crash in rare cases where annotation is already removed
+                if (annotation != nil && annotation.coordinate.latitude == pin.latitude && annotation.coordinate.longitude == pin.longitude && annotation.title! == pin.name) {
                     let storyBoard = UIStoryboard(name: "PinDetailView", bundle: nil)
                     let pinDetailVC = storyBoard.instantiateViewController(withIdentifier: "PinDetail") as! PinDetailViewController
                     pinDetailVC.pin = pin

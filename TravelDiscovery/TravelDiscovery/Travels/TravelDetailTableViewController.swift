@@ -151,6 +151,12 @@ class TravelDetailTableViewController: UITableViewController {
     }
     */
     
+    @IBAction func drawRouteClicked(_ sender: Any) {
+        NotificationCenter.default.post(name: Notification.Name("drawLine"), object: nil)
+        tabBarController?.selectedIndex = 0
+    }
+    
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
