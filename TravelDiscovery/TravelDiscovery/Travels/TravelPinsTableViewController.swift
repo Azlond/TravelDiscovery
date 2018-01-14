@@ -14,6 +14,7 @@ import SwiftLocation
 
 class TravelPinsTableViewController: UITableViewController {
     var travelId : String = ""
+    var privatePins: [Pin] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,6 +32,18 @@ class TravelPinsTableViewController: UITableViewController {
             selector: #selector(updateFeed),
             name: Notification.Name("updateFeed"),
             object: nil)
+        
+        if let travelCount = FirebaseData.travels[self.travelId]?.pins.count {
+            outer: for index in 1 ..< travelCount + 1 {
+                for pin in (FirebaseData.travels[self.travelId]?.pins)! {
+                    if (pin.value.number == index) {
+                        privatePins.append(pin.value)
+                        continue outer
+                    }
+                }
+            }
+        }
+       
         
         self.tableView.reloadData()
         
@@ -102,9 +115,9 @@ class TravelPinsTableViewController: UITableViewController {
             fatalError("The dequeued cell is not an instance of PinTableViewCell.")
         }
         //let pin = FirebaseData.publicPins[indexPath.row]
-        let pinKey = Array((FirebaseData.travels[self.travelId]?.pins.keys)!)[indexPath.row]
-        let pin = (FirebaseData.travels[self.travelId]?.pins[pinKey])!
-        
+       // let pinKey = Array((FirebaseData.travels[self.travelId]?.pins.keys)!)[indexPath.row]
+       // let pin = (FirebaseData.travels[self.travelId]?.pins[pinKey])!
+        let pin = privatePins[indexPath.row]
         let geoCoder = CLGeocoder()
         let location: CLLocation = CLLocation.init(latitude: pin.latitude, longitude: pin.longitude)
         geoCoder.reverseGeocodeLocation(location, completionHandler: { placemarks, error in
