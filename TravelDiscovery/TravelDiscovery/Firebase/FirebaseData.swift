@@ -13,15 +13,17 @@ import CoreLocation
 
 //TODO: Capitalization of first letter in "new Travel Popup"
 //TODO: Change "new trip/Pin" button when travel is created 
-//TODO: Decide whether itS' called new Travel or new Trip
+//TODO: Decide whether it's called new Travel or new Trip
 //TODO: value of "share in public feed" gets reset when selecting an image/video
-
+//TODO: private pins are appearing in public feed - might be related to TODO above
+//TODO: maybe show pin-videos in fullscreen?
+//TODO: openning a travel deletes and reuplods pins to Firebase for some reason
+//TODO: Warnings are hidden/invisible behind NavigationBar in MapView
 class FirebaseData {
     public static var visitedCountries : Dictionary<String, Bool> = [:]
     public static var user : User?
     public static var ref: DatabaseReference!
     public static let defaultSettings: Dictionary<String, String> = ["feedRange":"1","username":"","visibility":"0","scratchPercent":"90"]
-    public static var locationData : Dictionary<Int, CLLocationCoordinate2D> = [:]  /*TODO: Might no longer be needed once locationData is saved to travel*/
     public static var publicPins = [Pin]()
     public static var travels: Dictionary<String, Travel> = [:]
     public static let imageCache = NSCache<NSString, AnyObject>()
