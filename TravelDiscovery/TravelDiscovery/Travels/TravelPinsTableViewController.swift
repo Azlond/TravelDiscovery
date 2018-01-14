@@ -114,10 +114,9 @@ class TravelPinsTableViewController: UITableViewController {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "PinTableViewCell", for: indexPath) as? PinTableViewCell else {
             fatalError("The dequeued cell is not an instance of PinTableViewCell.")
         }
-        //let pin = FirebaseData.publicPins[indexPath.row]
-       // let pinKey = Array((FirebaseData.travels[self.travelId]?.pins.keys)!)[indexPath.row]
-       // let pin = (FirebaseData.travels[self.travelId]?.pins[pinKey])!
-        let pin = privatePins[indexPath.row]
+        let pinKey = Array((FirebaseData.travels[self.travelId]?.pins.keys)!)[indexPath.row]
+        let pin = (FirebaseData.travels[self.travelId]?.pins[pinKey])!
+        //let pin = privatePins[indexPath.row] //TODO: comment out the two lines above and use this one once the video upload-bug has been fixed
         let geoCoder = CLGeocoder()
         let location: CLLocation = CLLocation.init(latitude: pin.latitude, longitude: pin.longitude)
         geoCoder.reverseGeocodeLocation(location, completionHandler: { placemarks, error in
