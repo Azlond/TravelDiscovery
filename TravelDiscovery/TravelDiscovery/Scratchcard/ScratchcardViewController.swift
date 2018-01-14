@@ -75,11 +75,11 @@ class ScratchcardViewController: UIViewController, ScratchUIViewDelegate {
     
     /**
      * function that checks how much of the scratchcard the user has already cleared.
+     * if scratched value is higher than user selected percentage, end scratching
      */
     func checkForCompletion() {
         let scratchPercent: Double = scratchCard.getScratchPercent()
         if scratchPercent > (userScratchPercent / 100) {
-            //finishSuccess(sleepTime: 0.001)
             scratchCard.scratchView.isHidden = true
             self.parentVC.markCountry(name: self.country)
             self.dismiss(animated: true, completion: nil)
