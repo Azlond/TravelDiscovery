@@ -153,7 +153,7 @@ class SettingsViewController: FormViewController {
     func backgroundLocationUpdates(enabled: Bool) {
         let userSettings = UserDefaults.standard
         userSettings.set(enabled, forKey: "backgroundLocationUpdates")
-        if (enabled) {
+        if (enabled  && FirebaseData.getActiveTravel() != nil) {
             if Locator.authorizationStatus != .authorizedAlways {
                 let locationInfoAlert = UIAlertController(title: "LocationService", message: "You do not have background location enabled for TravelDiscovery. Please do so in the settings app to use background location updates.", preferredStyle: .alert)
                 locationInfoAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action: UIAlertAction!) in
@@ -310,12 +310,7 @@ class SettingsViewController: FormViewController {
         deleteConfirmationAlert.view.tintColor = UIColor.red
         self.present(deleteConfirmationAlert, animated: true, completion: nil)
     }
-    
-    /*TODO: needs to be moved/removed*/
-    func drawLineOnMap(cell: ButtonCellOf<String>, row: ButtonRow) {
-        NotificationCenter.default.post(name: Notification.Name("drawLine"), object: nil)        
-    }
-    
+   
     func clearLocalData() {
         FirebaseData.visitedCountries.removeAll()
         FirebaseData.publicPins.removeAll()

@@ -267,6 +267,7 @@ class FirebaseController {
                                 pin.videoDownloadURL = videoURL
                                 self.uploadingVideo = false
                                 self.savePinToFirebase(pin: pin, user: user, travel: travel)
+                                NotificationCenter.default.post(name: Notification.Name("uploadSuccess"), object: nil, userInfo: ["type":"Video"])
                             }
                         })
                         //upload video thumbnail
@@ -289,7 +290,6 @@ class FirebaseController {
                                     pin.videoThumbnailURL = imageURL
                                     self.uploadingVideoThumbnail = false
                                     self.savePinToFirebase(pin: pin, user: user, travel: travel)
-                                    NotificationCenter.default.post(name: Notification.Name("uploadSuccess"), object: nil, userInfo: ["type":"Video"])
                                 }
                             })
                         }
@@ -316,7 +316,7 @@ class FirebaseController {
             let fbDict = pin.prepareDictForFirebase()
             FirebaseData.ref.child("users").child(user.uid).child("travels").child(travel.id).child("pins").child(pin.id).setValue(fbDict)
             NotificationCenter.default.post(name: Notification.Name("updatePins"), object: nil)
-            
+            NotificationCenter.default.post(name: Notification.Name("updateTravels"), object: nil)
             //save public pin
             if (pin.visibilityPublic) {
                 FirebaseData.ref.child("publicPins").child(pin.id).setValue(fbDict)
@@ -415,8 +415,6 @@ class FirebaseController {
                 
                 //save pins
                 savePinsToFirebaseOfTravel(travel: travel)
-                
-                NotificationCenter.default.post(name: Notification.Name("updateTravels"), object: nil)
             }
         }
     }
