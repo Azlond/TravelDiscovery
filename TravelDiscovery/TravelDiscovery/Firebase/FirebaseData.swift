@@ -11,14 +11,10 @@ import FirebaseAuth
 import FirebaseDatabase
 import CoreLocation
 
-//TODO: Capitalization of first letter in "new Travel Popup"
-//TODO: Change "new trip/Pin" button when travel is created 
+//TODO: Change "new trip/Pin" button when travel is created
 //TODO: Decide whether it's called new Travel or new Trip
-//TODO: value of "share in public feed" gets reset when selecting an image/video
 //TODO: private pins are appearing in public feed - might be related to TODO above
 //TODO: maybe show pin-videos in fullscreen?
-//TODO: opening a travel deletes and reuplods pins to Firebase for some reason
-//TODO: Warnings are hidden/invisible behind NavigationBar in MapView
 //TODO: Steps in the steplabel in travels are cut off at right screen, same for KM
 //TODO: HealthKit-Operations are async - correct amount of steps only gets shown on second visit to travel
 //TODO: Build logic for DatePickers in Travels or replace them with textLabels
