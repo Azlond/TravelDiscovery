@@ -49,7 +49,7 @@ class FeedTableViewController: UITableViewController {
     @objc func handleRefresh() {
         self.tableView.reloadData()
         FirebaseController.retrievePublicPinsFromFirebase()
-        //timeout in case no data can be retrieved
+        /*timeout in case no data can be retrieved*/
         Timer.scheduledTimer(timeInterval: 10, target: self, selector: #selector(updateFeed), userInfo: nil, repeats: false)
         
     }

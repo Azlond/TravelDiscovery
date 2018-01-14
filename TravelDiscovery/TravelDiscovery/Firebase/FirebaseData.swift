@@ -25,7 +25,7 @@ class FirebaseData {
     static func getActiveTravel() -> Travel? {
         for travelEntry in FirebaseData.travels{
             let travel = travelEntry.value
-            if(travel.active)!{
+            if(travel.active){
                 return travel
             }
         }

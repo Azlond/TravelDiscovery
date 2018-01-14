@@ -10,6 +10,7 @@ import UIKit
 import FirebaseAuth
 
 // TODO: potentially make status not opaque and visible
+// TODO: buttons are currently overlaying appname
 
 class LoginViewController: UIViewController {
     

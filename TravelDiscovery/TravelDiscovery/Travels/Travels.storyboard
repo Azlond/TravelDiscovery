@@ -24,28 +24,8 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="travelCell" id="iFX-JB-GO9">
-                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="iFX-JB-GO9" id="Hz9-Ov-vTE">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="S6C-B4-Zbs">
-                                            <rect key="frame" x="22" y="12" width="186" height="21"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <nil key="textColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                    </subviews>
-                                </tableViewCellContentView>
-                                <connections>
-                                    <segue destination="pHF-Io-7Gs" kind="show" identifier="sequeTravelDetail2" id="yYS-AH-1ta"/>
-                                </connections>
-                            </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="travelCell2" rowHeight="85" id="mN5-aZ-6ME" customClass="TravelsTableViewCell" customModule="TravelDiscovery" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="72" width="375" height="85"/>
+                                <rect key="frame" x="0.0" y="28" width="375" height="85"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="mN5-aZ-6ME" id="EVQ-lp-IzA">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="84.5"/>
@@ -61,13 +41,13 @@
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Date" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nG4-As-dTM">
-                                            <rect key="frame" x="104" y="45" width="110" height="15"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nG4-As-dTM">
+                                            <rect key="frame" x="104" y="45" width="255" height="15"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="AL" translatesAutoresizingMaskIntoConstraints="NO" id="wYd-Fr-hnz">
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="wYd-Fr-hnz">
                                             <rect key="frame" x="16" y="11" width="63" height="63"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="63" id="BFv-x4-JDO"/>
@@ -76,12 +56,6 @@
                                                 <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="63" id="s9X-ep-c4a"/>
                                             </constraints>
                                         </imageView>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Date" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VuG-Nr-NTE">
-                                            <rect key="frame" x="249" y="45" width="110" height="15"/>
-                                            <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
-                                            <nil key="textColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
                                     </subviews>
                                     <constraints>
                                         <constraint firstItem="nG4-As-dTM" firstAttribute="leading" secondItem="wYd-Fr-hnz" secondAttribute="trailing" constant="25" id="22N-w6-V0B"/>
@@ -89,12 +63,8 @@
                                         <constraint firstItem="wYd-Fr-hnz" firstAttribute="leading" secondItem="EVQ-lp-IzA" secondAttribute="leadingMargin" id="H3w-Ry-K2k"/>
                                         <constraint firstItem="nG4-As-dTM" firstAttribute="leading" secondItem="wYd-Fr-hnz" secondAttribute="trailing" constant="25" id="HUR-Ns-k7c"/>
                                         <constraint firstItem="nG4-As-dTM" firstAttribute="top" secondItem="mcA-BE-mqB" secondAttribute="bottom" constant="9" id="NhL-9G-iYl"/>
-                                        <constraint firstAttribute="bottomMargin" secondItem="VuG-Nr-NTE" secondAttribute="bottom" constant="14" id="RzY-Do-gJz"/>
                                         <constraint firstItem="nG4-As-dTM" firstAttribute="leading" secondItem="EVQ-lp-IzA" secondAttribute="leadingMargin" constant="88" id="cgQ-6h-ET5"/>
                                         <constraint firstItem="wYd-Fr-hnz" firstAttribute="bottom" secondItem="EVQ-lp-IzA" secondAttribute="bottomMargin" id="fAc-3w-e9R"/>
-                                        <constraint firstItem="VuG-Nr-NTE" firstAttribute="leading" secondItem="nG4-As-dTM" secondAttribute="trailing" constant="35" id="hac-2w-u3l"/>
-                                        <constraint firstItem="VuG-Nr-NTE" firstAttribute="leading" secondItem="nG4-As-dTM" secondAttribute="trailing" constant="35" id="hhN-fZ-aGE"/>
-                                        <constraint firstItem="VuG-Nr-NTE" firstAttribute="trailing" secondItem="EVQ-lp-IzA" secondAttribute="trailingMargin" id="ist-Db-QGC"/>
                                         <constraint firstItem="nG4-As-dTM" firstAttribute="top" secondItem="mcA-BE-mqB" secondAttribute="bottom" constant="9" id="mCl-8f-2BX"/>
                                         <constraint firstItem="nG4-As-dTM" firstAttribute="trailing" secondItem="EVQ-lp-IzA" secondAttribute="trailingMargin" id="oqy-62-CNV"/>
                                         <constraint firstItem="mcA-BE-mqB" firstAttribute="trailing" secondItem="EVQ-lp-IzA" secondAttribute="trailingMargin" id="rOr-Vp-SY3"/>
@@ -104,7 +74,7 @@
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <outlet property="travelDateLabel" destination="nG4-As-dTM" id="5xY-kA-n3o"/>
+                                    <outlet property="travelDateLabel" destination="nG4-As-dTM" id="yqJ-rV-jB9"/>
                                     <outlet property="travelImageView" destination="wYd-Fr-hnz" id="SEG-vZ-oiy"/>
                                     <outlet property="travelNameLabel" destination="mcA-BE-mqB" id="ulS-im-afA"/>
                                     <segue destination="pHF-Io-7Gs" kind="show" identifier="sequeTravelDetail" id="wpS-6L-0GH"/>
@@ -316,7 +286,7 @@
         <!--Travels-->
         <scene sceneID="024-NZ-5SH">
             <objects>
-                <navigationController storyboardIdentifier="TravelsTVC" toolbarHidden="NO" id="9mF-j1-I4g" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="TravelsTVC" id="9mF-j1-I4g" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Travels" image="travelIcon" id="wpg-xf-GNb"/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="0Sp-Kv-2ie">
@@ -391,12 +361,8 @@
         </scene>
     </scenes>
     <resources>
-        <image name="AL" width="375" height="667"/>
         <image name="default" width="938" height="938"/>
         <image name="travelIcon" width="32" height="32"/>
     </resources>
-    <inferredMetricsTieBreakers>
-        <segue reference="wpS-6L-0GH"/>
-    </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.21960784310000001" green="0.63921568630000003" blue="0.66274509800000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
 </document>

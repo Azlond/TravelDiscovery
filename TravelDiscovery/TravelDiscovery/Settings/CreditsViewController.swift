@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+//TODO: update credit links
 class CreditsViewController: UIViewController {
 
     @IBOutlet weak var creditsTextView: UITextView!
