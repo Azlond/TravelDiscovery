@@ -19,8 +19,9 @@ import CoreLocation
 //TODO: maybe show pin-videos in fullscreen?
 //TODO: opening a travel deletes and reuplods pins to Firebase for some reason
 //TODO: Warnings are hidden/invisible behind NavigationBar in MapView
-//TODO: Steps in the steplabel in travels are cut off at right screen
+//TODO: Steps in the steplabel in travels are cut off at right screen, same for KM
 //TODO: HealthKit-Operations are async - correct amount of steps only gets shown on second visit to travel
+//TODO: Build logic for DatePickers in Travels or replace them with textLabels
 
 class FirebaseData {
     public static var visitedCountries : Dictionary<String, Bool> = [:]

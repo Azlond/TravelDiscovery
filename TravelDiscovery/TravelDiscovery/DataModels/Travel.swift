@@ -147,8 +147,15 @@ class Travel {
     }
     
     func getKm() -> Double {
-        if (self.active) {
-            // Eventually we need to calculate the km of the active travel
+        if (self.active && self.routeData.count > 0) {
+            var distance: Double = 0.0
+            for index in 1 ..< self.routeData.count {
+                let previousLocation: CLLocation = CLLocation(latitude: (routeData[String(index-1)]!.latitude), longitude: (routeData[String(index-1)]!.longitude))
+                let currentLocation: CLLocation = CLLocation(latitude: (routeData[String(index)]!.latitude), longitude: (routeData[String(index)]!.longitude))
+                let m = currentLocation.distance(from: previousLocation)
+                distance += m / 1000
+            }
+            self.km = distance
         }
         return self.km
     }
