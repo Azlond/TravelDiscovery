@@ -107,7 +107,7 @@
                         <sections>
                             <tableViewSection headerTitle="Pins" id="OJs-4m-IFY">
                                 <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="He5-Gq-QY0">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="default" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="He5-Gq-QY0">
                                         <rect key="frame" x="0.0" y="55.5" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="He5-Gq-QY0" id="fjN-T7-emn">
@@ -131,7 +131,7 @@
                             </tableViewSection>
                             <tableViewSection headerTitle="Route" id="Jmd-1Z-6Ad">
                                 <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="default" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="WCo-fH-nIU">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="WCo-fH-nIU">
                                         <rect key="frame" x="0.0" y="155.5" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" tag="1" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="WCo-fH-nIU" id="L9z-fI-op9">
@@ -162,7 +162,7 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="default" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="rAw-2e-1UO">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="rAw-2e-1UO">
                                         <rect key="frame" x="0.0" y="199.5" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" tag="1" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="rAw-2e-1UO" id="s3N-j4-bFe">
@@ -222,7 +222,7 @@
                             </tableViewSection>
                             <tableViewSection headerTitle="Date" id="mPe-ay-u16">
                                 <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="default" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="T3q-QJ-vw4" detailTextLabel="bP0-h9-BNV" style="IBUITableViewCellStyleValue1" id="21s-tb-r17">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="T3q-QJ-vw4" detailTextLabel="bP0-h9-BNV" style="IBUITableViewCellStyleValue1" id="21s-tb-r17">
                                         <rect key="frame" x="0.0" y="343.5" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="21s-tb-r17" id="TbF-KM-Apq">
@@ -246,7 +246,7 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="default" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="Ojz-UM-Bxg" detailTextLabel="Wjj-K1-qZ2" style="IBUITableViewCellStyleValue1" id="nqu-kv-Y2x">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="Ojz-UM-Bxg" detailTextLabel="Wjj-K1-qZ2" style="IBUITableViewCellStyleValue1" id="nqu-kv-Y2x">
                                         <rect key="frame" x="0.0" y="387.5" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" tag="1" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="nqu-kv-Y2x" id="GI1-K3-dlW">
@@ -270,26 +270,6 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="163" id="Kc8-mX-zWz">
-                                        <rect key="frame" x="0.0" y="431.5" width="375" height="163"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" tag="2" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Kc8-mX-zWz" id="xhh-cx-YfR">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="162.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <datePicker contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="date" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="kyD-P5-UGt">
-                                                    <rect key="frame" x="0.0" y="0.0" width="375" height="162"/>
-                                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                                                    <date key="date" timeIntervalSinceReferenceDate="536671842.88290697">
-                                                        <!--2018-01-03 11:30:42 +0000-->
-                                                    </date>
-                                                    <connections>
-                                                        <action selector="beginDatePickerValue:" destination="pHF-Io-7Gs" eventType="valueChanged" id="Zc8-ra-c6I"/>
-                                                    </connections>
-                                                </datePicker>
-                                            </subviews>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
                                 </cells>
                             </tableViewSection>
                         </sections>
@@ -301,7 +281,6 @@
                     <navigationItem key="navigationItem" id="Hor-0E-zuf"/>
                     <connections>
                         <outlet property="beginDateLabel" destination="bP0-h9-BNV" id="VBB-jA-qLv"/>
-                        <outlet property="datePicker" destination="kyD-P5-UGt" id="cru-mr-HAk"/>
                         <outlet property="endDateLabel" destination="Wjj-K1-qZ2" id="Dqp-cW-9uu"/>
                         <outlet property="infoTableView" destination="bYF-Fi-Apv" id="EdN-Ck-ge0"/>
                         <outlet property="kmLabel" destination="bYM-Hg-5q3" id="vPj-fh-hyA"/>
