@@ -491,5 +491,16 @@ class FirebaseController {
         
     }
     
+    public static func updateTravelsIndices(index: Int) {
+        if let user = Auth.auth().currentUser {
+            initDatabase()
+            for travel in FirebaseData.travels.values {
+                if (travel.sortIndex > index) {
+                    travel.sortIndex -= 1
+                    FirebaseData.ref.child("users").child(user.uid).child("travels").child(travel.id).child("sortIndex").setValue(travel.sortIndex)
+                }
+            }
+        }
+    }
     
 }

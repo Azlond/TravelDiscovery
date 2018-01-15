@@ -246,6 +246,9 @@ class TravelsTableViewController: UITableViewController {
                 
                 // Delete the travel row from the data source
                 let k = Array(FirebaseData.travels.keys)[row]
+                if let sortIndex = FirebaseData.travels[k]?.sortIndex {
+                    FirebaseController.updateTravelsIndices(index: sortIndex)
+                }
                 FirebaseData.travels.removeValue(forKey: k)
                 FirebaseController.removeTravelFromFirebase(travelid: k)
                 tableView.deleteRows(at: [indexPath], with: .automatic)
