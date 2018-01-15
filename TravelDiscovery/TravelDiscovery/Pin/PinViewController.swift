@@ -148,7 +148,7 @@ class PinViewController: UITableViewController, UICollectionViewDataSource, UICo
                 
         //save location to background data for route visualization
         let location = CLLocation.init(latitude: latitude, longitude: longitude)
-        FirebaseController.handleBackgroundLocationData(location: location)
+        FirebaseController.handleBackgroundLocationData(location: location, isPin: true)
         
         returnToParentViewController()
         
