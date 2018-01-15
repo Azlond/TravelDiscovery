@@ -93,9 +93,18 @@ class TravelDetailTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        // && self.datePickerHidden
         if indexPath.section == 2 && (indexPath.row == 0 || indexPath.row == 1) {
-            rowTag = indexPath.row
-            toggleDatepicker ()
+            
+            let alert = UIAlertController(title: "Change Begin Date", message: "Are you sure you want to change the begin date?", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+            alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { _ in
+               
+                self.toggleDatepicker ()
+            }))
+             self.rowTag = indexPath.row
+            self.present(alert, animated: true, completion: nil)
+            
         }
     }
     /*
@@ -190,12 +199,7 @@ class TravelDetailTableViewController: UITableViewController {
     
     func toggleDatepicker() {
         datePickerHidden = !datePickerHidden
-        
-        /*
-        if !datePickerHidden {
-            datePickerHidden = !datePickerHidden
-        }
- */
+     
         infoTableView.beginUpdates()
         infoTableView.endUpdates()
         
