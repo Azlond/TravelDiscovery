@@ -11,13 +11,16 @@ import FirebaseAuth
 import FirebaseDatabase
 import CoreLocation
 
-//TODO: Travel: Distance: 2 Nachkommastellen runden
-//TODO: HealthKit-Operations are async - correct amount of steps only gets shown on second visit to travel
-//TODO: Build logic for DatePickers in Travels or replace them with textLabels
-//TODO: activeTravelID in usersettings needs to be set to "" when deleting an active travel / potentially remove option to remove travels
-//TODO: New Trp: Capitalization
-//TODO: New Trip: no empty input should be possible
-//TODO: fix constraints in travelstableview
+//TODO: Travel: Distance: 2 Nachkommastellen runden -> Jan
+//TODO: HealthKit-Operations are async - correct amount of steps only gets shown on second visit to travel -> Jan
+//TODO: Build logic for DatePickers in Travels or replace them with textLabels -> Hyerim
+//TODO: activeTravelID in usersettings needs to be set to "" when deleting an active travel -> Jan
+//TODO: New Trip: Capitalization -> Laura
+//TODO: New Trip: no empty input should be possible -> Hyerim
+//TODO: Trips table view: deactivate sorting -> Hyerim
+//TODO: fix constraints in travelstableview -> Laura
+//TODO: Travels: update sort index on delete -> Jan
+//TODO: Route Visualisation: following with camera, design -> Laura
 class FirebaseData {
     public static var visitedCountries : Dictionary<String, Bool> = [:]
     public static var user : User?
