@@ -141,7 +141,7 @@ class PinViewController: UITableViewController, UICollectionViewDataSource, UICo
         // save pin to travel
         if let currentTravel = FirebaseData.getActiveTravel() {
             currentTravel.pins[pin.id] = pin
-            FirebaseController.saveTravelsToFirebase()
+            FirebaseController.savePinToFirebaseOfTravel(pin: pin, travel: currentTravel)
         }
                 
         //save location to background data for route visualization

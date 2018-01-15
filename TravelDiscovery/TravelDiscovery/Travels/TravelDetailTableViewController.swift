@@ -194,7 +194,7 @@ class TravelDetailTableViewController: UITableViewController {
             endDateLabel.text = DateFormatter.localizedString(from: datePicker.date, dateStyle: Travel.dateStyle, timeStyle: Travel.timeStyle)
             FirebaseData.travels[self.travelId]!.end = endDateLabel.text
         }
-        FirebaseController.saveTravelsToFirebase()
+        FirebaseController.updateTravelInFirebase(travel: FirebaseData.travels[self.travelId]!)
     }
     
     func toggleDatepicker() {

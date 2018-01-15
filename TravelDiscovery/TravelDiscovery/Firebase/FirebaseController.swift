@@ -137,118 +137,120 @@ class FirebaseController {
         }
     }
     
+    fileprivate static func uploadImages(_ pin: Pin, _ user: User, _ travel: Travel) {
+        self.uploadingImages = true
+        //loop over images
+        for (index,image) in pin.photos!.enumerated() {
+            
+            // name image after random name
+            let imageName = UUID().uuidString + ".jpeg"
+            let storageRef = Storage.storage().reference().child("images").child(imageName)
+            
+            if let uploadData = UIImageJPEGRepresentation(image, 1) {
+                // upload image
+                storageRef.putData(uploadData, metadata:nil, completion: {
+                    (metadata, error) in
+                    if error != nil {
+                        print(error!)
+                        self.uploadingImages = false
+                        //notify of error
+                        NotificationCenter.default.post(name: Notification.Name("uploadError"), object: nil, userInfo: ["type":"image"])
+                        return
+                    }
+                    
+                    //UPLOAD SUCCESS
+                    //retrieve URL of uploaded image
+                    if let imageURL = metadata?.downloadURL()?.absoluteString {
+                        pin.imageURLs?.append(imageURL)
+                        
+                        //save pin after last image was uploaded
+                        if index == (pin.photos!.count-1) {
+                            self.uploadingImages = false
+                            self.savePinToFirebase(pin: pin, user: user, travel: travel)
+                            NotificationCenter.default.post(name: Notification.Name("uploadSuccess"), object: nil, userInfo: ["type":"Image"])
+                        }
+                    }
+                })
+            }
+        }
+    }
+    
+    fileprivate static func uploadVideo(_ pin: Pin, _ user: User, _ travel: Travel) {
+        self.uploadingVideo = true
+        
+        let videoName = UUID().uuidString + ".mov"
+        let storageRef = Storage.storage().reference().child("videos").child(videoName)
+        
+        //upload video
+        storageRef.putFile(from: pin.videoUploadURL!, metadata:nil, completion: {
+            (metadata, error) in
+            if error != nil {
+                print(error!)
+                self.uploadingVideo = false
+                //alert uploading error
+                NotificationCenter.default.post(name: Notification.Name("uploadError"), object: nil, userInfo: ["type":"video"])
+                return
+                
+            }
+            //UPLOAD SUCCESS
+            //retrieve URL of uploaded video
+            if let videoURL = metadata?.downloadURL()?.absoluteString {
+                pin.videoDownloadURL = videoURL
+                self.uploadingVideo = false
+                self.savePinToFirebase(pin: pin, user: user, travel: travel)
+                NotificationCenter.default.post(name: Notification.Name("uploadSuccess"), object: nil, userInfo: ["type":"Video"])
+            }
+        })
+        //upload video thumbnail
+        let imageName = UUID().uuidString + ".jpeg"
+        let storageRefImages = Storage.storage().reference().child("images").child(imageName)
+        
+        if let uploadData = UIImageJPEGRepresentation(pin.videoThumbnail!, 1) {
+            self.uploadingVideoThumbnail = true
+            storageRefImages.putData(uploadData, metadata:nil, completion: {
+                (metadata, error) in
+                if error != nil {
+                    print("Error Uploading: ",error!)
+                    self.uploadingVideoThumbnail = false
+                    NotificationCenter.default.post(name: Notification.Name("uploadError"), object: nil, userInfo: ["type":"video thumbnail"])
+                    return
+                }
+                //UPLOAD SUCCESS
+                //retrieve URL of uploaded video thumbnail
+                if let imageURL = metadata?.downloadURL()?.absoluteString {
+                    pin.videoThumbnailURL = imageURL
+                    self.uploadingVideoThumbnail = false
+                    self.savePinToFirebase(pin: pin, user: user, travel: travel)
+                }
+            })
+        }
+    }
+    
     /**
-     * upload images and videos if necessary
+     * upload pin images and videos if necessary
      */
-    public static func savePinsToFirebaseOfTravel(travel: Travel) {
+    public static func savePinToFirebaseOfTravel(pin: Pin, travel: Travel) {
         if let user = Auth.auth().currentUser {
             initDatabase()
             
-            // loop over pins
-            let pinsCopy = travel.pins
-            for pinEntry in pinsCopy {
-                let pin = pinEntry.value
+            // check if images or videos have to be uploaded
+            if  ((pin.imageURLs?.isEmpty ?? true) && !(pin.photos?.isEmpty ?? true)) || (pin.videoUploadURL != nil && pin.videoDownloadURL == nil) {
                 
-                // check if images or videos have to be uploaded
-                if  ((pin.imageURLs?.isEmpty ?? true) && !(pin.photos?.isEmpty ?? true)) || (pin.videoUploadURL != nil && pin.videoDownloadURL == nil) {
-                    
-                    // IMAGE UPLOAD: if a pin doesn't have imageURL entries but has photos -> upload images
-                    if ((pin.imageURLs?.isEmpty ?? true) && !(pin.photos?.isEmpty ?? true)) {
-                        self.uploadingImages = true
-                        //loop over images
-                        for (index,image) in pin.photos!.enumerated() {
-                            
-                            // name image after random name
-                            let imageName = UUID().uuidString + ".jpeg"
-                            let storageRef = Storage.storage().reference().child("images").child(imageName)
-                            
-                            if let uploadData = UIImageJPEGRepresentation(image, 1) {
-                                // upload image
-                                storageRef.putData(uploadData, metadata:nil, completion: {
-                                    (metadata, error) in
-                                    if error != nil {
-                                        print(error!)
-                                        self.uploadingImages = false
-                                        //notify of error
-                                        NotificationCenter.default.post(name: Notification.Name("uploadError"), object: nil, userInfo: ["type":"image"])
-                                        return
-                                    }
-                                    
-                                    //UPLOAD SUCCESS
-                                    //retrieve URL of uploaded image
-                                    if let imageURL = metadata?.downloadURL()?.absoluteString {
-                                        pin.imageURLs?.append(imageURL)
-                                        
-                                        //save pin after last image was uploaded
-                                        if index == (pin.photos!.count-1) {
-                                            self.uploadingImages = false
-                                            self.savePinToFirebase(pin: pin, user: user, travel: travel)
-                                            NotificationCenter.default.post(name: Notification.Name("uploadSuccess"), object: nil, userInfo: ["type":"Image"])
-                                        }
-                                    }
-                                })
-                            }
-                        }
-                    }
-                    
-                    //upload video if pin only has an uploadURL saved but no downloadURL
-                    if pin.videoUploadURL != nil && pin.videoDownloadURL == nil {
-                        self.uploadingVideo = true
-                        
-                        let videoName = UUID().uuidString + ".mov"
-                        let storageRef = Storage.storage().reference().child("videos").child(videoName)
-                        
-                        //upload video
-                        storageRef.putFile(from: pin.videoUploadURL!, metadata:nil, completion: {
-                            (metadata, error) in
-                            if error != nil {
-                                print(error!)
-                                self.uploadingVideo = false
-                                //alert uploading error
-                                NotificationCenter.default.post(name: Notification.Name("uploadError"), object: nil, userInfo: ["type":"video"])
-                                return
-                                
-                            }
-                            //UPLOAD SUCCESS
-                            //retrieve URL of uploaded video
-                            if let videoURL = metadata?.downloadURL()?.absoluteString {
-                                pin.videoDownloadURL = videoURL
-                                self.uploadingVideo = false
-                                self.savePinToFirebase(pin: pin, user: user, travel: travel)
-                                NotificationCenter.default.post(name: Notification.Name("uploadSuccess"), object: nil, userInfo: ["type":"Video"])
-                            }
-                        })
-                        //upload video thumbnail
-                        let imageName = UUID().uuidString + ".jpeg"
-                        let storageRefImages = Storage.storage().reference().child("images").child(imageName)
-                        
-                        if let uploadData = UIImageJPEGRepresentation(pin.videoThumbnail!, 1) {
-                            self.uploadingVideoThumbnail = true
-                            storageRefImages.putData(uploadData, metadata:nil, completion: {
-                                (metadata, error) in
-                                if error != nil {
-                                    print("Error Uploading: ",error!)
-                                    self.uploadingVideoThumbnail = false
-                                    NotificationCenter.default.post(name: Notification.Name("uploadError"), object: nil, userInfo: ["type":"video thumbnail"])
-                                    return
-                                }
-                                //UPLOAD SUCCESS
-                                //retrieve URL of uploaded video thumbnail
-                                if let imageURL = metadata?.downloadURL()?.absoluteString {
-                                    pin.videoThumbnailURL = imageURL
-                                    self.uploadingVideoThumbnail = false
-                                    self.savePinToFirebase(pin: pin, user: user, travel: travel)
-                                }
-                            })
-                        }
-                        
-                    }
+                // IMAGE UPLOAD: if the pin doesn't have imageURL entries but has photos -> upload images
+                if ((pin.imageURLs?.isEmpty ?? true) && !(pin.photos?.isEmpty ?? true)) {
+                    uploadImages(pin, user, travel)
                 }
-                    // no images or video to upload: save pin to firebase immediately
-                else {
-                    self.savePinToFirebase(pin: pin, user: user, travel: travel)
+                
+                // VIDEO UPLOAD: if pin only has a video uploadURL saved but no downloadURL
+                if pin.videoUploadURL != nil && pin.videoDownloadURL == nil {
+                    uploadVideo(pin, user, travel)
                 }
             }
+                // no images or video to upload: save pin to firebase immediately
+            else {
+                self.savePinToFirebase(pin: pin, user: user, travel: travel)
+            }
+            
         }
     }
     /**
@@ -349,23 +351,42 @@ class FirebaseController {
         })
     }
     
-    /**
-     * saving travels to firebase
-     */
-    public static func saveTravelsToFirebase() {
+//    /**
+//     * saving travels to firebase
+//     */
+//    public static func saveTravelsToFirebase() {
+//        if let user = Auth.auth().currentUser {
+//            initDatabase()
+//
+//            // loop over travels
+//            let travelsCopy = FirebaseData.travels
+//            for travelEntry in travelsCopy {
+//                let travel = travelEntry.value
+//                let fbDict = travel.prepareDictForFirebase()
+//                FirebaseData.ref.child("users").child(user.uid).child("travels").child(travel.id).setValue(fbDict)
+//
+//                //save pins
+//                savePinsToFirebaseOfTravel(travel: travel)
+//            }
+//        }
+//    }
+    
+    public static func addTravelToFirebase(travel: Travel) {
         if let user = Auth.auth().currentUser {
             initDatabase()
+            let fbDict = travel.prepareDictForFirebase()
+            FirebaseData.ref.child("users").child(user.uid).child("travels").child(travel.id).setValue(fbDict)
+        }
+    }
+    
+    public static func updateTravelInFirebase(travel: Travel) {
+        if let user = Auth.auth().currentUser {
+            initDatabase()
+            let fbDict = travel.prepareDictForFirebase()
             
-            // loop over travels
-            let travelsCopy = FirebaseData.travels
-            for travelEntry in travelsCopy {
-                let travel = travelEntry.value
-                let fbDict = travel.prepareDictForFirebase()
-                FirebaseData.ref.child("users").child(user.uid).child("travels").child(travel.id).setValue(fbDict)
-                
-                //save pins
-                savePinsToFirebaseOfTravel(travel: travel)
-            }
+            let travelRef = FirebaseData.ref.child("users").child(user.uid).child("travels").child(travel.id)
+            travelRef.updateChildValues(fbDict)
+
         }
     }
     

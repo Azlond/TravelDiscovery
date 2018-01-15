@@ -148,8 +148,9 @@ class TravelsTableViewController: UITableViewController {
             let alert = UIAlertController(title: "End Trip", message: "Are you sure you want to end your trip?", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
             alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { _ in
-                FirebaseData.getActiveTravel()?.endTrip()
-                FirebaseController.saveTravelsToFirebase()
+                let activeTravel = FirebaseData.getActiveTravel()!
+                activeTravel.endTrip()
+                FirebaseController.updateTravelInFirebase(travel: activeTravel)
                 self.addButton.title = "New Trip"
             }))
             self.present(alert, animated: true, completion: nil)
@@ -179,7 +180,7 @@ class TravelsTableViewController: UITableViewController {
                 travel.begin = DateFormatter.localizedString(from: Date(), dateStyle: Travel.dateStyle, timeStyle: Travel.timeStyle)
                 // save travel to firebase
                 FirebaseData.travels[travel.id] = travel
-                FirebaseController.saveTravelsToFirebase()
+                FirebaseController.addTravelToFirebase(travel: travel)
             }
         }
         
@@ -220,14 +221,13 @@ class TravelsTableViewController: UITableViewController {
             let alert = UIAlertController(title: "Your are on traveling!", message: "Are you sure you want to delete your trip?", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
             alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { _ in
+                FirebaseData.getActiveTravel()?.endTrip()
                 // delete the travel row from the date source
                 let k = Array(FirebaseData.travels.keys)[row]
                 FirebaseData.travels.removeValue(forKey: k)
                 FirebaseController.removeTravelFromFirebase(travelid: k)
                 tableView.deleteRows(at: [indexPath], with: .automatic)
-                FirebaseData.getActiveTravel()?.endTrip()
-                FirebaseController.saveTravelsToFirebase()
-                
+                //FirebaseController.saveTravelsToFirebase()
               
                 self.addButton.title = "New Trip"
             }))
