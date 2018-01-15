@@ -49,6 +49,11 @@ class TravelDetailTableViewController: UITableViewController {
             //datePickerChanged()
         }
        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(updateSteps),
+            name:Notification.Name("updateSteps"),
+            object: nil)
        
         let steps = Int((FirebaseData.travels[self.travelId]?.getSteps())!)
         let km = (FirebaseData.travels[self.travelId]?.getKm())!
@@ -67,7 +72,13 @@ class TravelDetailTableViewController: UITableViewController {
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
     
-    
+    @objc func updateSteps(_ notification: NSNotification) {
+        DispatchQueue.main.async {
+            if let travel = FirebaseData.travels[self.travelId] {
+                self.stepsLabel.text = String(describing: Int(travel.steps))
+            }
+        }
+    }
    
     // MARK: - Table view data source
 /*

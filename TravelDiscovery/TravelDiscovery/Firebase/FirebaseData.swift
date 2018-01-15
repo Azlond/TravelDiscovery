@@ -11,13 +11,12 @@ import FirebaseAuth
 import FirebaseDatabase
 import CoreLocation
 
-//TODO: HealthKit-Operations are async - correct amount of steps only gets shown on second visit to travel -> Jan
 //TODO: Build logic for DatePickers in Travels or replace them with textLabels -> Hyerim
 //TODO: New Trip: no empty input should be possible -> Hyerim
 //TODO: Trips table view: deactivate sorting -> Hyerim
 //TODO: Travels: update sort index on delete -> Jan
 //TODO: Route Visualisation: following with camera, design -> Laura
-
+//TODO: On end trip, "on traveling" doesn't disappear until the view is changed
 class FirebaseData {
     public static var visitedCountries : Dictionary<String, Bool> = [:]
     public static var user : User?

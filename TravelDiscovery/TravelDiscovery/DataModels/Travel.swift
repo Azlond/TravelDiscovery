@@ -141,8 +141,28 @@ class Travel {
     }
     
     func getSteps() -> Double {
-        //TODO: completion handler: return steps after stepCounter is finished
-        //if (self.active) {
+        if (self.active) {
+            stepCounter()
+        }
+        return self.steps
+    }
+    
+    func getKm() -> Double {
+        if (self.active && self.routeData.count > 0) {
+            var distance: Double = 0.0
+            for index in 1 ..< self.routeData.count {
+                let previousLocation: CLLocation = CLLocation(latitude: (routeData[String(index-1)]!.latitude), longitude: (routeData[String(index-1)]!.longitude))
+                let currentLocation: CLLocation = CLLocation(latitude: (routeData[String(index)]!.latitude), longitude: (routeData[String(index)]!.longitude))
+                let m = currentLocation.distance(from: previousLocation)
+                distance += m / 1000
+            }
+            self.km = Double(round(100*distance)/100)
+        }
+        return self.km
+    }
+    
+    // Copy of stepCounter from SettingsViewController
+    func stepCounter() {
         guard let healthStore: HKHealthStore? = {
             if HKHealthStore.isHealthDataAvailable() {
                 return HKHealthStore()
@@ -150,8 +170,8 @@ class Travel {
                 return nil
             }
             }() else {
-                return 0
-        }
+                return
+            }
         
         let stepsCount = HKQuantityType.quantityType(forIdentifier: .stepCount)
         
@@ -172,7 +192,6 @@ class Travel {
                 dateComponentsStart.year = userCalendar.component(.year, from: beginDate!)
                 dateComponentsStart.month = userCalendar.component(.month, from: beginDate!)
                 dateComponentsStart.day = userCalendar.component(.day, from: beginDate!)
-                dateComponentsStart.timeZone = TimeZone(abbreviation: "CET") // Central European Time
                 dateComponentsStart.hour = 1
                 
                 let startDate = userCalendar.date(from: dateComponentsStart)
@@ -182,15 +201,15 @@ class Travel {
                     dateComponentEnd.year = userCalendar.component(.year, from: finalDate)
                     dateComponentEnd.month = userCalendar.component(.month, from: finalDate)
                     dateComponentEnd.day = userCalendar.component(.day, from: finalDate)
-                    dateComponentEnd.timeZone = TimeZone(abbreviation: "CET") // Central European Time
-                    dateComponentEnd.hour = 1
+                    dateComponentEnd.hour = 24
+                    dateComponentEnd.minute = 59
+                    dateComponentEnd.second = 59
                     endDate = userCalendar.date(from: dateComponentEnd)!
                 } else {
                     endDate = Date()
                 }
                 
                 let predicate = HKQuery.predicateForSamples(withStart: startDate, end: endDate, options: .strictStartDate)
-                
                 let stepsSampleQuery = HKStatisticsQuery(quantityType: stepsCount!, quantitySamplePredicate: predicate, options: .cumulativeSum) { (_, result, error) in
                     var resultCount = 0.0
                     
@@ -205,32 +224,11 @@ class Travel {
                     
                     // Save result in Travel object
                     self.steps = resultCount
+                    NotificationCenter.default.post(name: Notification.Name("updateSteps"), object: nil)
                 }
                 // Don't forget to execute the Query!
                 healthStore?.execute(stepsSampleQuery)
             }
         }
-       // }
-        return self.steps
-    }
-    
-    func getKm() -> Double {
-        if (self.active && self.routeData.count > 0) {
-            var distance: Double = 0.0
-            for index in 1 ..< self.routeData.count {
-                let previousLocation: CLLocation = CLLocation(latitude: (routeData[String(index-1)]!.latitude), longitude: (routeData[String(index-1)]!.longitude))
-                let currentLocation: CLLocation = CLLocation(latitude: (routeData[String(index)]!.latitude), longitude: (routeData[String(index)]!.longitude))
-                let m = currentLocation.distance(from: previousLocation)
-                distance += m / 1000
-            }
-            self.km = Double(round(100*distance)/100)
-        }
-        return self.km
-    }
-    
-    // Copy of stepCounter from SettingsViewController
-    func stepCounter() {
-        
-        
     }
 }
