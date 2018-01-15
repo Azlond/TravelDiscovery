@@ -11,14 +11,12 @@ import Firebase
 
 
 class TravelsTableViewController: UITableViewController {
-   // @IBOutlet var travelsTableView: UITableView!
-    
     
     @IBOutlet weak var addButton: UIBarButtonItem!
     
     //var detailVC = TravelDetailTableViewController()
     
-   var travelId : String = ""
+    var travelId : String = ""
     var travels: [Travel] = []
     override func viewDidLoad() {
         
@@ -262,6 +260,7 @@ class TravelsTableViewController: UITableViewController {
 
     
     // Override to support rearranging the table view.
+    /*
     override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
         //let countryToMove = countries[(fromIndexPath as NSIndexPath).row]
         print("position ändern fehlt")
@@ -269,7 +268,7 @@ class TravelsTableViewController: UITableViewController {
         //countries.insert(countryToMove, at: (to as NSIndexPath).row)
         
     }
-    
+    */
 
     /*
     // Override to support conditional rearranging of the table view.
