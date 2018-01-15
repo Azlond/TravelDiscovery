@@ -16,6 +16,7 @@ class ScratchcardViewController: UIViewController, ScratchUIViewDelegate {
     var countryCode: String!
     var parentVC: MapViewController!
     var userScratchPercent : Double!
+    var lock = false
     
     @IBOutlet var scratchView: UIView!
     @IBOutlet weak var navigationBar: UINavigationBar!
@@ -79,10 +80,9 @@ class ScratchcardViewController: UIViewController, ScratchUIViewDelegate {
      */
     func checkForCompletion() {
         let scratchPercent: Double = scratchCard.getScratchPercent()
-        if scratchPercent > (userScratchPercent / 100) {
-            scratchCard.scratchView.isHidden = true
-            self.parentVC.markCountry(name: self.country)
-            self.dismiss(animated: true, completion: nil)
+        if (scratchPercent > (userScratchPercent / 100) && !lock) {
+            lock = true
+            finishSuccess(sleepTime: 0.006)
         }
     }
     
@@ -130,8 +130,10 @@ class ScratchcardViewController: UIViewController, ScratchUIViewDelegate {
      */
     @objc func dismissToPrevious() {
         if (scratchCard.getScratchPercent() == 1) {
-            self.parentVC.markCountry(name: self.country)
-            self.dismiss(animated: true, completion: nil)
+            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1), execute: {
+                self.parentVC.markCountry(name: self.country)
+                self.dismiss(animated: true, completion: nil)
+            })
         }
     }
     
