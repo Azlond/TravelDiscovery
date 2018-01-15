@@ -14,8 +14,6 @@ class TravelsTableViewController: UITableViewController {
     
     @IBOutlet weak var addButton: UIBarButtonItem!
     
-    //var detailVC = TravelDetailTableViewController()
-    
     var travelId : String = ""
     var travels: [Travel] = []
     override func viewDidLoad() {
@@ -205,10 +203,11 @@ class TravelsTableViewController: UITableViewController {
     // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         
-        guard editingStyle == .delete else {
+        
+        guard editingStyle == .delete  else {
             return
         }
-        
+    
         //tableView.deleteRows(at: [indexPath], with: .fade)
         let row = indexPath.row
         
