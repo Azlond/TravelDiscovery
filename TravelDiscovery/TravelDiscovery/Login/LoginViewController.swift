@@ -9,8 +9,6 @@
 import UIKit
 import FirebaseAuth
 
-// TODO: potentially make status not opaque and visible
-
 class LoginViewController: UIViewController {
     
     

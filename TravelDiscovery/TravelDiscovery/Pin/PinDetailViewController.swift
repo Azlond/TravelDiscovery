@@ -84,9 +84,7 @@ class PinDetailViewController: UIViewController, UICollectionViewDataSource, UIC
         } else {
             videoDisplayHeight.constant = 0
         }
-        
-        //TODO? add map including pin location marker
-        
+                
         imagesCV.dataSource = self
         imagesCV.delegate = self
         imagesCV.reloadData()

@@ -77,6 +77,11 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
         
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        buttonAddPin!.title = (FirebaseData.getActiveTravel() != nil) ? "📍" : "New Trip"
+    }
+    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
@@ -393,7 +398,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
         
         // follow coordinates with camera
         //TODO: stop following if user interacted with map
-        //TODO? make camera ride smoother
+        //TODO: make camera ride smoother
         self.mapView.setCenter(coordinates[currentIndex-1], animated: true)
         
         currentIndex += 1

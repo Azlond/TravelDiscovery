@@ -169,7 +169,7 @@ class TravelsTableViewController: UITableViewController {
     
     func addNewTravel() {
         var textField = UITextField()
-        textField.autocapitalizationType = .words
+        textField.autocapitalizationType = .words // TODO: Why the hell?
         let alert = UIAlertController(title: "Add New Trip", message: "", preferredStyle: .alert)
         let action = UIAlertAction(title: "Add", style: .default) { (action) in
             
@@ -181,6 +181,7 @@ class TravelsTableViewController: UITableViewController {
                 // save travel to firebase
                 FirebaseData.travels[travel.id] = travel
                 FirebaseController.addTravelToFirebase(travel: travel)
+                self.tableView.reloadData()
             }
         }
         
@@ -230,6 +231,8 @@ class TravelsTableViewController: UITableViewController {
                 //FirebaseController.saveTravelsToFirebase()
               
                 self.addButton.title = "New Trip"
+                self.tableView.reloadData()
+                //TODO: User defaults: activeTravelID -> ""
             }))
             
              self.present(alert, animated: true, completion: nil)

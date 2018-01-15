@@ -11,10 +11,12 @@ import FirebaseAuth
 import FirebaseDatabase
 import CoreLocation
 
-//TODO: Steps in the steplabel in travels are cut off at right screen, same for KM
+//TODO: Travel: Distance: 2 Nachkommastellen runden
 //TODO: HealthKit-Operations are async - correct amount of steps only gets shown on second visit to travel
 //TODO: Build logic for DatePickers in Travels or replace them with textLabels
 //TODO: activeTravelID in usersettings needs to be set to "" when deleting an active travel / potentially remove option to remove travels
+//TODO: New Trp: Capitalization
+//TODO: New Trip: no empty input should be possible
 //TODO: fix constraints in travelstableview
 class FirebaseData {
     public static var visitedCountries : Dictionary<String, Bool> = [:]
@@ -25,7 +27,6 @@ class FirebaseData {
     public static var travels: Dictionary<String, Travel> = [:]
     public static let imageCache = NSCache<NSString, AnyObject>()
     
-    /*TODO: does this belong to FirebaseData or FirebaseController? */
     static func getActiveTravel() -> Travel? {
         for travelEntry in FirebaseData.travels{
             let travel = travelEntry.value
