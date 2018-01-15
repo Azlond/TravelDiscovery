@@ -11,10 +11,8 @@ import FirebaseAuth
 import FirebaseDatabase
 import CoreLocation
 
-//TODO: Travel: Distance: 2 Nachkommastellen runden -> Jan
 //TODO: HealthKit-Operations are async - correct amount of steps only gets shown on second visit to travel -> Jan
 //TODO: Build logic for DatePickers in Travels or replace them with textLabels -> Hyerim
-//TODO: activeTravelID in usersettings needs to be set to "" when deleting an active travel -> Jan
 //TODO: New Trip: no empty input should be possible -> Hyerim
 //TODO: Trips table view: deactivate sorting -> Hyerim
 //TODO: Travels: update sort index on delete -> Jan
