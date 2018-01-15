@@ -55,7 +55,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     @objc func sendBackgroundLocationData(timer: Timer) {
         let location = timer.userInfo as! (CLLocation)
-        FirebaseController.handleBackgroundLocationData(location: location)
+        FirebaseController.handleBackgroundLocationData(location: location, isPin: false)
     }
     
     func applicationWillResignActive(_ application: UIApplication) {

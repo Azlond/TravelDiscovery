@@ -104,7 +104,7 @@ class FirebaseController {
     /**
      * saves background location updates to firebase
      */
-    @objc public static func handleBackgroundLocationData(location: CLLocation) {
+    @objc public static func handleBackgroundLocationData(location: CLLocation, isPin: Bool) {
         if let user = Auth.auth().currentUser {
             initDatabase()
             
@@ -113,7 +113,7 @@ class FirebaseController {
                 return
             }
             
-           if (!activeTravel.routeData.isEmpty) {
+           if (!activeTravel.routeData.isEmpty && !isPin) {
                 /*if current location is too close to last location, don't record it, as this can make the map-route look weird*/
                let lastLocation: CLLocation = CLLocation(latitude: (activeTravel.routeData[String(activeTravel.routeData.count-1)]?.latitude)!, longitude: (activeTravel.routeData[String(activeTravel.routeData.count-1)]?.longitude)!)
                 if (location.distance(from: lastLocation) < 1000) {

@@ -32,6 +32,10 @@ open class ScratchUIView: UIView, ScratchViewDelegate {
         self.Init()
     }
 
+    /**
+     * Method to automatically finish the scratching of the open scratchview
+     * by Jan Kaiser
+     */
     open func autoScratch(sleepTime: Double) {
         scratchView.isUserInteractionEnabled = false
         let viewSize = scratchView.getContentLayer().bounds

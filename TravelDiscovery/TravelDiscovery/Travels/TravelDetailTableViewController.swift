@@ -43,7 +43,7 @@ class TravelDetailTableViewController: UITableViewController {
         let steps = Int((FirebaseData.travels[self.travelId]?.getSteps())!)
         let km = (FirebaseData.travels[self.travelId]?.getKm())!
         self.stepsLabel.text = String(describing: steps)
-        self.kmLabel.text = String(describing: km)
+        self.kmLabel.text = String(describing: km) + " km"
         
        // infoTableView.estimatedRowHeight = 44.0
      //   infoTableView.rowHeight = UITableViewAutomaticDimension

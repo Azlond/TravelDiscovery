@@ -57,7 +57,7 @@ class Travel {
         let userSettings = UserDefaults.standard
         userSettings.set(id, forKey: "activeTravelID")
         Locator.subscribeSignificantLocations(onUpdate: { location in
-            FirebaseController.handleBackgroundLocationData(location: location)
+            FirebaseController.handleBackgroundLocationData(location: location, isPin: false)
         }) { (err, lastLocation) -> (Void) in
             print("Failed with err: \(err)")
         }
@@ -96,7 +96,7 @@ class Travel {
             let userSettings = UserDefaults.standard
             userSettings.set(id, forKey: "activeTravelID")
             Locator.subscribeSignificantLocations(onUpdate: { location in
-                FirebaseController.handleBackgroundLocationData(location: location)
+                FirebaseController.handleBackgroundLocationData(location: location, isPin: false)
             }) { (err, lastLocation) -> (Void) in
                 print("Failed with err: \(err)")
             }
@@ -223,7 +223,7 @@ class Travel {
                 let m = currentLocation.distance(from: previousLocation)
                 distance += m / 1000
             }
-            self.km = distance
+            self.km = Double(round(100*distance)/100)
         }
         return self.km
     }
