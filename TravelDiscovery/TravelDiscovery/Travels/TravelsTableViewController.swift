@@ -204,28 +204,54 @@ class TravelsTableViewController: UITableViewController {
     
     // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        
         guard editingStyle == .delete else {
             return
         }
         
-        
-        
         //tableView.deleteRows(at: [indexPath], with: .fade)
         let row = indexPath.row
         
+        let travel = FirebaseData.travels[Array(FirebaseData.travels.keys)[row]]
         // Show a confirm message before delete
-        let alert = UIAlertController(title: "Delete Trip", message: "Are you sure you want to delete your trip?", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-        alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { _ in
+        // wenn travel is active
+        if (travel?.active == true){
             
-            // Delete the row from the data source
-            let k = Array(FirebaseData.travels.keys)[row]
-            FirebaseData.travels.removeValue(forKey: k)
-            FirebaseController.removeTravelFromFirebase(travelid: k)
-            tableView.deleteRows(at: [indexPath], with: .automatic)
-        }))
-        
-        self.present(alert, animated: true, completion: nil)
+            let alert = UIAlertController(title: "Your are on traveling!", message: "Are you sure you want to delete your trip?", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+            alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { _ in
+                // delete the travel row from the date source
+                let k = Array(FirebaseData.travels.keys)[row]
+                FirebaseData.travels.removeValue(forKey: k)
+                FirebaseController.removeTravelFromFirebase(travelid: k)
+                tableView.deleteRows(at: [indexPath], with: .automatic)
+                FirebaseData.getActiveTravel()?.endTrip()
+                FirebaseController.saveTravelsToFirebase()
+                
+              
+                self.addButton.title = "New Trip"
+            }))
+            
+             self.present(alert, animated: true, completion: nil)
+            
+            
+        } else {
+            // wenn travel is not active
+            let alert = UIAlertController(title: "Delete Trip", message: "Are you sure you want to delete your trip?", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+            alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { _ in
+                
+                // Delete the travel row from the data source
+                let k = Array(FirebaseData.travels.keys)[row]
+                FirebaseData.travels.removeValue(forKey: k)
+                FirebaseController.removeTravelFromFirebase(travelid: k)
+                tableView.deleteRows(at: [indexPath], with: .automatic)
+            }))
+            
+            self.present(alert, animated: true, completion: nil)
+        }
+ 
+     
         
         }    
 
