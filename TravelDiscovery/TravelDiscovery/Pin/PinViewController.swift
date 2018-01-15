@@ -38,9 +38,11 @@ class PinViewController: UITableViewController, UICollectionViewDataSource, UICo
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.latitude = UserDefaults.standard.double(forKey: "latitude")
-        self.longitude = UserDefaults.standard.double(forKey: "longitude")
-        initSettings()
+        if(self.latitude == 0 && self.longitude == 0) {
+            self.latitude = UserDefaults.standard.double(forKey: "latitude")
+            self.longitude = UserDefaults.standard.double(forKey: "longitude")
+            initSettings()
+        }
         
     }
     

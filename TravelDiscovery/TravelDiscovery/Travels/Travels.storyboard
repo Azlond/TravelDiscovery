@@ -32,18 +32,14 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mcA-BE-mqB">
-                                            <rect key="frame" x="98" y="15.5" width="255" height="18.5"/>
-                                            <constraints>
-                                                <constraint firstAttribute="width" constant="255" id="FXO-fv-I20"/>
-                                            </constraints>
+                                            <rect key="frame" x="98" y="16" width="255" height="15"/>
                                             <fontDescription key="fontDescription" name="Verdana-Bold" family="Verdana" pointSize="15"/>
                                             <color key="textColor" red="0.12984204290000001" green="0.12984612579999999" blue="0.12984395030000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nG4-As-dTM">
-                                            <rect key="frame" x="98" y="43" width="255" height="14"/>
+                                            <rect key="frame" x="98" y="39" width="261" height="14"/>
                                             <constraints>
-                                                <constraint firstAttribute="width" constant="255" id="bkt-gW-4Dp"/>
                                                 <constraint firstAttribute="height" constant="14" id="oEM-2U-UHo"/>
                                             </constraints>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleCaption2"/>
@@ -60,13 +56,13 @@
                                     </subviews>
                                     <constraints>
                                         <constraint firstAttribute="bottomMargin" secondItem="nG4-As-dTM" secondAttribute="bottom" constant="16" id="76L-F1-ycK"/>
-                                        <constraint firstItem="mcA-BE-mqB" firstAttribute="top" secondItem="EVQ-lp-IzA" secondAttribute="topMargin" constant="4" id="Apd-ef-nVz"/>
+                                        <constraint firstItem="mcA-BE-mqB" firstAttribute="top" secondItem="EVQ-lp-IzA" secondAttribute="topMargin" constant="5" id="Apd-ef-nVz"/>
                                         <constraint firstItem="wYd-Fr-hnz" firstAttribute="leading" secondItem="EVQ-lp-IzA" secondAttribute="leadingMargin" id="H3w-Ry-K2k"/>
                                         <constraint firstItem="mcA-BE-mqB" firstAttribute="leading" secondItem="wYd-Fr-hnz" secondAttribute="trailing" constant="25" id="KCg-hy-xKh"/>
-                                        <constraint firstItem="mcA-BE-mqB" firstAttribute="trailing" secondItem="EVQ-lp-IzA" secondAttribute="trailingMargin" id="daN-gD-Mcx"/>
+                                        <constraint firstItem="nG4-As-dTM" firstAttribute="width" secondItem="mcA-BE-mqB" secondAttribute="width" constant="6" id="Tuk-ci-BNA"/>
+                                        <constraint firstItem="mcA-BE-mqB" firstAttribute="trailing" secondItem="EVQ-lp-IzA" secondAttribute="trailingMargin" constant="-6" id="daN-gD-Mcx"/>
                                         <constraint firstItem="wYd-Fr-hnz" firstAttribute="bottom" secondItem="EVQ-lp-IzA" secondAttribute="bottomMargin" id="fAc-3w-e9R"/>
-                                        <constraint firstItem="nG4-As-dTM" firstAttribute="leading" secondItem="wYd-Fr-hnz" secondAttribute="trailing" constant="25" id="l7m-KM-HV9"/>
-                                        <constraint firstItem="nG4-As-dTM" firstAttribute="top" secondItem="mcA-BE-mqB" secondAttribute="bottom" constant="9" id="lkt-QS-30U"/>
+                                        <constraint firstItem="nG4-As-dTM" firstAttribute="top" secondItem="mcA-BE-mqB" secondAttribute="bottom" constant="8" id="lkt-QS-30U"/>
                                         <constraint firstItem="nG4-As-dTM" firstAttribute="trailing" secondItem="EVQ-lp-IzA" secondAttribute="trailingMargin" id="nMu-Bq-XRo"/>
                                         <constraint firstItem="wYd-Fr-hnz" firstAttribute="top" secondItem="EVQ-lp-IzA" secondAttribute="topMargin" id="s9w-a5-YEe"/>
                                     </constraints>
