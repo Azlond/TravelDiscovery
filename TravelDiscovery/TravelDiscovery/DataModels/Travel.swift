@@ -223,7 +223,7 @@ class Travel {
                 let m = currentLocation.distance(from: previousLocation)
                 distance += m / 1000
             }
-            self.km = distance
+            self.km = Double(round(100*distance)/100)
         }
         return self.km
     }
