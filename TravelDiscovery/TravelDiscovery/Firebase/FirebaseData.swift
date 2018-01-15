@@ -11,14 +11,10 @@ import FirebaseAuth
 import FirebaseDatabase
 import CoreLocation
 
-//TODO: Change "new trip/Pin" button when travel is created
-//TODO: Decide whether it's called new Travel or new Trip
-//TODO: private pins are appearing in public feed - might be related to TODO above
-//TODO: maybe show pin-videos in fullscreen?
 //TODO: Steps in the steplabel in travels are cut off at right screen, same for KM
 //TODO: HealthKit-Operations are async - correct amount of steps only gets shown on second visit to travel
 //TODO: Build logic for DatePickers in Travels or replace them with textLabels
-//TODO: activeTravelID in usersettings needs to be set to "" when deleting an active travel
+//TODO: activeTravelID in usersettings needs to be set to "" when deleting an active travel / potentially remove option to remove travels
 //TODO: fix constraints in travelstableview
 class FirebaseData {
     public static var visitedCountries : Dictionary<String, Bool> = [:]
