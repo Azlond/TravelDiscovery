@@ -11,7 +11,7 @@ import AVFoundation
 import CoreLocation
 import SwiftLocation
 
-class PinDetailViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+class PinDetailViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UIScrollViewDelegate {
     
     @IBOutlet weak var usernameLabel: UILabel!
     @IBOutlet weak var primaryImageView: UIImageView!
@@ -182,6 +182,7 @@ class PinDetailViewController: UIViewController, UICollectionViewDataSource, UIC
     
     var startFrame: CGRect?
     var blackBackground: UIView?
+    var scrollView = UIScrollView()
     
     @objc func zoomIn(tapGesture: UITapGestureRecognizer){
         if let imageView = tapGesture.view as? UIImageView {
@@ -215,6 +216,18 @@ class PinDetailViewController: UIViewController, UICollectionViewDataSource, UIC
                 }, completion: {(completed) in
                     self.showStatusBar = false
                     self.setNeedsStatusBarAppearanceUpdate()
+                    
+                    zoomInView.removeFromSuperview()
+                    
+                    self.scrollView = UIScrollView(frame: self.view.bounds)
+                    self.scrollView.delegate = self
+                    self.scrollView.isUserInteractionEnabled = true
+                    self.scrollView.alwaysBounceVertical = true
+                    self.scrollView.alwaysBounceHorizontal = true
+                    self.scrollView.maximumZoomScale = 3.0
+                    self.scrollView.addSubview(zoomInView)
+                    keyWindow.addSubview(self.scrollView)
+                    
                 })
             }
             
@@ -235,9 +248,13 @@ class PinDetailViewController: UIViewController, UICollectionViewDataSource, UIC
                 zoomOutView.frame = self.startFrame!
                 
             }, completion: {(completed) in
-                zoomOutView.removeFromSuperview()
+                self.scrollView.removeFromSuperview()
             })
         }
+    }
+    
+    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
+        return self.scrollView.subviews[0]
     }
     
     
