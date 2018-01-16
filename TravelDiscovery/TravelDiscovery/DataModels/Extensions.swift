@@ -172,6 +172,7 @@ extension UIImageView {
             
             DispatchQueue.main.async {
                 if let image = UIImage(data: data!) {
+                    FirebaseController.saveImageToDocuments(withUrl: url!, pinImage: image)
                     FirebaseData.imageCache.setObject(image, forKey: url!.lastPathComponent as NSString)
                     if let visibleCellIndices = tableview?.indexPathsForVisibleRows {
                         if (!visibleCellIndices.contains(indexPath!)) {

@@ -325,7 +325,7 @@ class FirebaseController {
                             pinsArray.append(pin!)
                             /*Download firs timage of pin to display in feed if necessary*/
                             if ((pin!.imageURLs?.count ?? 0) > 0) {
-                                pin!.saveImageToDocuments(withUrl: pin!.imageURLs![0])
+                                saveImageToDocuments(withUrl: URL(string: pin!.imageURLs![0])!, pinImage: nil)
                             }
                         }
                         FirebaseData.publicPins = pinsArray
@@ -501,6 +501,9 @@ class FirebaseController {
         
     }
     
+    /**
+     * updating travel indices for sorting
+     */
     public static func updateTravelsIndices(index: Int) {
         if let user = Auth.auth().currentUser {
             initDatabase()
@@ -511,6 +514,49 @@ class FirebaseController {
                 }
             }
         }
+    }
+    
+    /**
+     * saving the first image of the pin to local documents for better caching
+     */
+    public static func saveImageToDocuments(withUrl url : URL, pinImage: UIImage?) {
+        
+        if (pinImage != nil) {
+            savetoDocs(image: pinImage!, url: url)
+        } else {
+            // check cached image
+            if (FirebaseData.imageCache.object(forKey: url.lastPathComponent as NSString) as? UIImage) != nil {
+                return
+            }
+            
+            // if not, download image from url
+            URLSession.shared.dataTask(with: url, completionHandler: { (data, response, error) in
+                if error != nil {
+                    print(error!)
+                    return
+                }
+                if let image = UIImage(data: data!) {
+                    self.savetoDocs(image: image, url: url)
+                }
+            }).resume()
+        }
+    }
+    
+    /**
+     * actually saving to local file
+     */
+    private static func savetoDocs(image: UIImage, url: URL) {
+        if let data = UIImageJPEGRepresentation(image, 0.8) {
+            let fileManager = FileManager.default
+            do {
+                let documentDirectory = try fileManager.url(for: .documentDirectory, in: .userDomainMask, appropriateFor:nil, create:false)
+                let fileURL = documentDirectory.appendingPathComponent(url.lastPathComponent)
+                try data.write(to: fileURL)
+            } catch {
+                print(error)
+            }
+        }
+        FirebaseData.imageCache.setObject(image, forKey: url.lastPathComponent as NSString)
     }
     
 }
