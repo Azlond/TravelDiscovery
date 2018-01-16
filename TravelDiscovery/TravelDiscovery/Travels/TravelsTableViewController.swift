@@ -81,7 +81,7 @@ class TravelsTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return FirebaseData.travels.count
+        return self.travels.count
     }
 
     
