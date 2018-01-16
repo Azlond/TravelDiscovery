@@ -30,6 +30,8 @@ class LoginViewController: UIViewController {
         //init alpha values (start values of animation)
         subText.alpha = 1.0
         loginOptionsView.alpha = 0
+        self.logoHeight.constant = 110
+        self.view.layoutIfNeeded()
     }
     
     override func viewDidAppear(_ animated: Bool) {
