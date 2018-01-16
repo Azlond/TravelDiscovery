@@ -11,7 +11,6 @@ import FirebaseAuth
 import FirebaseDatabase
 import CoreLocation
 
-//TODO: New Trip: no empty input should be possible -> Hyerim
 
 class FirebaseData {
     public static var visitedCountries : Dictionary<String, Bool> = [:]

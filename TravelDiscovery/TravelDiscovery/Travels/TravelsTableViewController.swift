@@ -126,9 +126,8 @@ class TravelsTableViewController: UITableViewController {
     
     @IBAction func addButtonPressed() {
         if (FirebaseData.getActiveTravel() == nil) {
-            // no active travel => adding a new travel and switch button
+            // no active travel => adding a new travel and switch button (in addNewTravel)
             self.addNewTravel()
-            self.addButton.title = "End Trip"
         }
         else {
             // there is an active travel => end the current travel and switch button
@@ -158,9 +157,7 @@ class TravelsTableViewController: UITableViewController {
     
     func addNewTravel() {
         var textField = UITextField()
-        let alert = UIAlertController(title: "Add New Trip", message: "", preferredStyle: .alert)
-        let action = UIAlertAction(title: "Add", style: .default) { (action) in
-            
+        let addAction = UIAlertAction(title: "Add", style: .default, handler: { _ in
             let id = "Travel_" + UUID().uuidString
             let name = textField.text!
             if name.isEmpty {} else {
@@ -171,17 +168,25 @@ class TravelsTableViewController: UITableViewController {
                 FirebaseController.addTravelToFirebase(travel: travel)
                 self.populateTravels()
                 self.tableView.reloadData()
+                self.addButton.title = "End Trip"
             }
-        }
+        })
+        addAction.isEnabled = false
         
+        let alert = UIAlertController(title: "Create New Trip", message: "", preferredStyle: .alert)
         alert.addTextField { (alertTextField) in
             alertTextField.placeholder = "Create New Trip"
             alertTextField.autocapitalizationType = .words
             textField = alertTextField
+            // Observe the UITextFieldTextDidChange notification to be notified in the below block when text is changed
+            NotificationCenter.default.addObserver(forName: .UITextFieldTextDidChange, object: textField, queue: OperationQueue.main, using: {_ in
+                    addAction.isEnabled = (!textField.text!.isEmpty)
+            })
         }
         
-        alert.addAction(action)
-        present(alert, animated: true, completion: nil)
+        alert.addAction(addAction)
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        self.present(alert, animated: true, completion: nil)
     }
  
     
