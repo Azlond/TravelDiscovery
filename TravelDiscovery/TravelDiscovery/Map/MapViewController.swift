@@ -106,22 +106,24 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
     }
     
     @objc func handleLongPress(_ gesture: UILongPressGestureRecognizer) {
-        // Get the CGPoint where the user tapped.
-        let spot = gesture.location(in: mapView)
-        // Access the features at that point within the country layer.
-        let features = mapView.visibleFeatures(at: spot, styleLayerIdentifiers: Set(["countries copy"]))
-        
-        // get the selected country name
-        if let feature = features.first, let country = feature.attribute(forKey: "name") as? String{
-            if (FirebaseData.visitedCountries[country] == true) {
-                let alert = UIAlertController(title: "Remove Country", message: "Do you want to reset " + country + "?", preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in
-                    FirebaseData.visitedCountries.removeValue(forKey: country)
-                    self.updateMap()
-                    FirebaseController.countryToFirebase(countryName: country, add: false)
-                }))
-                self.present(alert, animated: true, completion: nil)
+        if (gesture.state == .began) {
+            // Get the CGPoint where the user tapped.
+            let spot = gesture.location(in: mapView)
+            // Access the features at that point within the country layer.
+            let features = mapView.visibleFeatures(at: spot, styleLayerIdentifiers: Set(["countries copy"]))
+            
+            // get the selected country name
+            if let feature = features.first, let country = feature.attribute(forKey: "name") as? String{
+                if (FirebaseData.visitedCountries[country] == true) {
+                    let alert = UIAlertController(title: "Remove Country", message: "Do you want to reset " + country + "?", preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+                    alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in
+                        FirebaseData.visitedCountries.removeValue(forKey: country)
+                        self.updateMap()
+                        FirebaseController.countryToFirebase(countryName: country, add: false)
+                    }))
+                    self.present(alert, animated: true, completion: nil)
+                }
             }
         }
     }

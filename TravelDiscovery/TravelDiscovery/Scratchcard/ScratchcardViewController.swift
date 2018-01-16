@@ -130,6 +130,12 @@ class ScratchcardViewController: UIViewController, ScratchUIViewDelegate {
      */
     @objc func dismissToPrevious() {
         if (scratchCard.getScratchPercent() == 1) {
+            //bounce animation
+            self.scratchCard.transform = CGAffineTransform(scaleX: 1, y: 1)
+            UIView.animate(withDuration: 1.7, delay: 0.15, usingSpringWithDamping: 0.2, initialSpringVelocity: 7.0, options: [], animations: {
+                self.scratchCard.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
+            })
+            
             DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1), execute: {
                 self.parentVC.markCountry(name: self.country)
                 self.dismiss(animated: true, completion: nil)
