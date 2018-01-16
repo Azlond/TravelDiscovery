@@ -175,7 +175,7 @@ class TravelsTableViewController: UITableViewController {
         
         let alert = UIAlertController(title: "Create New Trip", message: "", preferredStyle: .alert)
         alert.addTextField { (alertTextField) in
-            alertTextField.placeholder = "Create New Trip"
+            alertTextField.placeholder = "i.e. My trip to Disney World"
             alertTextField.autocapitalizationType = .words
             textField = alertTextField
             // Observe the UITextFieldTextDidChange notification to be notified in the below block when text is changed
