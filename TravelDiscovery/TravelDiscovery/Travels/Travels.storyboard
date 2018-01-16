@@ -24,21 +24,15 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="travelCell" rowHeight="80" id="mN5-aZ-6ME" customClass="TravelsTableViewCell" customModule="TravelDiscovery" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="28" width="375" height="80"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="travelCell" id="mN5-aZ-6ME" customClass="TravelsTableViewCell" customModule="TravelDiscovery" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="mN5-aZ-6ME" id="EVQ-lp-IzA">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="79.5"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="mN5-aZ-6ME" id="EVQ-lp-IzA">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mcA-BE-mqB">
-                                            <rect key="frame" x="98" y="16" width="255" height="15"/>
-                                            <fontDescription key="fontDescription" name="Verdana-Bold" family="Verdana" pointSize="15"/>
-                                            <color key="textColor" red="0.12984204290000001" green="0.12984612579999999" blue="0.12984395030000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nG4-As-dTM">
-                                            <rect key="frame" x="98" y="39" width="261" height="14"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Date" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nG4-As-dTM">
+                                            <rect key="frame" x="98" y="43" width="261" height="14"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="14" id="oEM-2U-UHo"/>
                                             </constraints>
@@ -46,25 +40,30 @@
                                             <color key="textColor" red="0.66422420739999999" green="0.66424006219999998" blue="0.66423153879999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="wYd-Fr-hnz">
-                                            <rect key="frame" x="16" y="11.5" width="57" height="57"/>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wYd-Fr-hnz">
+                                            <rect key="frame" x="16" y="10" width="57" height="57"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="57" id="0cf-nB-Ldt"/>
                                                 <constraint firstAttribute="width" constant="57" id="eTs-tD-QYx"/>
                                             </constraints>
                                         </imageView>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mcA-BE-mqB">
+                                            <rect key="frame" x="98" y="16" width="261" height="19"/>
+                                            <fontDescription key="fontDescription" name="Verdana-Bold" family="Verdana" pointSize="15"/>
+                                            <color key="textColor" red="0.12984204290000001" green="0.12984612579999999" blue="0.12984395030000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstAttribute="bottomMargin" secondItem="nG4-As-dTM" secondAttribute="bottom" constant="16" id="76L-F1-ycK"/>
-                                        <constraint firstItem="mcA-BE-mqB" firstAttribute="top" secondItem="EVQ-lp-IzA" secondAttribute="topMargin" constant="5" id="Apd-ef-nVz"/>
-                                        <constraint firstItem="wYd-Fr-hnz" firstAttribute="leading" secondItem="EVQ-lp-IzA" secondAttribute="leadingMargin" id="H3w-Ry-K2k"/>
-                                        <constraint firstItem="mcA-BE-mqB" firstAttribute="leading" secondItem="wYd-Fr-hnz" secondAttribute="trailing" constant="25" id="KCg-hy-xKh"/>
-                                        <constraint firstItem="nG4-As-dTM" firstAttribute="width" secondItem="mcA-BE-mqB" secondAttribute="width" constant="6" id="Tuk-ci-BNA"/>
-                                        <constraint firstItem="mcA-BE-mqB" firstAttribute="trailing" secondItem="EVQ-lp-IzA" secondAttribute="trailingMargin" constant="-6" id="daN-gD-Mcx"/>
-                                        <constraint firstItem="wYd-Fr-hnz" firstAttribute="bottom" secondItem="EVQ-lp-IzA" secondAttribute="bottomMargin" id="fAc-3w-e9R"/>
-                                        <constraint firstItem="nG4-As-dTM" firstAttribute="top" secondItem="mcA-BE-mqB" secondAttribute="bottom" constant="8" id="lkt-QS-30U"/>
-                                        <constraint firstItem="nG4-As-dTM" firstAttribute="trailing" secondItem="EVQ-lp-IzA" secondAttribute="trailingMargin" id="nMu-Bq-XRo"/>
-                                        <constraint firstItem="wYd-Fr-hnz" firstAttribute="top" secondItem="EVQ-lp-IzA" secondAttribute="topMargin" id="s9w-a5-YEe"/>
+                                        <constraint firstItem="mcA-BE-mqB" firstAttribute="trailing" secondItem="EVQ-lp-IzA" secondAttribute="trailingMargin" id="SA9-tJ-9df"/>
+                                        <constraint firstItem="mcA-BE-mqB" firstAttribute="leading" secondItem="wYd-Fr-hnz" secondAttribute="trailing" constant="25" id="TNc-rq-RB3"/>
+                                        <constraint firstItem="nG4-As-dTM" firstAttribute="top" secondItem="mcA-BE-mqB" secondAttribute="bottom" constant="8" id="VVY-8b-pfc"/>
+                                        <constraint firstItem="wYd-Fr-hnz" firstAttribute="leading" secondItem="EVQ-lp-IzA" secondAttribute="leading" constant="16" id="Zl1-fC-cui"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="nG4-As-dTM" secondAttribute="bottom" constant="12" id="avT-1B-QwF"/>
+                                        <constraint firstItem="nG4-As-dTM" firstAttribute="leading" secondItem="wYd-Fr-hnz" secondAttribute="trailing" constant="25" id="bPg-kH-9vk"/>
+                                        <constraint firstItem="wYd-Fr-hnz" firstAttribute="top" secondItem="EVQ-lp-IzA" secondAttribute="top" constant="10" id="bTU-2W-rDE"/>
+                                        <constraint firstItem="nG4-As-dTM" firstAttribute="trailing" secondItem="EVQ-lp-IzA" secondAttribute="trailingMargin" id="bhb-Wv-m3Q"/>
+                                        <constraint firstItem="mcA-BE-mqB" firstAttribute="top" secondItem="EVQ-lp-IzA" secondAttribute="topMargin" constant="5" id="s4g-pD-SKa"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
