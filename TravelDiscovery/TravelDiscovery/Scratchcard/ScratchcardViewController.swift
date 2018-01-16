@@ -82,6 +82,8 @@ class ScratchcardViewController: UIViewController, ScratchUIViewDelegate {
         let scratchPercent: Double = scratchCard.getScratchPercent()
         if (scratchPercent > (userScratchPercent / 100) && !lock) {
             lock = true
+            autoCompleteButton.isEnabled = false
+            cancelButton.isEnabled = false
             finishSuccess(sleepTime: 0.006)
         }
     }
