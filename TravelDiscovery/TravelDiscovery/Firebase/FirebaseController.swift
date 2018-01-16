@@ -442,6 +442,16 @@ class FirebaseController {
         }
     }
     
+    public static func updateDistance(travel: Travel) {
+        if let user = Auth.auth().currentUser {
+            if (FirebaseData.ref == nil) {
+                // initialize database
+                FirebaseData.ref = Database.database().reference()
+            }
+            FirebaseData.ref.child("users").child(user.uid).child("travels").child(travel.id).child("km").setValue(travel.km)
+        }
+    }
+    
    // MARK: Helper functions
     
     /**

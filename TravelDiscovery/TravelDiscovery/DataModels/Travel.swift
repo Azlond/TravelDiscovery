@@ -157,6 +157,7 @@ class Travel {
                 distance += m / 1000
             }
             self.km = Double(round(100*distance)/100)
+            FirebaseController.updateDistance(travel: self)
         }
         return self.km
     }
