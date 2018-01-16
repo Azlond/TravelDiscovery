@@ -224,6 +224,7 @@ class Travel {
                     
                     // Save result in Travel object
                     self.steps = resultCount
+                    FirebaseController.updateTravelSteps(travel: self)
                     NotificationCenter.default.post(name: Notification.Name("updateSteps"), object: nil)
                 }
                 // Don't forget to execute the Query!

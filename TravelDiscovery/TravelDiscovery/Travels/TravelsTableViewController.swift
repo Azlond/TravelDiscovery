@@ -32,6 +32,15 @@ class TravelsTableViewController: UITableViewController {
             name: Notification.Name("updateTravels"),
             object: nil)
         
+        populateTravels()       
+        handleRefresh()
+        self.updateAddButton()
+    }
+
+    func populateTravels() {
+        if (travels.count > 0) {
+            travels.removeAll()
+        }
         outer: for index in 0 ..< FirebaseData.travels.count {
             for travel in FirebaseData.travels {
                 if (travel.value.sortIndex == index) {
@@ -40,15 +49,9 @@ class TravelsTableViewController: UITableViewController {
                 }
             }
         }
-        
-        tableView.reloadData()
-        
-        handleRefresh()
-        self.updateAddButton()
-        
-    
+        travels = travels.reversed()
     }
-
+    
     /**
      * reload data view, end refresh
      */
@@ -84,33 +87,33 @@ class TravelsTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let row = indexPath.row
-        let travel = FirebaseData.travels[Array(FirebaseData.travels.keys)[row]]
-        //let travel = travels[row] //TODO: use this line and comment out the two lines above once deleting travels is no longer possible / we're updating the sortIndex for all travels
+        //let travel = FirebaseData.travels[Array(FirebaseData.travels.keys)[row]]
+        let travel = travels[row] //TODO: use this line and comment out the two lines above once deleting travels is no longer possible / we're updating the sortIndex for all travels
 
         //let pin = travel!.pins
         //let photos = FirebaseData.pins[pKey]!.photos
 
         let cell = tableView.dequeueReusableCell(withIdentifier: "travelCell", for: indexPath) as! TravelsTableViewCell
-        cell.travelImageView.setRadius(borderWidth: (travel!.active ? 3 : 0))
+        cell.travelImageView.setRadius(borderWidth: (travel.active ? 3 : 0))
         //  cell.travelImageView.layoutSubviews()
-        cell.travelNameLabel.text = travel!.name
-        let beginDate = "From " + travel!.begin! + "  "
+        cell.travelNameLabel.text = travel.name
+        let beginDate = "From " + travel.begin! + "  "
         let onTraveling = "⇨   On traveling ✈️"
    
         
         
         
-        if(travel!.end! != ""){
-              cell.travelDateLabel.text = beginDate + "⇨   To " + travel!.end!
+        if(travel.end! != ""){
+            cell.travelDateLabel.text = beginDate + "⇨   To " + travel.end!
         } else {
              cell.travelDateLabel.text = beginDate + onTraveling
         }
         
         // set images
         cell.travelImageView.image = UIImage(named: "default2")
-        if (travel!.pins.count > 0) {
-            let pinKey = Array(travel!.pins.keys)[0]
-            let pin = travel!.pins[pinKey]
+        if (travel.pins.count > 0) {
+            let pinKey = Array(travel.pins.keys)[0]
+            let pin = travel.pins[pinKey]
             if ((pin!.imageURLs?.count ?? 0) > 0) {
                 cell.travelImageView.loadImageUsingCache(withUrl: pin!.imageURLs![0], tableview: tableView, indexPath: indexPath)
             }
@@ -118,18 +121,6 @@ class TravelsTableViewController: UITableViewController {
 
         return cell
     }
-
-
-
-    
-    // MARK: Tableview Delegate Methods
-    
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let row = indexPath.row
-        let k = Array(FirebaseData.travels.keys)[row]
-        let name = FirebaseData.travels[k]!.name
-    }
-
     
     // MAR: Add New Countries
     
@@ -148,6 +139,8 @@ class TravelsTableViewController: UITableViewController {
                 activeTravel.endTrip()
                 FirebaseController.updateTravelInFirebase(travel: activeTravel)
                 self.addButton.title = "New Trip"
+                self.populateTravels()
+                self.tableView.reloadData()
             }))
             self.present(alert, animated: true, completion: nil)
         }
@@ -176,6 +169,7 @@ class TravelsTableViewController: UITableViewController {
                 // save travel to firebase
                 FirebaseData.travels[travel.id] = travel
                 FirebaseController.addTravelToFirebase(travel: travel)
+                self.populateTravels()
                 self.tableView.reloadData()
             }
         }
@@ -211,27 +205,29 @@ class TravelsTableViewController: UITableViewController {
         //tableView.deleteRows(at: [indexPath], with: .fade)
         let row = indexPath.row
         
-        let travel = FirebaseData.travels[Array(FirebaseData.travels.keys)[row]]
+        let travel = travels[row]
         // Show a confirm message before delete
         // wenn travel is active
-        if (travel?.active == true){
+        if (travel.active == true){
             
             let alert = UIAlertController(title: "Your are on traveling!", message: "Are you sure you want to delete your trip?", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
             alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { _ in
                 FirebaseData.getActiveTravel()?.endTrip()
                 // delete the travel row from the date source
-                let k = Array(FirebaseData.travels.keys)[row]
-                FirebaseData.travels.removeValue(forKey: k)
-                FirebaseController.removeTravelFromFirebase(travelid: k)
-                tableView.deleteRows(at: [indexPath], with: .automatic)
+                //let k = Array(FirebaseData.travels.keys)[row]
+                let travel = self.travels[row]
+                FirebaseData.travels.removeValue(forKey: travel.id)
+                FirebaseController.removeTravelFromFirebase(travelid: travel.id)
+                //tableView.deleteRows(at: [indexPath], with: .automatic)
                 //FirebaseController.saveTravelsToFirebase()
               
                 self.addButton.title = "New Trip"
-                
+                print(self.addButton.title)
                 let userSettings = UserDefaults.standard
                 userSettings.set("", forKey: "activeTravelID")
                 
+                self.populateTravels()
                 self.tableView.reloadData()
             }))
             
@@ -245,13 +241,16 @@ class TravelsTableViewController: UITableViewController {
             alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { _ in
                 
                 // Delete the travel row from the data source
-                let k = Array(FirebaseData.travels.keys)[row]
-                if let sortIndex = FirebaseData.travels[k]?.sortIndex {
+                //let k = Array(FirebaseData.travels.keys)[row]
+                let travel = self.travels[row]
+                if let sortIndex = FirebaseData.travels[travel.id]?.sortIndex {
                     FirebaseController.updateTravelsIndices(index: sortIndex)
                 }
-                FirebaseData.travels.removeValue(forKey: k)
-                FirebaseController.removeTravelFromFirebase(travelid: k)
-                tableView.deleteRows(at: [indexPath], with: .automatic)
+                FirebaseData.travels.removeValue(forKey: travel.id)
+                FirebaseController.removeTravelFromFirebase(travelid: travel.id)
+                self.populateTravels()
+                //tableView.deleteRows(at: [indexPath], with: .automatic)
+                self.tableView.reloadData()
             }))
             
             self.present(alert, animated: true, completion: nil)
@@ -285,6 +284,7 @@ class TravelsTableViewController: UITableViewController {
    
     
     override func viewDidAppear(_ animated: Bool) {
+        self.populateTravels()
         self.tableView.reloadData()
     }
     
@@ -301,7 +301,7 @@ class TravelsTableViewController: UITableViewController {
             let indexPath = self.tableView.indexPath(for: cell)
             let travelDetailView = segue.destination as! TravelDetailTableViewController
             let row = indexPath!.row
-            let k = Array(FirebaseData.travels.keys)[row]
+            let k = travels[row].id
             travelDetailView.travelId = k
             //travelDetailView.setCountryName(countries[((indexPath as NSIndexPath?)?.row)!])
             

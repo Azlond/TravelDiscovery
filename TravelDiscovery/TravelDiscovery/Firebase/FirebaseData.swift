@@ -11,10 +11,7 @@ import FirebaseAuth
 import FirebaseDatabase
 import CoreLocation
 
-//TODO: Build logic for DatePickers in Travels or replace them with textLabels -> Hyerim
 //TODO: New Trip: no empty input should be possible -> Hyerim
-//TODO: Trips table view: deactivate sorting -> Hyerim
-//TODO: On end trip, "on traveling" doesn't disappear until the view is changed -> Hyerim
 
 class FirebaseData {
     public static var visitedCountries : Dictionary<String, Bool> = [:]
