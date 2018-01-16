@@ -144,7 +144,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
     
     func mapViewDidFinishLoadingMap(_ mapView: MGLMapView) {
         let userLocation: CLLocationCoordinate2D = (mapView.userLocation?.coordinate)!
-
+        
         //animate camera to zoom and center to user location
         let camera = MGLMapCamera(lookingAtCenter: userLocation, fromEyeCoordinate: mapView.centerCoordinate, eyeAltitude: 10000000)
         mapView.setCamera(camera, withDuration: 2, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut), completionHandler: {
@@ -194,7 +194,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
                 let marker = MGLPointAnnotation()
                 marker.coordinate = CLLocationCoordinate2D(latitude: pin.latitude, longitude: pin.longitude)
                 marker.title = pin.name
-                                
+                
                 mapView.addAnnotation(marker)
             }
         }
@@ -351,59 +351,109 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
         let layer = MGLLineStyleLayer(identifier: "polyline", source: source)
         layer.lineJoin = MGLStyleValue(rawValue: NSValue(mglLineJoin: .round))
         layer.lineCap = MGLStyleValue(rawValue: NSValue(mglLineCap: .round))
-        layer.lineColor = MGLStyleValue(rawValue: UIColor.red)
+        layer.lineColor = MGLStyleValue(rawValue: UIColor.black.withAlphaComponent(0.5))
         layer.lineWidth = MGLStyleFunction(interpolationMode: .exponential,
                                            cameraStops: [14: MGLConstantStyleValue<NSNumber>(rawValue: 5),
                                                          18: MGLConstantStyleValue<NSNumber>(rawValue: 20)],
                                            options: [.defaultValue : MGLConstantStyleValue<NSNumber>(rawValue: 1.5)])
-        style.addLayer(layer)
+        
+        let airportLayer = style.layer(withIdentifier: "airport-label")
+        style.insertLayer(layer, below: airportLayer!)
     }
-  
+    
     /*
      *
-    */
+     */
     @objc func animateTravel(_ notification: NSNotification) {
         guard let travelId = notification.userInfo?["travelID"] as? String else {
             return
         }
-        
         currentIndex = 1
-        timer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(tick), userInfo: ["travelID":travelId], repeats: true)
+        startAnimation(travelId: travelId)
     }
     
-    
-    @objc func tick(_timer: Timer) {
-        let userInfo = timer?.userInfo as! Dictionary<String, AnyObject>
-        let travelId = userInfo["travelID"] as! String
-        
+    func startAnimation(travelId: String) {
         let numberTripLocations = FirebaseData.travels[travelId]?.routeData.count
         
         if numberTripLocations == nil || numberTripLocations! < 2 {
-            timer?.invalidate()
-            timer = nil
             let alert = UIAlertController(title: "Unable to draw route", message: "You don't have enough locations saved to draw a route", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
             self.present(alert, animated: true, completion: nil)
             return
         }
         if currentIndex > numberTripLocations! {
-            timer?.invalidate()
-            timer = nil
             return
         }
+        
         var coordinates = [CLLocationCoordinate2D]()
         for index in 0..<currentIndex {
             coordinates.append((FirebaseData.travels[travelId]?.routeData[String(index)])!)
         }
+        
         // Update our MGLShapeSource with the current locations.
         updatePolylineWithCoordinates(coordinates: coordinates)
         
-        // follow coordinates with camera
-        //TODO: stop following if user interacted with map
-        //TODO: make camera ride smoother
-        self.mapView.setCenter(coordinates[currentIndex-1], animated: true)
+        // follow route with camera
+        let currentLocation = CLLocation(latitude: coordinates[currentIndex-1].latitude, longitude: coordinates[currentIndex-1].longitude)
         
-        currentIndex += 1
+        if currentIndex == 1 {
+            //animate camera to zoom and center to first location point
+            let camera = MGLMapCamera(lookingAtCenter: currentLocation.coordinate, fromEyeCoordinate: mapView.centerCoordinate, eyeAltitude: 10000)
+            mapView.setCamera(camera, withDuration: 2, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseIn), completionHandler: {
+                self.mapView.setDirection(0.0, animated: true)
+                self.currentIndex += 1
+                self.startAnimation(travelId: travelId)
+            })
+        } else {
+            // calculate the duration of the animation considering the distance
+            let previousLocation = CLLocation(latitude: coordinates[currentIndex-2].latitude, longitude: coordinates[currentIndex-2].longitude)
+            let distance = currentLocation.distance(from: previousLocation)
+            let duration = getCameraRideDuration(distance: distance)
+            print(distance, duration)
+            
+            let camera = MGLMapCamera(lookingAtCenter: currentLocation.coordinate, fromEyeCoordinate: mapView.centerCoordinate, eyeAltitude: 10000)
+            
+            if distance < 100000 {
+                mapView.setCamera(camera, withDuration: duration, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear), completionHandler: {
+                    self.currentIndex += 1
+                    self.startAnimation(travelId: travelId)
+                })
+            } else {
+                mapView.fly(to: camera, withDuration: duration, completionHandler: {
+                    self.currentIndex += 1
+                    self.startAnimation(travelId: travelId)
+                })
+            }
+        }
+    }
+    
+    /*
+     * adjusts speed of camera ride in respect of the distance:
+     * levels: the further two points are away from each other, the faster the speed
+     */
+    func getCameraRideDuration(distance: Double) -> Double {
+        var duration: Double = 0.0
+        // level: 0-5km
+        if distance < 5000 {
+            duration = distance / 2000 // 2000m/s
+        }
+        // level: 5-10km
+        else if distance < 10000 {
+            duration =  distance / 4000
+        }
+        // level: 10-50km
+        else if distance < 50000 {
+            duration = distance / 10000
+        }
+        // level: 50-100km
+        else if distance < 100000 {
+            duration = distance / 25000
+        }
+        // level: >= 100km -> flight
+        else {
+            duration = distance / 2000000
+        }
+        return duration
     }
     
     func updatePolylineWithCoordinates(coordinates: [CLLocationCoordinate2D]) {
