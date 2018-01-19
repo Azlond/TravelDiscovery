@@ -10,6 +10,7 @@ import AVKit
 import AVFoundation
 import CoreLocation
 import SwiftLocation
+import Agrume
 
 class PinDetailViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UIScrollViewDelegate {
     
@@ -35,6 +36,7 @@ class PinDetailViewController: UIViewController, UICollectionViewDataSource, UIC
     var showStatusBar = true
     var isFeedPin = false
     var pin: Pin!
+    var images = [UIImage]()
     
     let playButton: UIButton = {
         let button = UIButton()
@@ -74,6 +76,9 @@ class PinDetailViewController: UIViewController, UICollectionViewDataSource, UIC
         if ((pin.imageURLs?.count ?? 0) > 0) {
             primaryImageView.loadImageUsingCache(withUrl: pin.imageURLs![0], tableview: nil, indexPath: nil)
             primaryImageView.reduceSaturation()
+            
+            loadImages(urlStrings: pin.imageURLs!)
+            
         } else {
             imagesCVHeight.constant = 0
         }
@@ -88,6 +93,7 @@ class PinDetailViewController: UIViewController, UICollectionViewDataSource, UIC
         imagesCV.dataSource = self
         imagesCV.delegate = self
         imagesCV.reloadData()
+        
                 
         //navigationBar design
         self.navigationController?.navigationBar.prefersLargeTitles = false
@@ -137,12 +143,25 @@ class PinDetailViewController: UIViewController, UICollectionViewDataSource, UIC
             imageView.clipsToBounds = true
             imageView.contentMode = .scaleAspectFill
             imageView.isUserInteractionEnabled = true
-            imageView.addGestureRecognizer(UITapGestureRecognizer(target:self, action: #selector(zoomIn)))
             
             cell.contentView.addSubview(imageView)
             return cell
         }
         return collectionView.dequeueReusableCell(withReuseIdentifier: "detailCell", for: indexPath as IndexPath)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let agrume = Agrume(images: self.images, startIndex: indexPath.row, backgroundBlurStyle: .dark, backgroundColor: UIColor.black)
+        agrume.didScroll = { [unowned self] index in
+            self.imagesCV.scrollToItem(at: IndexPath(row: index, section: 0),
+                                       at: [],
+                                       animated: false)
+        }
+        
+        if self.images.count == pin.imageURLs?.count {
+            agrume.showFrom(self)
+        }
+        
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -216,7 +235,6 @@ class PinDetailViewController: UIViewController, UICollectionViewDataSource, UIC
                 }, completion: {(completed) in
                     self.showStatusBar = false
                     self.setNeedsStatusBarAppearanceUpdate()
-                    
                     zoomInView.removeFromSuperview()
                     
                     self.scrollView = UIScrollView(frame: self.view.bounds)
@@ -226,6 +244,7 @@ class PinDetailViewController: UIViewController, UICollectionViewDataSource, UIC
                     self.scrollView.alwaysBounceHorizontal = true
                     self.scrollView.maximumZoomScale = 3.0
                     self.scrollView.addSubview(zoomInView)
+                  
                     keyWindow.addSubview(self.scrollView)
                     
                 })
@@ -298,6 +317,34 @@ class PinDetailViewController: UIViewController, UICollectionViewDataSource, UIC
             
             self.playButton.isHidden = false
             self.spinner.stopAnimating()
+        }
+    }
+    
+    func loadImages(urlStrings: [String]) {
+        for urlString in urlStrings {
+            let url = URL(string: urlString)
+            
+            /*check cached image*/
+            if let cachedImage = FirebaseData.imageCache.object(forKey: url!.lastPathComponent as NSString) as? UIImage {
+                self.images.append(cachedImage)
+                continue
+            }
+            
+            /* if it is not in cache, download image from url*/
+            URLSession.shared.dataTask(with: url!, completionHandler: { (data, response, error) in
+                if error != nil {
+                    print(error!)
+                    return
+                }
+                
+                DispatchQueue.main.async {
+                    if let image = UIImage(data: data!) {
+                        FirebaseController.saveImageToDocuments(withUrl: url!, pinImage: image)
+                        FirebaseData.imageCache.setObject(image, forKey: url!.lastPathComponent as NSString)
+                        self.images.append(image)
+                    }
+                }
+            }).resume()
         }
     }
     

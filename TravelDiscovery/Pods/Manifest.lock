@@ -1,39 +1,40 @@
 PODS:
+  - Agrume (4.0.2)
   - Eureka (4.0.1)
-  - Firebase/Auth (4.8.0):
+  - Firebase/Auth (4.8.1):
     - Firebase/Core
-    - FirebaseAuth (= 4.4.1)
-  - Firebase/Core (4.8.0):
-    - FirebaseAnalytics (= 4.0.5)
-    - FirebaseCore (= 4.0.13)
-  - Firebase/Database (4.8.0):
+    - FirebaseAuth (= 4.4.2)
+  - Firebase/Core (4.8.1):
+    - FirebaseAnalytics (= 4.0.7)
+    - FirebaseCore (= 4.0.14)
+  - Firebase/Database (4.8.1):
     - Firebase/Core
-    - FirebaseDatabase (= 4.1.3)
-  - Firebase/Storage (4.8.0):
+    - FirebaseDatabase (= 4.1.4)
+  - Firebase/Storage (4.8.1):
     - Firebase/Core
-    - FirebaseStorage (= 2.1.1)
-  - FirebaseAnalytics (4.0.5):
+    - FirebaseStorage (= 2.1.2)
+  - FirebaseAnalytics (4.0.7):
     - FirebaseCore (~> 4.0)
     - FirebaseInstanceID (~> 2.0)
     - GoogleToolboxForMac/NSData+zlib (~> 2.1)
     - nanopb (~> 0.3)
-  - FirebaseAuth (4.4.1):
+  - FirebaseAuth (4.4.2):
     - FirebaseAnalytics (~> 4.0)
     - GoogleToolboxForMac/NSDictionary+URLArguments (~> 2.1)
     - GTMSessionFetcher/Core (~> 1.1)
-  - FirebaseCore (4.0.13):
+  - FirebaseCore (4.0.14):
     - GoogleToolboxForMac/NSData+zlib (~> 2.1)
-  - FirebaseDatabase (4.1.3):
+  - FirebaseDatabase (4.1.4):
     - FirebaseAnalytics (~> 4.0)
     - FirebaseCore (~> 4.0)
     - leveldb-library (~> 1.18)
   - FirebaseInstanceID (2.0.8):
     - FirebaseCore (~> 4.0)
-  - FirebaseStorage (2.1.1):
+  - FirebaseStorage (2.1.2):
     - FirebaseAnalytics (~> 4.0)
     - FirebaseCore (~> 4.0)
     - GTMSessionFetcher/Core (~> 1.1)
-  - FirebaseUI/Database (4.5.0):
+  - FirebaseUI/Database (4.5.1):
     - Firebase/Database (~> 4.0)
   - GoogleToolboxForMac/DebugUtils (2.1.3):
     - GoogleToolboxForMac/Defines (= 2.1.3)
@@ -48,7 +49,7 @@ PODS:
   - GSMessages (1.5.1)
   - GTMSessionFetcher/Core (1.1.12)
   - leveldb-library (1.20)
-  - Mapbox-iOS-SDK (3.7.1)
+  - Mapbox-iOS-SDK (3.7.3)
   - nanopb (0.3.8):
     - nanopb/decode (= 0.3.8)
     - nanopb/encode (= 0.3.8)
@@ -61,6 +62,7 @@ PODS:
   - SwiftyJSON (4.0.0)
 
 DEPENDENCIES:
+  - Agrume
   - Eureka
   - Firebase/Auth
   - Firebase/Core
@@ -74,26 +76,27 @@ DEPENDENCIES:
   - SwiftLocation (~> 3.1.0)
 
 SPEC CHECKSUMS:
+  Agrume: e2b284482d12b1b21e130278be2a17c4754fc5f0
   Eureka: c8bd5cc07143b6f66268c208d28a246c99b41955
-  Firebase: 710decbbc6d9d48530e9a5dba3209740c3532e05
-  FirebaseAnalytics: 5b02a63ead2c3f0259cfc7f15e053e440587ecf8
-  FirebaseAuth: dc0dd403beca5b2b016aac89c2d0b8dad1c81926
-  FirebaseCore: 3c02ec652db3d03fdc8bc6d9154af3e20d64b6f5
-  FirebaseDatabase: 7088bfc4af2cc00231bb36e1404fc2d7509eb4dc
+  Firebase: 2721056b8885eef90233b03f37be64358d35d262
+  FirebaseAnalytics: 617afa8c26b57a0c3f11361b248bc9e17bfd8dfd
+  FirebaseAuth: bd2738c5c1e92b108ba5f7f7335908097a4e50bb
+  FirebaseCore: 2e0b98fb2d64ca8140136beff15772bdd14d2dd7
+  FirebaseDatabase: de4446507ccd3257fca37d16f40e1540324571fd
   FirebaseInstanceID: 81df5805a08001e69138664bdd02c6719a9ac80f
-  FirebaseStorage: ab08d1c93a2feffa038fdd6693088b310ab1e6c6
-  FirebaseUI: 883482fea73b73bbb488c55176f4c6ad128957eb
+  FirebaseStorage: 181bb543d39ee3c53e0558de7ba86b1286a0427f
+  FirebaseUI: 1dc9c8a87a776b488a28a28541f029e60c824cfd
   GoogleToolboxForMac: 2501e2ad72a52eb3dfe7bd9aee7dad11b858bd20
   GSMessages: 2e6893301ae99f59d72a6d8c920ad41be407216c
   GTMSessionFetcher: ebaa1f79a5366922c1735f1566901f50beba23b7
   leveldb-library: 08cba283675b7ed2d99629a4bc5fd052cd2bb6a5
-  Mapbox-iOS-SDK: 34c96bec48a1122ead238e7e886cd9d613e6280c
+  Mapbox-iOS-SDK: 5304bd9605babe6da9050ea4cb23c1671420b737
   nanopb: 5601e6bca2dbf1ed831b519092ec110f66982ca3
   NohanaImagePicker: b39fa5623cabab69597ea6f6a2d6729b9895cd2b
   ScratchCard: e5b9f8b9c5f9c197128fc6540cd829473e284fd3
   SwiftLocation: 8f5ef4f510a45e43239de57a3145b3669301e898
   SwiftyJSON: 070dabdcb1beb81b247c65ffa3a79dbbfb3b48aa
 
-PODFILE CHECKSUM: a73000b50220e68cfc66e187786cf4c1c9ef65dd
+PODFILE CHECKSUM: ad33641cd501d4350cbb1a075af60a1808210dd3
 
 COCOAPODS: 1.3.1

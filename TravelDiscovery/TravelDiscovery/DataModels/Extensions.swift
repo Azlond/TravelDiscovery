@@ -11,7 +11,6 @@ import UIKit
 import NohanaImagePicker
 import Photos
 
-
 /*Adds a preference for adding a done button to the keyboard when using UITextView*/
 extension UITextView {
     /*Expose preference to storyboard*/
@@ -172,7 +171,6 @@ extension UIImageView {
             
             DispatchQueue.main.async {
                 if let image = UIImage(data: data!) {
-                    FirebaseController.saveImageToDocuments(withUrl: url!, pinImage: image)
                     FirebaseData.imageCache.setObject(image, forKey: url!.lastPathComponent as NSString)
                     if let visibleCellIndices = tableview?.indexPathsForVisibleRows {
                         if (!visibleCellIndices.contains(indexPath!)) {

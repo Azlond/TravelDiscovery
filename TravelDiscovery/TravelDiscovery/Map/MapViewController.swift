@@ -85,9 +85,14 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
-        //prevents button from staying highlighted
+        //prevents Pin/New Trip button from staying highlighted
         buttonAddPin.isEnabled = false
         buttonAddPin.isEnabled = true
+    }
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
     }
     
     @objc func handleTap(_ gesture: UITapGestureRecognizer) {
@@ -133,13 +138,25 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
         return true
     }
     
+    @objc func showUploadErrorAlert(_ notification: NSNotification) {
+        let type = notification.userInfo?["type"] as? String
+        let message = "An error occurred during " + type! + " upload"
+        self.showMessage(message, type: .error)
+    }
+    
+    @objc func showUploadSuccessMessage(_ notification: NSNotification) {
+        let type = notification.userInfo?["type"] as? String
+        let message = type! + " upload complete"
+        self.showMessage(message, type: .success, options: [.autoHideDelay(2.0)])
+    }
+    
+    
+    // MARK: Map
     
     // Wait until the style is loaded before modifying the map style.
     func mapView(_ mapView: MGLMapView, didFinishLoading style: MGLStyle) {
         updateMap()
         addLayer(to: style)
-        //Timer.scheduledTimer(timeInterval: 10, target: self, selector: #selector(animateTravel), userInfo: nil, repeats: false)
-        
     }
     
     func mapViewDidFinishLoadingMap(_ mapView: MGLMapView) {
@@ -176,7 +193,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
     }
     
     /*
-     * adds the user's pins to the map
+     * adds the user's private pins to the map
      */
     @objc func displayPinsOnMap() {
         // set Navigation Bar Button item
@@ -186,6 +203,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
         if let markers = mapView.annotations {
             mapView.removeAnnotations(markers)
         }
+        
         for travelEntry in FirebaseData.travels {
             let travel = travelEntry.value
             
@@ -208,7 +226,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
             let travel = travelEntry.value            
             for pinEntry in travel.pins{
                 let pin = pinEntry.value
-                //annotation != nil: preventing crash in rare cases where annotation is already removed
+                //annotation != nil: preventing crash in rare cases where annotation is already removed right after it was clicked
                 if ((annotation != nil) && annotation.coordinate.latitude == pin.latitude && annotation.coordinate.longitude == pin.longitude && annotation.title! == pin.name) {
                     let storyBoard = UIStoryboard(name: "PinDetailView", bundle: nil)
                     let pinDetailVC = storyBoard.instantiateViewController(withIdentifier: "PinDetail") as! PinDetailViewController
@@ -254,6 +272,8 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
     func mapView(_ mapView: MGLMapView, rightCalloutAccessoryViewFor annotation: MGLAnnotation) -> UIView? {
         return UIButton(type: .detailDisclosure) 
     }
+    
+    // MARK: ScratchCard
     
     /**
      * load the Scratchcard with the selected country
@@ -307,40 +327,16 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
         
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
     
-    @objc func showUploadErrorAlert(_ notification: NSNotification) {
-        let type = notification.userInfo?["type"] as? String
-        let message = "An error occurred during " + type! + " upload"
-        self.showMessage(message, type: .error)
-    }
-    
-    @objc func showUploadSuccessMessage(_ notification: NSNotification) {
-        let type = notification.userInfo?["type"] as? String
-        let message = type! + " upload complete"
-        self.showMessage(message, type: .success, options: [.autoHideDelay(2.0)])
-    }
-    
-    /*
-     // MARK: - Navigation
-     
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destinationViewController.
-     // Pass the selected object to the new view controller.
-     }
-     
-     */
-    
+    // MARK: Draw Route
     
     var timer: Timer?
     var polylineSource: MGLShapeSource?
     var currentIndex = 1
     
-    
+    /*
+     * adds polyline to map
+     */
     func addLayer(to style: MGLStyle) {
         // Add an empty MGLShapeSource, we’ll keep a reference to this and add points to this later.
         let source = MGLShapeSource(identifier: "polyline", shape: nil, options: nil)
@@ -361,9 +357,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
         style.insertLayer(layer, below: airportLayer!)
     }
     
-    /*
-     *
-     */
+    
     @objc func animateTravel(_ notification: NSNotification) {
         guard let travelId = notification.userInfo?["travelID"] as? String else {
             return
@@ -376,7 +370,9 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
         let numberTripLocations = FirebaseData.travels[travelId]?.routeData.count
         
         if numberTripLocations == nil || numberTripLocations! < 2 {
-            let alert = UIAlertController(title: "Unable to draw route", message: "You don't have enough locations saved to draw a route", preferredStyle: .alert)
+            let alert = UIAlertController(title: "Unable to draw route",
+                                          message: "You don't have enough locations saved to draw a route",
+                                          preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
             self.present(alert, animated: true, completion: nil)
             return
