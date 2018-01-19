@@ -378,6 +378,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
             return
         }
         if currentIndex > numberTripLocations! {
+            mapView.setDirection(0.0, animated: true)
             return
         }
         
