@@ -228,7 +228,6 @@ class TravelsTableViewController: UITableViewController {
                 //FirebaseController.saveTravelsToFirebase()
               
                 self.addButton.title = "New Trip"
-                print(self.addButton.title)
                 let userSettings = UserDefaults.standard
                 userSettings.set("", forKey: "activeTravelID")
                 

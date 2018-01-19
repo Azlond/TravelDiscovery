@@ -160,10 +160,7 @@ class TravelPinsTableViewController: UITableViewController {
     
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        //let pin = FirebaseData.publicPins[indexPath.row]
-        let pinKey = Array((FirebaseData.travels[self.travelId]?.pins.keys)!)[indexPath.row]
-        let pin = (FirebaseData.travels[self.travelId]?.pins[pinKey])!
-        
+        let pin = privatePins[indexPath.row]
         let storyBoard = UIStoryboard(name: "PinDetailView", bundle: nil)
         let pinDetailVC = storyBoard.instantiateViewController(withIdentifier: "PinDetail") as! PinDetailViewController
         pinDetailVC.pin = pin

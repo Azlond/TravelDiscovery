@@ -104,8 +104,8 @@ class Travel {
     }
     
     func endTrip(){
-        self.getSteps()
-        self.getKm()
+        self.stepCounter()
+        _ = self.getKm()
         
         self.active = false
         if (self.end == "") {
