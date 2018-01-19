@@ -19,8 +19,11 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yy4-gK-reb">
                     <rect key="frame" x="0.0" y="0.0" width="375" height="450"/>
                     <subviews>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Username - 24.12.2017" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BGv-8I-Flg">
-                            <rect key="frame" x="16" y="8" width="185.5" height="20.5"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BGv-8I-Flg">
+                            <rect key="frame" x="16" y="8" width="343" height="21"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="21" id="xpx-Du-kpD"/>
+                            </constraints>
                             <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                             <color key="textColor" red="0.21873752568693683" green="0.63812185264326404" blue="0.66444705310880825" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
@@ -53,10 +56,13 @@
                     <constraints>
                         <constraint firstItem="wKB-gW-cgg" firstAttribute="leading" secondItem="yy4-gK-reb" secondAttribute="leading" constant="16" id="674-Jx-F9B"/>
                         <constraint firstItem="iTW-y0-8pa" firstAttribute="leading" secondItem="yy4-gK-reb" secondAttribute="leading" constant="16" id="7IC-xB-uHl"/>
+                        <constraint firstItem="BGv-8I-Flg" firstAttribute="top" secondItem="yy4-gK-reb" secondAttribute="top" constant="8" id="I6e-n5-mau"/>
                         <constraint firstAttribute="trailing" secondItem="wKB-gW-cgg" secondAttribute="trailing" constant="16" id="ODC-3M-0cS"/>
                         <constraint firstItem="wKB-gW-cgg" firstAttribute="top" secondItem="1IN-dq-wtk" secondAttribute="bottom" constant="0.5" id="R0R-2k-5Kx"/>
                         <constraint firstAttribute="trailing" secondItem="iTW-y0-8pa" secondAttribute="trailing" constant="16" id="TuR-QA-tAj"/>
+                        <constraint firstAttribute="trailing" secondItem="BGv-8I-Flg" secondAttribute="trailing" constant="16" id="UL6-K2-sed"/>
                         <constraint firstItem="1IN-dq-wtk" firstAttribute="leading" secondItem="yy4-gK-reb" secondAttribute="leading" constant="20" id="Uy0-8t-QjX"/>
+                        <constraint firstItem="BGv-8I-Flg" firstAttribute="leading" secondItem="yy4-gK-reb" secondAttribute="leading" constant="16" id="XKy-3K-hj7"/>
                         <constraint firstItem="iTW-y0-8pa" firstAttribute="top" secondItem="BGv-8I-Flg" secondAttribute="bottom" constant="4" id="XTA-JO-7rl"/>
                         <constraint firstItem="BGv-8I-Flg" firstAttribute="top" secondItem="yy4-gK-reb" secondAttribute="top" constant="8" id="gvn-lm-cUJ"/>
                         <constraint firstItem="1IN-dq-wtk" firstAttribute="top" secondItem="iTW-y0-8pa" secondAttribute="bottom" constant="7" id="rXK-Kp-EL3"/>

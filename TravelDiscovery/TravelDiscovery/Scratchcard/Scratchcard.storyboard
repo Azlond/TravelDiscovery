@@ -18,9 +18,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <navigationBar contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rlL-ld-Zsh">
+                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rlL-ld-Zsh">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                 <items>
                                     <navigationItem title="Scratch" id="oT5-vS-Zcw">
                                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="OAF-HI-SQN">
@@ -36,20 +35,39 @@
                                     </navigationItem>
                                 </items>
                             </navigationBar>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Start scratching!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oWq-h2-wVZ">
+                                <rect key="frame" x="0.0" y="44" width="320" height="36"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="36" id="kBv-bm-sy4"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
+                                <color key="textColor" white="0.2917078998353746" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="rlL-ld-Zsh" firstAttribute="leading" secondItem="oWq-h2-wVZ" secondAttribute="leading" id="4V9-0a-P2g"/>
+                            <constraint firstItem="rlL-ld-Zsh" firstAttribute="trailing" secondItem="oWq-h2-wVZ" secondAttribute="trailing" id="B3S-ZL-qGz"/>
+                            <constraint firstItem="rlL-ld-Zsh" firstAttribute="top" secondItem="imy-Aq-6Us" secondAttribute="top" id="BSo-eo-Efm"/>
+                            <constraint firstItem="oWq-h2-wVZ" firstAttribute="leading" secondItem="TcC-Nb-3DP" secondAttribute="leading" id="XIU-4J-MUQ"/>
+                            <constraint firstItem="oWq-h2-wVZ" firstAttribute="top" secondItem="rlL-ld-Zsh" secondAttribute="bottom" id="oFE-bU-a3s"/>
+                            <constraint firstItem="oWq-h2-wVZ" firstAttribute="trailing" secondItem="TcC-Nb-3DP" secondAttribute="trailing" id="pkJ-6I-3PT"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="TcC-Nb-3DP"/>
                     </view>
                     <connections>
                         <outlet property="autoCompleteButton" destination="vhK-WP-UNP" id="iTQ-v4-iSt"/>
                         <outlet property="cancelButton" destination="OAF-HI-SQN" id="f8H-nm-gZ4"/>
                         <outlet property="navigationBar" destination="rlL-ld-Zsh" id="fZ4-95-jGv"/>
+                        <outlet property="scratchLabel" destination="oWq-h2-wVZ" id="suD-gX-jGC"/>
                         <outlet property="scratchView" destination="imy-Aq-6Us" id="h0F-sP-2Oy"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Veg-QY-bFl" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-30" y="125"/>
+            <point key="canvasLocation" x="-30" y="124.64788732394366"/>
         </scene>
     </scenes>
+    <color key="tintColor" red="0.21960784310000001" green="0.63921568630000003" blue="0.66274509800000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
 </document>

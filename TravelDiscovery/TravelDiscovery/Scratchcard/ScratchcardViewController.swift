@@ -23,6 +23,8 @@ class ScratchcardViewController: UIViewController, ScratchUIViewDelegate {
     @IBOutlet weak var autoCompleteButton: UIBarButtonItem!
     @IBOutlet weak var cancelButton: UIBarButtonItem!
     
+    @IBOutlet weak var scratchLabel: UILabel!
+    
     /*
      * Hide the status bar during scratchview
      */
@@ -33,10 +35,10 @@ class ScratchcardViewController: UIViewController, ScratchUIViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let cardWidth = scratchView.bounds.width-10
-        let cardHeight = scratchView.bounds.height-navigationBar.bounds.height-10
+        let cardWidth = scratchView.bounds.width-20
+        let cardHeight = scratchView.bounds.height-navigationBar.bounds.height-45
         
-        scratchCard  = ScratchUIView(frame: CGRect(x:5, y:navigationBar.bounds.height+5,
+        scratchCard  = ScratchUIView(frame: CGRect(x:10, y:navigationBar.bounds.height+35,
                                                    width:cardWidth,
                                                    height:cardHeight),
                                      Coupon: countryCode,
@@ -48,6 +50,8 @@ class ScratchcardViewController: UIViewController, ScratchUIViewDelegate {
         
         let userSettings = UserDefaults.standard
         userScratchPercent = userSettings.double(forKey: "scratchPercent")
+        
+        scratchLabel.text = "Start scratching!"
     }
     
     /*
@@ -56,6 +60,7 @@ class ScratchcardViewController: UIViewController, ScratchUIViewDelegate {
      */
     func scratchBegan(_ view: ScratchUIView) {
         checkForCompletion()
+        scratchLabel.text = "Keep scratching..."
     }
     
     /**
@@ -110,6 +115,7 @@ class ScratchcardViewController: UIViewController, ScratchUIViewDelegate {
      * receive notification from async thread to check if we can already dismiss the view
      */
     func finishSuccess(sleepTime: Double) {
+        self.scratchLabel.text = ""
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(dismissToPrevious),
