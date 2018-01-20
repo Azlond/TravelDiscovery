@@ -8,7 +8,7 @@
 
 import Foundation
 import UIKit
-import NohanaImagePicker
+import ImagePicker
 import Photos
 
 /*Adds a preference for adding a done button to the keyboard when using UITextView*/
@@ -93,36 +93,6 @@ extension UIViewController {
 }
 
 
-/* MARK: Extension ImagePickerController*/
-
-extension PinViewController: NohanaImagePickerControllerDelegate {
-    
-    func nohanaImagePickerDidCancel(_ picker: NohanaImagePickerController) {
-        picker.dismiss(animated: true, completion: nil)
-    }
-    
-    func nohanaImagePicker(_ picker: NohanaImagePickerController, didFinishPickingPhotoKitAssets pickedAssts :[PHAsset]) {
-        picker.dismiss(animated: true, completion: nil)
-        
-        thumbnails = [UIImage]()
-        selectedPhotos = [UIImage]()
-        
-        for asset in pickedAssts {
-            thumbnails.append(getAssetThumbnail(asset: asset))
-            
-            let image = getUIImageFromAsset(asset: asset)
-            guard let jpgImage = compressImage(image: image) else {
-                /*if image compression fails use original image*/
-                print("image compression failed")
-                selectedPhotos.append(image)
-                continue
-            }
-            selectedPhotos.append(UIImage(data: jpgImage)!)
-        }
-        collectionView.reloadData()
-        
-    }
-}
 /**
  * Extensions to easily bold a string
  */

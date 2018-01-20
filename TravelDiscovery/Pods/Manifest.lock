@@ -1,5 +1,4 @@
 PODS:
-  - Agrume (4.0.2)
   - Eureka (4.0.1)
   - Firebase/Auth (4.8.1):
     - Firebase/Core
@@ -48,6 +47,7 @@ PODS:
   - GoogleToolboxForMac/NSString+URLArguments (2.1.3)
   - GSMessages (1.5.1)
   - GTMSessionFetcher/Core (1.1.12)
+  - ImagePicker (3.0.0)
   - leveldb-library (1.20)
   - Mapbox-iOS-SDK (3.7.3)
   - nanopb (0.3.8):
@@ -55,14 +55,13 @@ PODS:
     - nanopb/encode (= 0.3.8)
   - nanopb/decode (0.3.8)
   - nanopb/encode (0.3.8)
-  - NohanaImagePicker (0.9.0)
   - ScratchCard (1.1.3)
   - SwiftLocation (3.1.0):
     - SwiftyJSON (~> 4.0.0-alpha.1)
+  - SwiftPhotoGallery (3.3.1)
   - SwiftyJSON (4.0.0)
 
 DEPENDENCIES:
-  - Agrume
   - Eureka
   - Firebase/Auth
   - Firebase/Core
@@ -70,13 +69,13 @@ DEPENDENCIES:
   - Firebase/Storage
   - FirebaseUI/Database
   - GSMessages
+  - ImagePicker
   - Mapbox-iOS-SDK (~> 3.7)
-  - NohanaImagePicker
   - ScratchCard (~> 1.1.3)
   - SwiftLocation (~> 3.1.0)
+  - SwiftPhotoGallery
 
 SPEC CHECKSUMS:
-  Agrume: e2b284482d12b1b21e130278be2a17c4754fc5f0
   Eureka: c8bd5cc07143b6f66268c208d28a246c99b41955
   Firebase: 2721056b8885eef90233b03f37be64358d35d262
   FirebaseAnalytics: 617afa8c26b57a0c3f11361b248bc9e17bfd8dfd
@@ -89,14 +88,15 @@ SPEC CHECKSUMS:
   GoogleToolboxForMac: 2501e2ad72a52eb3dfe7bd9aee7dad11b858bd20
   GSMessages: 2e6893301ae99f59d72a6d8c920ad41be407216c
   GTMSessionFetcher: ebaa1f79a5366922c1735f1566901f50beba23b7
+  ImagePicker: 973953c25960fe04729a7082a56194321c6762d2
   leveldb-library: 08cba283675b7ed2d99629a4bc5fd052cd2bb6a5
   Mapbox-iOS-SDK: 5304bd9605babe6da9050ea4cb23c1671420b737
   nanopb: 5601e6bca2dbf1ed831b519092ec110f66982ca3
-  NohanaImagePicker: b39fa5623cabab69597ea6f6a2d6729b9895cd2b
   ScratchCard: e5b9f8b9c5f9c197128fc6540cd829473e284fd3
   SwiftLocation: 8f5ef4f510a45e43239de57a3145b3669301e898
+  SwiftPhotoGallery: 4b8eb285d41268bee6d49a37759cd07e5d1d3183
   SwiftyJSON: 070dabdcb1beb81b247c65ffa3a79dbbfb3b48aa
 
-PODFILE CHECKSUM: ad33641cd501d4350cbb1a075af60a1808210dd3
+PODFILE CHECKSUM: 543fa1b444d9d5e9ceb074632eda18be76b349bb
 
 COCOAPODS: 1.3.1

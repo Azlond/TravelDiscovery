@@ -10,9 +10,9 @@ import AVKit
 import AVFoundation
 import CoreLocation
 import SwiftLocation
-import Agrume
+import SwiftPhotoGallery
 
-class PinDetailViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UIScrollViewDelegate {
+class PinDetailViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UIScrollViewDelegate, SwiftPhotoGalleryDelegate, SwiftPhotoGalleryDataSource {
     
     @IBOutlet weak var usernameLabel: UILabel!
     @IBOutlet weak var primaryImageView: UIImageView!
@@ -94,7 +94,6 @@ class PinDetailViewController: UIViewController, UICollectionViewDataSource, UIC
         imagesCV.delegate = self
         imagesCV.reloadData()
         
-                
         //navigationBar design
         self.navigationController?.navigationBar.prefersLargeTitles = false
     }
@@ -151,17 +150,7 @@ class PinDetailViewController: UIViewController, UICollectionViewDataSource, UIC
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let agrume = Agrume(images: self.images, startIndex: indexPath.row, backgroundBlurStyle: .dark, backgroundColor: UIColor.black)
-        agrume.didScroll = { [unowned self] index in
-            self.imagesCV.scrollToItem(at: IndexPath(row: index, section: 0),
-                                       at: [],
-                                       animated: false)
-        }
-        
-        if self.images.count == pin.imageURLs?.count {
-            agrume.showFrom(self)
-        }
-        
+        openGallery(index: indexPath.row)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -197,11 +186,46 @@ class PinDetailViewController: UIViewController, UICollectionViewDataSource, UIC
         
     }
     
+    // MARK: SwiftPhotoGallery
+    
+    func openGallery(index: Int) {
+        if let keyWindow = UIApplication.shared.keyWindow {
+            blackBackground = UIView(frame: keyWindow.frame)
+            blackBackground!.backgroundColor = UIColor.black
+            blackBackground!.alpha = 0
+            keyWindow.addSubview(blackBackground!)
+            
+            UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseOut, animations: {
+                self.blackBackground!.alpha = 1
+            }, completion: {(completed) in
+                //open gallery
+                let gallery = SwiftPhotoGallery(delegate: self, dataSource: self)
+                self.present(gallery, animated: false, completion: {
+                    gallery.currentPage = index
+                    self.blackBackground?.alpha = 0
+                    
+                })
+            })
+        }
+    }
+    
+    
+    func numberOfImagesInGallery(gallery: SwiftPhotoGallery) -> Int {
+        return images.count
+    }
+    
+    func imageInGallery(gallery: SwiftPhotoGallery, forIndex: Int) -> UIImage? {
+        return images[forIndex]
+    }
+    
+    func galleryDidTapToClose(gallery: SwiftPhotoGallery) {
+        dismiss(animated: true, completion: nil)
+    }
+    
     // MARK: Image Click Animation
     
     var startFrame: CGRect?
     var blackBackground: UIView?
-    var scrollView = UIScrollView()
     
     @objc func zoomIn(tapGesture: UITapGestureRecognizer){
         if let imageView = tapGesture.view as? UIImageView {
@@ -210,11 +234,8 @@ class PinDetailViewController: UIViewController, UICollectionViewDataSource, UIC
             let zoomInView = UIImageView(frame: startFrame!)
             zoomInView.image = imageView.image
             zoomInView.contentMode = .scaleAspectFill
-            zoomInView.isUserInteractionEnabled = true
-            zoomInView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(zoomOut)))
             
             if let keyWindow = UIApplication.shared.keyWindow {
-                
                 guard let img = imageView.image else {
                     return
                 }
@@ -233,47 +254,12 @@ class PinDetailViewController: UIViewController, UICollectionViewDataSource, UIC
                     zoomInView.frame = CGRect(x: 0, y: 0, width: keyWindow.frame.width, height: height)
                     zoomInView.center = keyWindow.center
                 }, completion: {(completed) in
-                    self.showStatusBar = false
-                    self.setNeedsStatusBarAppearanceUpdate()
                     zoomInView.removeFromSuperview()
-                    
-                    self.scrollView = UIScrollView(frame: self.view.bounds)
-                    self.scrollView.delegate = self
-                    self.scrollView.isUserInteractionEnabled = true
-                    self.scrollView.alwaysBounceVertical = true
-                    self.scrollView.alwaysBounceHorizontal = true
-                    self.scrollView.maximumZoomScale = 3.0
-                    self.scrollView.addSubview(zoomInView)
-                  
-                    keyWindow.addSubview(self.scrollView)
                     
                 })
             }
             
         }
-    }
-    
-    //zoom image back to previous location
-    @objc func zoomOut(tapGesture: UITapGestureRecognizer) {
-        if let zoomOutView = tapGesture.view as? UIImageView {
-            zoomOutView.clipsToBounds = true
-            zoomOutView.contentMode = .scaleAspectFill
-            
-            self.showStatusBar = true
-            self.setNeedsStatusBarAppearanceUpdate()
-            
-            UIView.animate(withDuration: 0.4, delay: 0, options: .curveEaseOut, animations: {
-                self.blackBackground?.alpha = 0
-                zoomOutView.frame = self.startFrame!
-                
-            }, completion: {(completed) in
-                self.scrollView.removeFromSuperview()
-            })
-        }
-    }
-    
-    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
-        return self.scrollView.subviews[0]
     }
     
     

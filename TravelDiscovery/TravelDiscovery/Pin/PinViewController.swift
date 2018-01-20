@@ -9,10 +9,10 @@
 import Foundation
 import UIKit
 import Photos
-import NohanaImagePicker
+import ImagePicker
 import SwiftLocation
 
-class PinViewController: UITableViewController, UICollectionViewDataSource, UICollectionViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class PinViewController: UITableViewController, UICollectionViewDataSource, UICollectionViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, ImagePickerDelegate {
     
     //MARK: UI controls
     @IBOutlet weak var locationTextField: UITextField!
@@ -26,7 +26,6 @@ class PinViewController: UITableViewController, UICollectionViewDataSource, UICo
     var latitude: Double = 0.0, longitude: Double = 0.0
     
     //variables for image display
-    var picker = NohanaImagePickerController()
     var selectedPhotos = [UIImage]()
     var thumbnails = [UIImage]()
     
@@ -53,7 +52,6 @@ class PinViewController: UITableViewController, UICollectionViewDataSource, UICo
         
         //init image picker
         videoPicker.delegate = self
-        picker.delegate = self
         
         collectionView.dataSource = self
         collectionView.delegate = self
@@ -90,13 +88,15 @@ class PinViewController: UITableViewController, UICollectionViewDataSource, UICo
     
     //MARK: Image display in CollectionView
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return thumbnails.count
+        return self.selectedPhotos.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath as IndexPath)
         let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 79, height: 79))
-        imageView.image = thumbnails[indexPath.row]
+        imageView.image = selectedPhotos[indexPath.row]
+        imageView.clipsToBounds = true
+        imageView.contentMode = .scaleAspectFill
         cell.contentView.addSubview(imageView)
         return cell
     }
@@ -156,7 +156,10 @@ class PinViewController: UITableViewController, UICollectionViewDataSource, UICo
     
     @IBAction func addImages(_ sender: UIButton) {
         //open multi image picker
-        present(picker, animated: true, completion: nil)
+        let imagePickerController = ImagePickerController()
+        imagePickerController.imageLimit = 10
+        imagePickerController.delegate = self
+        present(imagePickerController, animated: true, completion: nil)
     }
     
     @IBAction func addVideo(_ sender: Any) {
@@ -167,6 +170,25 @@ class PinViewController: UITableViewController, UICollectionViewDataSource, UICo
         present(videoPicker, animated: true, completion: nil)
     }
     
+    // MARK: ImagePicker
+    
+    func cancelButtonDidPress(_ imagePicker: ImagePickerController) {
+        imagePicker.dismiss(animated: true, completion: nil)
+    }
+    
+    func wrapperDidPress(_ imagePicker: ImagePickerController, images: [UIImage]) {
+        guard images.count > 0 else { return }
+        //TODO: present images
+        
+    }
+    
+    func doneButtonDidPress(_ imagePicker: ImagePickerController, images: [UIImage]){
+        imagePicker.dismiss(animated: true, completion: nil)
+        for image in images {
+            selectedPhotos.append(image)
+        }
+        collectionView.reloadData()
+    }
     
     // MARK: Helper Functions
     
@@ -182,7 +204,6 @@ class PinViewController: UITableViewController, UICollectionViewDataSource, UICo
         let option = PHImageRequestOptions()
         var thumbnail = UIImage()
         option.isSynchronous = true
-        option.deliveryMode = .highQualityFormat
         option.resizeMode = .exact
         option.normalizedCropRect = cropRect
         
