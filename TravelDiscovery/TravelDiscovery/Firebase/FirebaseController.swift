@@ -526,6 +526,14 @@ class FirebaseController {
         }
     }
     
+    public static func endTrip(travel: Travel) {
+        if let user = Auth.auth().currentUser {
+            initDatabase()
+            FirebaseData.ref.child("users").child(user.uid).child("travels").child(travel.id).child("active").setValue(travel.active)
+            FirebaseData.ref.child("users").child(user.uid).child("travels").child(travel.id).child("end").setValue(travel.end)
+        }
+    }
+    
     /**
      * saving the first image of the pin to local documents for better caching
      */

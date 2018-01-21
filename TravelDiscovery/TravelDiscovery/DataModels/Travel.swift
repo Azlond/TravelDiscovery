@@ -114,6 +114,7 @@ class Travel {
             if (self.end == "") {
                 self.end = DateFormatter.localizedString(from: Date(), dateStyle: Travel.dateStyle, timeStyle: Travel.timeStyle)
             }
+            FirebaseController.endTrip(travel: self)
             Locator.completeAllLocationRequests()
             let userSettings = UserDefaults.standard
             userSettings.set("", forKey: "activeTravelID")
@@ -123,6 +124,7 @@ class Travel {
             if (self.end == "") {
                 self.end = DateFormatter.localizedString(from: Date(), dateStyle: Travel.dateStyle, timeStyle: Travel.timeStyle)
             }
+            FirebaseController.endTrip(travel: self)
             Locator.completeAllLocationRequests()
             let userSettings = UserDefaults.standard
             userSettings.set("", forKey: "activeTravelID")
