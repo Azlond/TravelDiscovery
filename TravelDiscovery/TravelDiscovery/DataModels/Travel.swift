@@ -107,14 +107,26 @@ class Travel {
         self.stepCounter()
         _ = self.getKm()
         
-        self.active = false
-        if (self.end == "") {
-            self.end = DateFormatter.localizedString(from: Date(), dateStyle: Travel.dateStyle, timeStyle: Travel.timeStyle)
-        }
-        
-        Locator.completeAllLocationRequests()
-        let userSettings = UserDefaults.standard
-        userSettings.set("", forKey: "activeTravelID")
+        Locator.currentPosition(accuracy: .house, onSuccess: {location in
+            /*Add current location as finishing location to trip*/
+            FirebaseController.handleBackgroundLocationData(location: location, isPin: true)
+            self.active = false
+            if (self.end == "") {
+                self.end = DateFormatter.localizedString(from: Date(), dateStyle: Travel.dateStyle, timeStyle: Travel.timeStyle)
+            }
+            Locator.completeAllLocationRequests()
+            let userSettings = UserDefaults.standard
+            userSettings.set("", forKey: "activeTravelID")
+        }, onFail: { (error, location) in
+            /*Even though we don't have a finishing location, we still need to end the trip*/
+            self.active = false
+            if (self.end == "") {
+                self.end = DateFormatter.localizedString(from: Date(), dateStyle: Travel.dateStyle, timeStyle: Travel.timeStyle)
+            }
+            Locator.completeAllLocationRequests()
+            let userSettings = UserDefaults.standard
+            userSettings.set("", forKey: "activeTravelID")
+        })
     }
     
     
