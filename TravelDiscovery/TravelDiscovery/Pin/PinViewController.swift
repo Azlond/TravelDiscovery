@@ -32,7 +32,6 @@ class PinViewController: UITableViewController, UICollectionViewDataSource, UICo
     var videoPicker = UIImagePickerController()
     var selectedVideoURL: URL?
     var videoThumbnail: UIImage?
-
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -55,6 +54,7 @@ class PinViewController: UITableViewController, UICollectionViewDataSource, UICo
         
         collectionView.dataSource = self
         collectionView.delegate = self
+        collectionView.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: #selector(activateDeleteOption)))
         collectionView.reloadData()
         
         self.hideKeyboardWhenTappedAround()
@@ -97,6 +97,7 @@ class PinViewController: UITableViewController, UICollectionViewDataSource, UICo
         imageView.image = selectedPhotos[indexPath.row]
         imageView.clipsToBounds = true
         imageView.contentMode = .scaleAspectFill
+
         cell.contentView.addSubview(imageView)
         return cell
     }
@@ -168,6 +169,20 @@ class PinViewController: UITableViewController, UICollectionViewDataSource, UICo
         videoPicker.allowsEditing = true
         videoPicker.videoQuality = .typeIFrame960x540
         present(videoPicker, animated: true, completion: nil)
+    }
+    
+    @objc func activateDeleteOption(longPress: UILongPressGestureRecognizer) {
+        if longPress.state == .began {
+            if let indexPath = collectionView.indexPathForItem(at: longPress.location(in: collectionView)){
+                let alert = UIAlertController(title: "Delete Photo", message: "", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in
+                    self.selectedPhotos.remove(at: indexPath.row)
+                    self.collectionView.reloadData()
+                }))
+                self.present(alert, animated: true, completion: nil)
+            }
+        }
     }
     
     // MARK: ImagePicker

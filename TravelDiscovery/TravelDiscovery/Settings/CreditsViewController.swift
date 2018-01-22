@@ -35,9 +35,9 @@ class CreditsViewController: UIViewController {
         let lib3 = "ScratchCard (https://github.com/joehour/ScratchCard)"
         let lib4 = "Eureka (https://github.com/xmartlabs/Eureka)"
         let lib5 = "SwiftLocation (https://github.com/malcommac/SwiftLocation)"
-        let lib6 = "NohanaImagePicker (https://github.com/nohana/NohanaImagePicker)"
+        let lib6 = "ImagePicker (https://github.com/hyperoslo/ImagePicker"
         let lib7 = "GSMessages (https://github.com/wxxsw/GSMessages)"
-        let lib8 = "Agrume (https://github.com/JanGorman/Agrume)"
+        let lib8 = "SwiftPhotoGallery (https://github.com/Inspirato/SwiftPhotoGallery)"
         
         let libraryBullets = createBullets(bullets: [lib1, lib2, lib3, lib4, lib5, lib6, lib7, lib8])
         creditsString.append(librariesTitleString)
