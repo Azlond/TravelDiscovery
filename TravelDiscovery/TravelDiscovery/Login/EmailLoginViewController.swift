@@ -23,6 +23,7 @@ class EmailLoginViewController: UIViewController, UITextFieldDelegate {
         emailField.delegate = self
         passwordField.delegate = self
         self.hideKeyboardWhenTappedAround()
+        emailField.becomeFirstResponder()
     }
 
     override func didReceiveMemoryWarning() {

@@ -23,6 +23,7 @@ class EmailSignUpViewController: UIViewController, UITextFieldDelegate {
         passwordTextField.delegate = self
         reenterPasswordField.delegate = self
         self.hideKeyboardWhenTappedAround()
+        emailTextField.becomeFirstResponder()
     }
 
     override func didReceiveMemoryWarning() {
