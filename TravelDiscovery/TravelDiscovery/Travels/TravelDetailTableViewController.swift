@@ -50,6 +50,7 @@ class TravelDetailTableViewController: UITableViewController {
         self.stepsLabel.text = String(describing: steps)
         self.kmLabel.text = String(describing: km) + " km"
         
+        
        // infoTableView.estimatedRowHeight = 44.0
      //   infoTableView.rowHeight = UITableViewAutomaticDimension
         

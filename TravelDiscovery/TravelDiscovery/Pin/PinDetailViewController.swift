@@ -62,6 +62,11 @@ class PinDetailViewController: UIViewController, UICollectionViewDataSource, UIC
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        //remove back button title
+        if let nav = self.navigationController, let item = nav.navigationBar.topItem {
+            item.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: self, action:nil)
+        }
+        
         usernameLabel.text = "by " + pin.username
         dateLabel.text = "- " + pin.date
         pinNameLabel.text = pin.name

@@ -16,6 +16,8 @@ class TravelPinsTableViewController: UITableViewController {
     var travelId : String = ""
     var privatePins: [Pin] = []
     
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -27,6 +29,7 @@ class TravelPinsTableViewController: UITableViewController {
         self.tableView.rowHeight = UITableViewAutomaticDimension
         
         self.refreshControl?.addTarget(self, action: #selector(self.handleRefresh), for: UIControlEvents.valueChanged)
+        
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(updateFeed),
@@ -43,6 +46,10 @@ class TravelPinsTableViewController: UITableViewController {
                 }
             }
         }
+        
+        if let nav = self.navigationController, let item = nav.navigationBar.topItem {
+            item.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: self, action:nil)
+        }
        
         
         self.tableView.reloadData()
@@ -50,6 +57,7 @@ class TravelPinsTableViewController: UITableViewController {
         handleRefresh()
         self.title = FirebaseData.travels[self.travelId]?.name
     }
+    
     
     /**
      * reload data view, end refresh
