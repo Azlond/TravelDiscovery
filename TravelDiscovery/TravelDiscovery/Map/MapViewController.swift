@@ -257,7 +257,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
             annotationView!.frame = CGRect(x: 0, y: 0, width: 25, height: 25)
             
             // Set the annotation view’s background color to a value determined by its longitude.
-            let hue = CGFloat(annotation.coordinate.longitude) / 100
+            let hue = abs(CGFloat(annotation.coordinate.longitude)) / 180
             annotationView!.backgroundColor = UIColor(hue: hue, saturation: 0.5, brightness: 1, alpha: 1)
         }
         
@@ -395,7 +395,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
         
         if currentIndex == 1 {
             //animate camera to zoom and center to first location point
-            let camera = MGLMapCamera(lookingAtCenter: currentLocation.coordinate, fromEyeCoordinate: mapView.centerCoordinate, eyeAltitude: 10000)
+            let camera = MGLMapCamera(lookingAtCenter: currentLocation.coordinate, fromEyeCoordinate: mapView.centerCoordinate, eyeAltitude: 15000)
             mapView.setCamera(camera, withDuration: 2, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseIn), completionHandler: {
                 self.mapView.setDirection(0.0, animated: true)
                 self.currentIndex += 1
@@ -408,7 +408,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
             let duration = getCameraRideDuration(distance: distance)
             print(distance, duration)
             
-            let camera = MGLMapCamera(lookingAtCenter: currentLocation.coordinate, fromEyeCoordinate: mapView.centerCoordinate, eyeAltitude: 10000)
+            let camera = MGLMapCamera(lookingAtCenter: currentLocation.coordinate, fromEyeCoordinate: mapView.centerCoordinate, eyeAltitude: 15000)
             
             if distance < 100000 {
                 mapView.setCamera(camera, withDuration: duration, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear), completionHandler: {
@@ -430,23 +430,27 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
      */
     func getCameraRideDuration(distance: Double) -> Double {
         var duration: Double = 0.0
-        // level: 0-5km
-        if distance < 5000 {
+        // level: 0-3km
+        if distance < 3000 {
             duration = distance / 2000 // 2000m/s
         }
-        // level: 5-10km
-        else if distance < 10000 {
-            duration =  distance / 4000
+            // level: 3-8km
+        else if distance < 8000 {
+            duration =  distance / 3000
         }
-        // level: 10-50km
-        else if distance < 50000 {
+            // level: 8-15km
+        else if distance < 20000 {
             duration = distance / 10000
         }
-        // level: 50-100km
+            // level: 15-50km
+        else if distance < 50000 {
+            duration = distance / 15000
+        }
+            // level: 50-100km
         else if distance < 100000 {
             duration = distance / 25000
         }
-        // level: >= 100km -> flight
+            // level: >= 100km -> flight
         else {
             duration = distance / 2000000
         }

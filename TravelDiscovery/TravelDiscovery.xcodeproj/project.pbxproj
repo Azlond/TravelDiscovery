@@ -198,6 +198,7 @@
 			children = (
 				3D7830F41FC8EA0800305D1D /* Map.storyboard */,
 				3D979C871FC9B89E00350C9E /* MapViewController.swift */,
+				845157501FEFCA9E00691E4E /* CustomAnnotationView.swift */,
 			);
 			path = Map;
 			sourceTree = "<group>";
@@ -268,7 +269,6 @@
 				845157541FFD208900691E4E /* PinDetailView.storyboard */,
 				8451574C1FEC2EC100691E4E /* PinTableViewCell.swift */,
 				8451574E1FEC300C00691E4E /* PinTableViewCell.xib */,
-				845157501FEFCA9E00691E4E /* CustomAnnotationView.swift */,
 			);
 			path = Pin;
 			sourceTree = "<group>";

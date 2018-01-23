@@ -78,9 +78,13 @@ class PinDetailViewController: UIViewController, UICollectionViewDataSource, UIC
             primaryImageView.reduceSaturation()
             
             loadImages(urlStrings: pin.imageURLs!)
-            
         } else {
             imagesCVHeight.constant = 0
+        }
+        // if no images were uploaded, but a video was -> use video thumbnail for preview
+        if pin.imageURLs?.count == 0 && pin.videoThumbnailURL != nil {
+            primaryImageView.loadImageUsingCache(withUrl: pin.videoThumbnailURL!, tableview: nil, indexPath: nil)
+            primaryImageView.reduceSaturation()
         }
         
         // set video
