@@ -139,9 +139,10 @@ class FirebaseController {
     
     fileprivate static func uploadImages(_ pin: Pin, _ user: User, _ travel: Travel) {
         self.uploadingImages = true
+        var count = 0
+        
         //loop over images
-        for (index,image) in pin.photos!.enumerated() {
-            
+        for image in pin.photos! {
             // name image after random name
             let imageName = UUID().uuidString + ".jpeg"
             let storageRef = Storage.storage().reference().child("images").child(imageName)
@@ -163,8 +164,9 @@ class FirebaseController {
                     if let imageURL = metadata?.downloadURL()?.absoluteString {
                         pin.imageURLs?.append(imageURL)
                         
+                        count += 1
                         //save pin after last image was uploaded
-                        if index == (pin.photos!.count-1) {
+                        if count == (pin.photos!.count) {
                             self.uploadingImages = false
                             self.savePinToFirebase(pin: pin, user: user, travel: travel)
                             NotificationCenter.default.post(name: Notification.Name("uploadSuccess"), object: nil, userInfo: ["type":"Image"])

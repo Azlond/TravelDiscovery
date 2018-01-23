@@ -200,7 +200,13 @@ class PinViewController: UITableViewController, UICollectionViewDataSource, UICo
     func doneButtonDidPress(_ imagePicker: ImagePickerController, images: [UIImage]){
         imagePicker.dismiss(animated: true, completion: nil)
         for image in images {
-            selectedPhotos.append(image)
+            guard let jpgImage = compressImage(image: image) else {
+                /*if image compression fails use original image*/
+                print("image compression failed")
+                selectedPhotos.append(image)
+                continue
+            }
+            selectedPhotos.append(UIImage(data: jpgImage)!)
         }
         collectionView.reloadData()
     }
