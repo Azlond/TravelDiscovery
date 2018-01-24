@@ -35,6 +35,7 @@ class PinDetailViewController: UIViewController, UICollectionViewDataSource, UIC
     
     var showStatusBar = true
     var isFeedPin = false
+    
     var pin: Pin!
     var images = [UIImage]()
     
@@ -197,7 +198,12 @@ class PinDetailViewController: UIViewController, UICollectionViewDataSource, UIC
     
     // MARK: SwiftPhotoGallery
     
+    var blackBackground: UIView?
+    
     func openGallery(index: Int) {
+        if images.count == 0 {
+            return
+        }
         if let keyWindow = UIApplication.shared.keyWindow {
             blackBackground = UIView(frame: keyWindow.frame)
             blackBackground!.backgroundColor = UIColor.black
@@ -210,7 +216,9 @@ class PinDetailViewController: UIViewController, UICollectionViewDataSource, UIC
                 //open gallery
                 let gallery = SwiftPhotoGallery(delegate: self, dataSource: self)
                 self.present(gallery, animated: false, completion: {
-                    gallery.currentPage = index
+                    if (index <= self.images.count) {
+                        gallery.currentPage = index
+                    }
                     self.blackBackground?.alpha = 0
                     
                 })
@@ -225,52 +233,14 @@ class PinDetailViewController: UIViewController, UICollectionViewDataSource, UIC
     
     func imageInGallery(gallery: SwiftPhotoGallery, forIndex: Int) -> UIImage? {
         return images[forIndex]
+        
     }
     
     func galleryDidTapToClose(gallery: SwiftPhotoGallery) {
         dismiss(animated: true, completion: nil)
     }
     
-    // MARK: Image Click Animation
-    
-    var startFrame: CGRect?
-    var blackBackground: UIView?
-    
-    @objc func zoomIn(tapGesture: UITapGestureRecognizer){
-        if let imageView = tapGesture.view as? UIImageView {
-            startFrame = imageView.superview?.convert(imageView.frame, to: nil)
-            
-            let zoomInView = UIImageView(frame: startFrame!)
-            zoomInView.image = imageView.image
-            zoomInView.contentMode = .scaleAspectFill
-            
-            if let keyWindow = UIApplication.shared.keyWindow {
-                guard let img = imageView.image else {
-                    return
-                }
-                
-                blackBackground = UIView(frame: keyWindow.frame)
-                blackBackground!.backgroundColor = UIColor.black
-                blackBackground!.alpha = 0
-                
-                keyWindow.addSubview(blackBackground!)
-                keyWindow.addSubview(zoomInView)
-                
-                //animate image to fill the screen with black background
-                UIView.animate(withDuration: 0.4, delay: 0, options: .curveEaseOut, animations: {
-                    self.blackBackground!.alpha = 1
-                    let height = img.size.height / img.size.width * keyWindow.frame.width
-                    zoomInView.frame = CGRect(x: 0, y: 0, width: keyWindow.frame.width, height: height)
-                    zoomInView.center = keyWindow.center
-                }, completion: {(completed) in
-                    zoomInView.removeFromSuperview()
-                    
-                })
-            }
-            
-        }
-    }
-    
+    // MARK: Video Display
     
     private func setupVideoDisplay() {
         //set first video frame as image
@@ -342,16 +312,5 @@ class PinDetailViewController: UIViewController, UICollectionViewDataSource, UIC
             }).resume()
         }
     }
-    
-    
-    /*
-     // MARK: - Navigation
-     
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destinationViewController.
-     // Pass the selected object to the new view controller.
-     }
-     */
     
 }

@@ -49,9 +49,7 @@ class PinViewController: UITableViewController, UICollectionViewDataSource, UICo
         
         addBorderToTextView()
         
-        //init image picker
         videoPicker.delegate = self
-        
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: #selector(activateDeleteOption)))
@@ -87,6 +85,7 @@ class PinViewController: UITableViewController, UICollectionViewDataSource, UICo
     }
     
     //MARK: Image display in CollectionView
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return self.selectedPhotos.count
     }
@@ -123,7 +122,7 @@ class PinViewController: UITableViewController, UICollectionViewDataSource, UICo
             return
         }
         
-        //calculate number of pin in active travel
+        //calculate number of pins in active travel
         var pinNumber = 0
         if let travel = FirebaseData.getActiveTravel() {
             pinNumber = travel.pins.count + 1
@@ -193,16 +192,12 @@ class PinViewController: UITableViewController, UICollectionViewDataSource, UICo
     
     func wrapperDidPress(_ imagePicker: ImagePickerController, images: [UIImage]) {
         guard images.count > 0 else { return }
-        //TODO: present images
-        
     }
     
     func doneButtonDidPress(_ imagePicker: ImagePickerController, images: [UIImage]){
         imagePicker.dismiss(animated: true, completion: nil)
         for image in images {
             guard let jpgImage = compressImage(image: image) else {
-                /*if image compression fails use original image*/
-                print("image compression failed")
                 selectedPhotos.append(image)
                 continue
             }
@@ -212,27 +207,6 @@ class PinViewController: UITableViewController, UICollectionViewDataSource, UICo
     }
     
     // MARK: Helper Functions
-    
-    //creates a thumbnail for chosen image assets to display them
-    func getAssetThumbnail(asset: PHAsset) -> UIImage {
-        let retinaScale = UIScreen.main.scale
-        let retinaSquare = CGSize(width: 80.0 * retinaScale, height: 80.0 * retinaScale)
-        let cropSizeLength = min(asset.pixelWidth, asset.pixelHeight)
-        let square = CGRect(x:0, y: 0,width: CGFloat(cropSizeLength),height: CGFloat(cropSizeLength))
-        let cropRect = square.applying(CGAffineTransform(scaleX: 1.0/CGFloat(asset.pixelWidth), y: 1.0/CGFloat(asset.pixelHeight)))
-        
-        let manager = PHImageManager.default()
-        let option = PHImageRequestOptions()
-        var thumbnail = UIImage()
-        option.isSynchronous = true
-        option.resizeMode = .exact
-        option.normalizedCropRect = cropRect
-        
-        manager.requestImage(for: asset, targetSize: retinaSquare, contentMode: .aspectFit, options: option, resultHandler: {(result, info)->Void in
-            thumbnail = result!
-        })
-        return thumbnail
-    }
     
     // creates UIImage in original size from chosen photo assets
     func getUIImageFromAsset(asset: PHAsset) -> UIImage {
@@ -287,19 +261,7 @@ class PinViewController: UITableViewController, UICollectionViewDataSource, UICo
         }
         return imageData
     }
-    
-    //video selected
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        if let videoURL = info[UIImagePickerControllerMediaURL] as? URL {
-            self.selectedVideoURL = videoURL
-        }
-        if let asset = info["UIImagePickerControllerPHAsset"] as? PHAsset {
-            self.videoThumbnail = getUIImageFromAsset(asset: asset)
-            videoPreview.image = videoThumbnail
-        }
-        videoPicker.dismiss(animated: true, completion: nil)
-    }
-  
+
     
     
     func returnToParentViewController() {
