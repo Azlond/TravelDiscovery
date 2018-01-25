@@ -82,7 +82,6 @@ class PinDetailViewController: UIViewController, UICollectionViewDataSource, UIC
         if ((pin.imageURLs?.count ?? 0) > 0) {
             primaryImageView.loadImageUsingCache(withUrl: pin.imageURLs![0], tableview: nil, indexPath: nil)
             primaryImageView.reduceSaturation()
-            
             loadImages(urlStrings: pin.imageURLs!)
         } else {
             imagesCVHeight.constant = 0
@@ -233,7 +232,6 @@ class PinDetailViewController: UIViewController, UICollectionViewDataSource, UIC
     
     func imageInGallery(gallery: SwiftPhotoGallery, forIndex: Int) -> UIImage? {
         return images[forIndex]
-        
     }
     
     func galleryDidTapToClose(gallery: SwiftPhotoGallery) {
@@ -286,12 +284,15 @@ class PinDetailViewController: UIViewController, UICollectionViewDataSource, UIC
     }
     
     func loadImages(urlStrings: [String]) {
-        for urlString in urlStrings {
-            let url = URL(string: urlString)
+        while self.images.count < urlStrings.count {
+            self.images.append(UIImage())
+        }
+        for index in 0 ..< urlStrings.count {
+            let url = URL(string: urlStrings[index])
             
             /*check cached image*/
             if let cachedImage = FirebaseData.imageCache.object(forKey: url!.lastPathComponent as NSString) as? UIImage {
-                self.images.append(cachedImage)
+                self.images[index] = cachedImage
                 continue
             }
             
@@ -306,7 +307,7 @@ class PinDetailViewController: UIViewController, UICollectionViewDataSource, UIC
                     if let image = UIImage(data: data!) {
                         FirebaseController.saveImageToDocuments(withUrl: url!, pinImage: image)
                         FirebaseData.imageCache.setObject(image, forKey: url!.lastPathComponent as NSString)
-                        self.images.append(image)
+                        self.images[index] = image
                     }
                 }
             }).resume()
