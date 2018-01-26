@@ -203,6 +203,8 @@ class PinDetailViewController: UIViewController, UICollectionViewDataSource, UIC
         if images.count == 0 {
             return
         }
+        // gallery can not be opened with an animation when a picture other than the first is selected
+        // => create animation: screen turning black and fading out again once gallery is open
         if let keyWindow = UIApplication.shared.keyWindow {
             blackBackground = UIView(frame: keyWindow.frame)
             blackBackground!.backgroundColor = UIColor.black
@@ -210,15 +212,23 @@ class PinDetailViewController: UIViewController, UICollectionViewDataSource, UIC
             keyWindow.addSubview(blackBackground!)
             
             UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseOut, animations: {
+                //turn screen black
                 self.blackBackground!.alpha = 1
+                
             }, completion: {(completed) in
                 //open gallery
                 let gallery = SwiftPhotoGallery(delegate: self, dataSource: self)
                 self.present(gallery, animated: false, completion: {
+                    // scroll to selected image
                     if (index <= self.images.count) {
                         gallery.currentPage = index
                     }
-                    self.blackBackground?.alpha = 0
+                    // fade out black
+                    UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseOut, animations: {
+                        self.blackBackground!.alpha = 0
+                    }, completion: {(completed) in
+                        self.blackBackground?.removeFromSuperview()
+                    })
                     
                 })
             })
