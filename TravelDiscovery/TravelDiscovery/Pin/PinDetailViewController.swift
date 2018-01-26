@@ -38,6 +38,7 @@ class PinDetailViewController: UIViewController, UICollectionViewDataSource, UIC
     
     var pin: Pin!
     var images = [UIImage]()
+    var tmpImage = UIImage()
     
     let playButton: UIButton = {
         let button = UIButton()
@@ -203,6 +204,11 @@ class PinDetailViewController: UIViewController, UICollectionViewDataSource, UIC
         if images.count == 0 {
             return
         }
+        
+        if (images[index] == tmpImage) {
+            return
+        }
+        
         // gallery can not be opened with an animation when a picture other than the first is selected
         // => create animation: screen turning black and fading out again once gallery is open
         if let keyWindow = UIApplication.shared.keyWindow {
@@ -295,7 +301,7 @@ class PinDetailViewController: UIViewController, UICollectionViewDataSource, UIC
     
     func loadImages(urlStrings: [String]) {
         while self.images.count < urlStrings.count {
-            self.images.append(UIImage())
+            self.images.append(tmpImage)
         }
         for index in 0 ..< urlStrings.count {
             let url = URL(string: urlStrings[index])
