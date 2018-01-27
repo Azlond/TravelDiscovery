@@ -9,7 +9,6 @@
 import UIKit
 import Firebase
 
-
 class TravelsTableViewController: UITableViewController {
     
     @IBOutlet weak var addButton: UIBarButtonItem!
@@ -20,9 +19,8 @@ class TravelsTableViewController: UITableViewController {
         
         super.viewDidLoad()
        
-       
-         tableView.estimatedRowHeight = 80
-         tableView.rowHeight = UITableViewAutomaticDimension
+       // tableView.estimatedRowHeight = 80
+        tableView.rowHeight = UITableViewAutomaticDimension
         
         self.navigationItem.leftBarButtonItem = self.editButtonItem
         self.refreshControl?.addTarget(self, action: #selector(self.handleRefresh), for: UIControlEvents.valueChanged)
@@ -37,6 +35,7 @@ class TravelsTableViewController: UITableViewController {
         self.updateAddButton()
     }
 
+    
     func populateTravels() {
         if (travels.count > 0) {
             travels.removeAll()
@@ -49,8 +48,10 @@ class TravelsTableViewController: UITableViewController {
                 }
             }
         }
+        
         travels = travels.reversed()
     }
+    
     
     /**
      * reload data view, end refresh
@@ -65,10 +66,12 @@ class TravelsTableViewController: UITableViewController {
     @objc func handleRefresh() {
         tableView.reloadData()
         FirebaseController.retrieveTravelsFromFirebase()
+        
         //timeout in case no data can be retrieved
         Timer.scheduledTimer(timeInterval: 10, target: self, selector: #selector(updateTravels), userInfo: nil, repeats: false)
         
     }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
@@ -87,22 +90,15 @@ class TravelsTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let row = indexPath.row
-        //let travel = FirebaseData.travels[Array(FirebaseData.travels.keys)[row]]
-        let travel = travels[row] //TODO: use this line and comment out the two lines above once deleting travels is no longer possible / we're updating the sortIndex for all travels
-
-        //let pin = travel!.pins
-        //let photos = FirebaseData.pins[pKey]!.photos
-
+        let travel = travels[row]
         let cell = tableView.dequeueReusableCell(withIdentifier: "travelCell", for: indexPath) as! TravelsTableViewCell
+       
         cell.travelImageView.setRadius(borderWidth: (travel.active ? 3 : 0))
-        //  cell.travelImageView.layoutSubviews()
         cell.travelNameLabel.text = travel.name
+      
         let beginDate = "From " + travel.begin! + "  "
         let onTraveling = "⇨   On traveling ✈️"
    
-        
-        
-        
         if(travel.end! != ""){
             cell.travelDateLabel.text = beginDate + "⇨   To " + travel.end!
         } else {
@@ -122,7 +118,8 @@ class TravelsTableViewController: UITableViewController {
         return cell
     }
     
-    // MAR: Add New Countries
+    
+    // MARK: Add New Countries
     
     @IBAction func addButtonPressed() {
         if (FirebaseData.getActiveTravel() == nil) {
@@ -171,6 +168,7 @@ class TravelsTableViewController: UITableViewController {
                 self.addButton.title = "End Trip"
             }
         })
+        
         addAction.isEnabled = false
         
         let alert = UIAlertController(title: "Create New Trip", message: "", preferredStyle: .alert)
@@ -190,43 +188,30 @@ class TravelsTableViewController: UITableViewController {
     }
  
     
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-    
     // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        
         
         guard editingStyle == .delete  else {
             return
         }
     
-        //tableView.deleteRows(at: [indexPath], with: .fade)
         let row = indexPath.row
-        
         let travel = travels[row]
+        
         // Show a confirm message before delete
-        // wenn travel is active
+        // when travel is active
         if (travel.active == true){
             
             let alert = UIAlertController(title: "Your are on traveling!", message: "Are you sure you want to delete your trip?", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
             alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { _ in
                 FirebaseData.getActiveTravel()?.endTrip()
+                
                 // delete the travel row from the date source
-                //let k = Array(FirebaseData.travels.keys)[row]
                 let travel = self.travels[row]
                 FirebaseData.travels.removeValue(forKey: travel.id)
                 FirebaseController.removeTravelFromFirebase(travelid: travel.id)
-                //tableView.deleteRows(at: [indexPath], with: .automatic)
-                //FirebaseController.saveTravelsToFirebase()
-              
+    
                 self.addButton.title = "New Trip"
                 let userSettings = UserDefaults.standard
                 userSettings.set("", forKey: "activeTravelID")
@@ -239,13 +224,12 @@ class TravelsTableViewController: UITableViewController {
             
             
         } else {
-            // wenn travel is not active
+            // when travel is not active
             let alert = UIAlertController(title: "Delete Trip", message: "Are you sure you want to delete your trip?", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
             alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { _ in
                 
                 // Delete the travel row from the data source
-                //let k = Array(FirebaseData.travels.keys)[row]
                 let travel = self.travels[row]
                 if let sortIndex = FirebaseData.travels[travel.id]?.sortIndex {
                     FirebaseController.updateTravelsIndices(index: sortIndex)
@@ -259,39 +243,16 @@ class TravelsTableViewController: UITableViewController {
             
             self.present(alert, animated: true, completion: nil)
         }
- 
-     
-        
-        }    
-
-   
-
-    
-    // Override to support rearranging the table view.
-    /*
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-        //let countryToMove = countries[(fromIndexPath as NSIndexPath).row]
-        print("position ändern fehlt")
-        //countries.remove(at: (fromIndexPath as NSIndexPath).row)
-        //countries.insert(countryToMove, at: (to as NSIndexPath).row)
         
     }
-    */
 
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-   
     
     override func viewDidAppear(_ animated: Bool) {
         self.populateTravels()
         self.tableView.reloadData()
     }
     
+
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
@@ -307,10 +268,6 @@ class TravelsTableViewController: UITableViewController {
             let row = indexPath!.row
             let k = travels[row].id
             travelDetailView.travelId = k
-            //travelDetailView.setCountryName(countries[((indexPath as NSIndexPath?)?.row)!])
-            
-            
-    
         }
 
     }
@@ -321,7 +278,6 @@ extension UIImageView {
     func setRadius(radius: CGFloat? = nil, borderWidth: CGFloat? = nil) {
         self.layer.cornerRadius = radius ?? self.frame.width / 2;
         self.layer.borderWidth = borderWidth ?? 1;
-        //self.layer.borderColor = UIColor.green.cgColor
         self.layer.borderColor = UIColor(red: 85/255, green: 170/255, blue: 153/255, alpha: 0.8).cgColor
         self.layer.masksToBounds = true;
         

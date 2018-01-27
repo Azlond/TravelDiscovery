@@ -206,11 +206,11 @@
 		3D7830ED1FC8E99A00305D1D /* Travels */ = {
 			isa = PBXGroup;
 			children = (
-				3D7830FE1FC8EC5B00305D1D /* TravelsTableViewController.swift */,
-				CE4356031FE9912B009E560C /* TravelDetailTableViewController.swift */,
 				3D7830F21FC8E9FD00305D1D /* Travels.storyboard */,
-				CE13B710200A5D0600D89AA5 /* TravelPinsTableViewController.swift */,
+				3D7830FE1FC8EC5B00305D1D /* TravelsTableViewController.swift */,
 				CE89CA27200AA041006FC32D /* TravelsTableViewCell.swift */,
+				CE4356031FE9912B009E560C /* TravelDetailTableViewController.swift */,
+				CE13B710200A5D0600D89AA5 /* TravelPinsTableViewController.swift */,
 			);
 			path = Travels;
 			sourceTree = "<group>";
@@ -744,7 +744,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = TravelDiscovery/TravelDiscovery.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = Q632JFQA88;
+				DEVELOPMENT_TEAM = 7JR5T96KSD;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Pods/FirebaseAnalytics/Frameworks",
@@ -768,7 +768,7 @@
 				);
 				INFOPLIST_FILE = TravelDiscovery/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = iOSTravelCrew.TravelDiscovery;
+				PRODUCT_BUNDLE_IDENTIFIER = iOSTravelCrew3.TravelDiscovery;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -782,7 +782,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = TravelDiscovery/TravelDiscovery.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = Q632JFQA88;
+				DEVELOPMENT_TEAM = 7JR5T96KSD;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Pods/FirebaseAnalytics/Frameworks",
@@ -806,7 +806,7 @@
 				);
 				INFOPLIST_FILE = TravelDiscovery/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = iOSTravelCrew.TravelDiscovery;
+				PRODUCT_BUNDLE_IDENTIFIER = iOSTravelCrew3.TravelDiscovery;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = 1;

@@ -51,7 +51,6 @@ class TravelPinsTableViewController: UITableViewController {
             item.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: self, action:nil)
         }
        
-        
         self.tableView.reloadData()
         
         handleRefresh()
@@ -135,6 +134,7 @@ class TravelPinsTableViewController: UITableViewController {
                 }
             }
         })
+        
         cell.pinNameLabel.text = pin.name
         
         var previewText : String = ""
@@ -144,7 +144,6 @@ class TravelPinsTableViewController: UITableViewController {
             }
         }
         cell.textView.text = previewText
-        
         cell.imgView.image = nil
         cell.imgView.setRandomBackgroundColor()
         
@@ -179,23 +178,4 @@ class TravelPinsTableViewController: UITableViewController {
         navigationController?.pushViewController(pinDetailVC, animated: true)
         
     }
-    
-    /*
-     // Override to support conditional rearranging of the table view.
-     override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-     // Return false if you do not want the item to be re-orderable.
-     return true
-     }
-     */
-    
-    /*
-     // MARK: - Navigation
-     
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destinationViewController.
-     // Pass the selected object to the new view controller.
-     }
-     */
-    
 }

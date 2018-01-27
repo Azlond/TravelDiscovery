@@ -16,13 +16,12 @@ class TravelsTableViewCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+        
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 
-        // Configure the view for the selected state
     }
 
     override func layoutSubviews() {
@@ -32,18 +31,6 @@ class TravelsTableViewCell: UITableViewCell {
         layer.masksToBounds = true
         layer.cornerRadius = min(self.frame.width/2 , self.frame.height/2)
         clipsToBounds = true
-        // layer.borderWidth = 1
-        // layer.borderColor = UIColor.lightGray.cgColor
-       // backgroundColor = UIColor.black
-      
-        
+
     }
-    /*
-    override func prepareForReuse() {
-        imgView.image = nil
-        imgView.setRandomBackgroundColor()
-        super.prepareForReuse()
-    }
- */
-    
 }
