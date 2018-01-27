@@ -310,7 +310,7 @@ class FirebaseController {
                 if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {
                     print("statusCode should be 200, but is \(httpStatus.statusCode)")
                     print("response = \(String(describing: response))")
-                    // If statuscode == 400, no location or range was sent to the server. Tell user about it.
+                    // If statuscode == 400, no location or range was sent to the server.
                     if httpStatus.statusCode == 400 {
                         DispatchQueue.main.async {
                             NotificationCenter.default.post(name: Notification.Name("serverError"), object: nil)
@@ -352,26 +352,6 @@ class FirebaseController {
             print(err)
         })
     }
-    
-//    /**
-//     * saving travels to firebase
-//     */
-//    public static func saveTravelsToFirebase() {
-//        if let user = Auth.auth().currentUser {
-//            initDatabase()
-//
-//            // loop over travels
-//            let travelsCopy = FirebaseData.travels
-//            for travelEntry in travelsCopy {
-//                let travel = travelEntry.value
-//                let fbDict = travel.prepareDictForFirebase()
-//                FirebaseData.ref.child("users").child(user.uid).child("travels").child(travel.id).setValue(fbDict)
-//
-//                //save pins
-//                savePinsToFirebaseOfTravel(travel: travel)
-//            }
-//        }
-//    }
     
     public static func addTravelToFirebase(travel: Travel) {
         if let user = Auth.auth().currentUser {
@@ -436,20 +416,14 @@ class FirebaseController {
     
     public static func updateTravelSteps(travel: Travel) {
         if let user = Auth.auth().currentUser {
-            if (FirebaseData.ref == nil) {
-                // initialize database
-                FirebaseData.ref = Database.database().reference()
-            }
+            initDatabase()
             FirebaseData.ref.child("users").child(user.uid).child("travels").child(travel.id).child("steps").setValue(travel.steps)
         }
     }
     
     public static func updateDistance(travel: Travel) {
         if let user = Auth.auth().currentUser {
-            if (FirebaseData.ref == nil) {
-                // initialize database
-                FirebaseData.ref = Database.database().reference()
-            }
+            initDatabase()
             FirebaseData.ref.child("users").child(user.uid).child("travels").child(travel.id).child("km").setValue(travel.km)
         }
     }

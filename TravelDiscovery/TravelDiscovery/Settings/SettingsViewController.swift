@@ -136,7 +136,6 @@ class SettingsViewController: FormViewController {
             }
         } catch {
             return
-            //error handling logout error
         }
         let storyBoard: UIStoryboard = UIStoryboard(name: "Login", bundle: nil)
         let vc = storyBoard.instantiateViewController(withIdentifier: "LoginVC")
@@ -173,16 +172,4 @@ class SettingsViewController: FormViewController {
         FirebaseData.ref = nil
         FirebaseData.user = nil
     }
-    
-    
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }
