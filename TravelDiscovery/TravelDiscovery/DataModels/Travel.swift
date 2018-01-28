@@ -31,14 +31,12 @@ class Travel {
     var steps: Double
     var km: Double
     var routeData : Dictionary<String, CLLocationCoordinate2D> = [:]
-    //var videos:
-    
-    
-    
-    
+   
+
     //MARK: Initialization
     
     init?(id: String, name: String, sortIndex: Int) {
+        
         // Initialization should fail if there is no name
         guard !name.isEmpty else {
             return nil

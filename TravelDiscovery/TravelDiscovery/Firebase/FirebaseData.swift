@@ -30,6 +30,7 @@ class FirebaseData {
         }
         return nil
     }
+    
     static func getHighestSortIndex() -> Int {
         // in case there are no travels we should return -1 instead of 0 since 0 is a valid sortIndex
         // the function to add a new travel add 1 to this return value
