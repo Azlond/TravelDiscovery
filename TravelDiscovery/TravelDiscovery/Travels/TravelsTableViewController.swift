@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import SwiftLocation
 
 class TravelsTableViewController: UITableViewController {
     
@@ -205,7 +206,7 @@ class TravelsTableViewController: UITableViewController {
             let alert = UIAlertController(title: "Your are on traveling!", message: "Are you sure you want to delete your trip?", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
             alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { _ in
-                FirebaseData.getActiveTravel()?.endTrip()
+                //FirebaseData.getActiveTravel()?.endTrip()
                 
                 // delete the travel row from the date source
                 let travel = self.travels[row]
@@ -215,6 +216,7 @@ class TravelsTableViewController: UITableViewController {
                 self.addButton.title = "New Trip"
                 let userSettings = UserDefaults.standard
                 userSettings.set("", forKey: "activeTravelID")
+                Locator.completeAllLocationRequests()
                 
                 self.populateTravels()
                 self.tableView.reloadData()

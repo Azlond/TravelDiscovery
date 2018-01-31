@@ -438,11 +438,11 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
         else if distance < 8000 {
             duration =  distance / 3000
         }
-            // level: 8-15km
+            // level: 8-20km
         else if distance < 20000 {
             duration = distance / 10000
         }
-            // level: 15-50km
+            // level: 20-50km
         else if distance < 50000 {
             duration = distance / 15000
         }

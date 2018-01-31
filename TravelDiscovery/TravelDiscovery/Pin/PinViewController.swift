@@ -206,6 +206,18 @@ class PinViewController: UITableViewController, UICollectionViewDataSource, UICo
         collectionView.reloadData()
     }
     
+    // MARK: Video Picker
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        if let videoURL = info[UIImagePickerControllerMediaURL] as? URL {
+            self.selectedVideoURL = videoURL
+        }
+        if let asset = info["UIImagePickerControllerPHAsset"] as? PHAsset {
+            self.videoThumbnail = getUIImageFromAsset(asset: asset)
+            videoPreview.image = videoThumbnail
+        }
+        videoPicker.dismiss(animated: true, completion: nil)
+    }
+    
     // MARK: Helper Functions
     
     // creates UIImage in original size from chosen photo assets
