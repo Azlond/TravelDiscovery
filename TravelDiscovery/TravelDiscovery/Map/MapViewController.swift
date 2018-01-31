@@ -406,7 +406,6 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
             let previousLocation = CLLocation(latitude: coordinates[currentIndex-2].latitude, longitude: coordinates[currentIndex-2].longitude)
             let distance = currentLocation.distance(from: previousLocation)
             let duration = getCameraRideDuration(distance: distance)
-            print(distance, duration)
             
             let camera = MGLMapCamera(lookingAtCenter: currentLocation.coordinate, fromEyeCoordinate: mapView.centerCoordinate, eyeAltitude: 15000)
             
