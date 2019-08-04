@@ -199,6 +199,7 @@ class Travel {
                 let dateFormatter = DateFormatter()
                 dateFormatter.dateStyle = Travel.dateStyle
                 dateFormatter.timeStyle = Travel.timeStyle
+                dateFormatter.dateFormat = "dd. MMM yyyy"
                 let beginDate = dateFormatter.date(from: self.begin!)
                 
                 var dateComponentsStart = DateComponents()
