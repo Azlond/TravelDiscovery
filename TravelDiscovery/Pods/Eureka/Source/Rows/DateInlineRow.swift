@@ -23,6 +23,7 @@
 // THE SOFTWARE.
 
 import Foundation
+import UIKit
 
 extension DatePickerRowProtocol {
 
@@ -30,6 +31,23 @@ extension DatePickerRowProtocol {
         inlineRow.minimumDate = minimumDate
         inlineRow.maximumDate = maximumDate
         inlineRow.minuteInterval = minuteInterval
+    }
+    
+    func configurePickerStyle(_ cell: DatePickerCell, _ mode: UIDatePicker.Mode = .dateAndTime) {
+        cell.datePicker.datePickerMode = mode
+        // For Xcode 11.4 and above
+        #if swift(>=5.2)
+            if #available(iOS 14.0, *) {
+                #if swift(>=5.3) && !(os(OSX) || (os(iOS) && targetEnvironment(macCatalyst)))
+                    cell.datePicker.preferredDatePickerStyle = .inline
+                #else
+                    cell.datePicker.preferredDatePickerStyle = .wheels
+                #endif
+            }
+            else if #available(iOS 13.4, *) {
+                cell.datePicker.preferredDatePickerStyle = .wheels
+            }
+        #endif
     }
 
 }
@@ -46,6 +64,7 @@ open class _DateInlineRow: _DateInlineFieldRow {
 
     open func setupInlineRow(_ inlineRow: DatePickerRow) {
         configureInlineRow(inlineRow)
+        configurePickerStyle(inlineRow.cell, .date)
     }
 }
 
@@ -61,6 +80,7 @@ open class _TimeInlineRow: _DateInlineFieldRow {
 
     open func setupInlineRow(_ inlineRow: TimePickerRow) {
         configureInlineRow(inlineRow)
+        configurePickerStyle(inlineRow.cell, .time)
     }
 }
 
@@ -76,6 +96,7 @@ open class _DateTimeInlineRow: _DateInlineFieldRow {
 
     open func setupInlineRow(_ inlineRow: DateTimePickerRow) {
         configureInlineRow(inlineRow)
+        configurePickerStyle(inlineRow.cell)
     }
 }
 
@@ -89,12 +110,9 @@ open class _CountDownInlineRow: _DateInlineFieldRow {
             guard let date = $0 else {
                 return nil
             }
-            let hour = Calendar.current.component(.hour, from: date)
-            let min = Calendar.current.component(.minute, from: date)
-            if hour == 1 {
-                return "\(hour) hour \(min) min"
-            }
-            return "\(hour) hours \(min) min"
+
+            let dateComponents = Calendar.current.dateComponents([.hour, .minute], from: date)
+            return DateComponentsFormatter.localizedString(from: dateComponents, unitsStyle: .full)?.replacingOccurrences(of: ",", with: "")
         }
     }
 

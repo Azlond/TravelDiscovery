@@ -17,14 +17,14 @@ extension ImageGalleryView: UICollectionViewDataSource {
 
     let asset = assets[(indexPath as NSIndexPath).row]
 
-    AssetManager.resolveAsset(asset, size: CGSize(width: 160, height: 240)) { image in
+    AssetManager.resolveAsset(asset, size: CGSize(width: 160, height: 240), shouldPreferLowRes: configuration.useLowResolutionPreviewImage) { image in
       if let image = image {
         cell.configureCell(image)
 
         if (indexPath as NSIndexPath).row == 0 && self.shouldTransform {
           cell.transform = CGAffineTransform(scaleX: 0, y: 0)
 
-          UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: UIViewAnimationOptions(), animations: {
+          UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: UIView.AnimationOptions(), animations: {
             cell.transform = CGAffineTransform.identity
             }) { _ in }
 

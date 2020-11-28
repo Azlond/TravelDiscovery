@@ -23,6 +23,7 @@
 // THE SOFTWARE.
 
 import Foundation
+import UIKit
 
 open class BaseRow: BaseRowType {
 
@@ -35,7 +36,7 @@ open class BaseRow: BaseRowType {
     var callbackOnCellHighlightChanged: (() -> Void)?
     var callbackOnRowValidationChanged: (() -> Void)?
     var _inlineRow: BaseRow?
-    
+
     var _cachedOptionsData: Any?
 
     public var validationOptions: ValidationOptions = .validatesOnBlur
@@ -59,7 +60,7 @@ open class BaseRow: BaseRowType {
     public var title: String?
 
     /// Parameter used when creating the cell for this row.
-    public var cellStyle = UITableViewCellStyle.value1
+    public var cellStyle = UITableViewCell.CellStyle.value1
 
     /// String that uniquely identifies a row. Must be unique among rows and sections.
     public var tag: String?
@@ -73,8 +74,13 @@ open class BaseRow: BaseRowType {
         get { return nil }
     }
 
-    public func validate() -> [ValidationError] {
+    open func validate(quietly: Bool = false) -> [ValidationError] {
         return []
+    }
+
+    // Reset validation
+    open func cleanValidationErrors() {
+        validationErrors = []
     }
 
     public static var estimatedRowHeight: CGFloat = 44.0
@@ -98,8 +104,19 @@ open class BaseRow: BaseRowType {
     public var isHidden: Bool { return hiddenCache }
 
     /// The section to which this row belongs.
-    public weak var section: Section?
+    open weak var section: Section?
+	
+    public lazy var trailingSwipe = {[unowned self] in SwipeConfiguration(self)}()
+	
+    //needs the accessor because if marked directly this throws "Stored properties cannot be marked potentially unavailable with '@available'"
+    private lazy var _leadingSwipe = {[unowned self] in SwipeConfiguration(self)}()
 
+    @available(iOS 11,*)
+    public var leadingSwipe: SwipeConfiguration{
+        get { return self._leadingSwipe }
+        set { self._leadingSwipe = newValue }
+    }
+    
     public required init(tag: String? = nil) {
         self.tag = tag
     }
@@ -117,10 +134,15 @@ open class BaseRow: BaseRowType {
     open func prepare(for segue: UIStoryboardSegue) {}
 
     /**
+     Helps to pick destination part of the cell after scrolling
+     */
+    open var destinationScrollPosition: UITableView.ScrollPosition? = UITableView.ScrollPosition.bottom
+
+    /**
      Returns the IndexPath where this row is in the current form.
      */
     public final var indexPath: IndexPath? {
-        guard let sectionIndex = section?.index, let rowIndex = section?.index(of: self) else { return nil }
+        guard let sectionIndex = section?.index, let rowIndex = section?.firstIndex(of: self) else { return nil }
         return IndexPath(row: rowIndex, section: sectionIndex)
     }
 
@@ -249,7 +271,7 @@ extension BaseRow: Equatable, Hidable, Disableable {}
 
 extension BaseRow {
 
-    public func reload(with rowAnimation: UITableViewRowAnimation = .none) {
+    public func reload(with rowAnimation: UITableView.RowAnimation = .none) {
         guard let tableView = baseCell?.formViewController()?.tableView ?? (section?.form?.delegate as? FormViewController)?.tableView, let indexPath = indexPath else { return }
         tableView.reloadRows(at: [indexPath], with: rowAnimation)
     }
@@ -260,7 +282,7 @@ extension BaseRow {
         tableView.deselectRow(at: indexPath, animated: animated)
     }
 
-    public func select(animated: Bool = false, scrollPosition: UITableViewScrollPosition = .none) {
+    public func select(animated: Bool = false, scrollPosition: UITableView.ScrollPosition = .none) {
         guard let indexPath = indexPath,
             let tableView = baseCell?.formViewController()?.tableView ?? (section?.form?.delegate as? FormViewController)?.tableView  else { return }
         tableView.selectRow(at: indexPath, animated: animated, scrollPosition: scrollPosition)

@@ -6,7 +6,7 @@ extension BottomContainerView {
 
   func setupConstraints() {
 
-    for attribute: NSLayoutAttribute in [.centerX, .centerY] {
+    for attribute: NSLayoutConstraint.Attribute in [.centerX, .centerY] {
       addConstraint(NSLayoutConstraint(item: pickerButton, attribute: attribute,
         relatedBy: .equal, toItem: self, attribute: attribute,
         multiplier: 1, constant: 0))
@@ -16,13 +16,13 @@ extension BottomContainerView {
         multiplier: 1, constant: 0))
     }
 
-    for attribute: NSLayoutAttribute in [.width, .left, .top] {
+    for attribute: NSLayoutConstraint.Attribute in [.width, .left, .top] {
       addConstraint(NSLayoutConstraint(item: topSeparator, attribute: attribute,
         relatedBy: .equal, toItem: self, attribute: attribute,
         multiplier: 1, constant: 0))
     }
 
-    for attribute: NSLayoutAttribute in [.width, .height] {
+    for attribute: NSLayoutConstraint.Attribute in [.width, .height] {
       addConstraint(NSLayoutConstraint(item: pickerButton, attribute: attribute,
         relatedBy: .equal, toItem: nil, attribute: .notAnAttribute,
         multiplier: 1, constant: ButtonPicker.Dimensions.buttonSize))
@@ -102,8 +102,8 @@ extension TopView {
 extension ImagePickerController {
 
   func setupConstraints() {
-    let attributes: [NSLayoutAttribute] = [.bottom, .right, .width]
-    let topViewAttributes: [NSLayoutAttribute] = [.left, .top, .width]
+    let attributes: [NSLayoutConstraint.Attribute] = [.bottom, .right, .width]
+    let topViewAttributes: [NSLayoutConstraint.Attribute] = [.left, .width]
 
     for attribute in attributes {
       view.addConstraint(NSLayoutConstraint(item: bottomContainer, attribute: attribute,
@@ -111,8 +111,8 @@ extension ImagePickerController {
         multiplier: 1, constant: 0))
     }
 
-    for attribute: NSLayoutAttribute in [.left, .top, .width] {
-      view.addConstraint(NSLayoutConstraint(item: cameraController.view, attribute: attribute,
+    for attribute: NSLayoutConstraint.Attribute in [.left, .top, .width] {
+      view.addConstraint(NSLayoutConstraint(item: cameraController.view!, attribute: attribute,
         relatedBy: .equal, toItem: view, attribute: attribute,
         multiplier: 1, constant: 0))
     }
@@ -123,15 +123,38 @@ extension ImagePickerController {
         multiplier: 1, constant: 0))
     }
 
-    view.addConstraint(NSLayoutConstraint(item: bottomContainer, attribute: .height,
-      relatedBy: .equal, toItem: nil, attribute: .notAnAttribute,
-      multiplier: 1, constant: BottomContainerView.Dimensions.height))
+    if #available(iOS 11.0, *) {
+      view.addConstraint(NSLayoutConstraint(item: topView, attribute: .top,
+                                            relatedBy: .equal, toItem: view.safeAreaLayoutGuide,
+                                            attribute: .top,
+                                            multiplier: 1, constant: 0))
+    } else {
+      view.addConstraint(NSLayoutConstraint(item: topView, attribute: .top,
+                                            relatedBy: .equal, toItem: view,
+                                            attribute: .top,
+                                            multiplier: 1, constant: 0))
+    }
+    
+    if #available(iOS 11.0, *) {
+      let heightPadding = UIApplication.shared.keyWindow!.safeAreaInsets.bottom
+      view.addConstraint(NSLayoutConstraint(item: bottomContainer, attribute: .height,
+                                            relatedBy: .equal, toItem: nil,
+                                            attribute: .notAnAttribute,
+                                            multiplier: 1,
+                                            constant: BottomContainerView.Dimensions.height + heightPadding))
+    } else {
+      view.addConstraint(NSLayoutConstraint(item: bottomContainer, attribute: .height,
+                                            relatedBy: .equal, toItem: nil,
+                                            attribute: .notAnAttribute,
+                                            multiplier: 1,
+                                            constant: BottomContainerView.Dimensions.height))
+    }
 
     view.addConstraint(NSLayoutConstraint(item: topView, attribute: .height,
       relatedBy: .equal, toItem: nil, attribute: .notAnAttribute,
       multiplier: 1, constant: TopView.Dimensions.height))
 
-    view.addConstraint(NSLayoutConstraint(item: cameraController.view, attribute: .height,
+    view.addConstraint(NSLayoutConstraint(item: cameraController.view!, attribute: .height,
       relatedBy: .equal, toItem: view, attribute: .height,
       multiplier: 1, constant: -BottomContainerView.Dimensions.height))
   }
@@ -141,7 +164,7 @@ extension ImageGalleryViewCell {
 
   func setupConstraints() {
 
-    for attribute: NSLayoutAttribute in [.width, .height, .centerX, .centerY] {
+    for attribute: NSLayoutConstraint.Attribute in [.width, .height, .centerX, .centerY] {
       addConstraint(NSLayoutConstraint(item: imageView, attribute: attribute,
         relatedBy: .equal, toItem: self, attribute: attribute,
         multiplier: 1, constant: 0))
@@ -156,7 +179,7 @@ extension ImageGalleryViewCell {
 extension ButtonPicker {
 
   func setupConstraints() {
-    let attributes: [NSLayoutAttribute] = [.centerX, .centerY]
+    let attributes: [NSLayoutConstraint.Attribute] = [.centerX, .centerY]
 
     for attribute in attributes {
       addConstraint(NSLayoutConstraint(item: numberLabel, attribute: attribute,

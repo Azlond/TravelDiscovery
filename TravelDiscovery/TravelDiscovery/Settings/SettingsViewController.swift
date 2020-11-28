@@ -39,14 +39,15 @@ class SettingsViewController: FormViewController {
         +++ Section("Scratch Settings")
             <<< SliderRow("scratchPercentRow") { row in
                 row.title = "ScratchPercent-Finish"
-                row.minimumValue = 1
-                row.maximumValue = 99
-                row.steps = UInt(row.maximumValue - row.minimumValue)
                 row.value = userSettings.float(forKey: "scratchPercent") != 0 ? userSettings.float(forKey: "scratchPercent") : 90.0
                 row.onChange({row in
                     Timer.scheduledTimer(timeInterval: 0.5, target: FirebaseController.self, selector: #selector(FirebaseController.saveSettingsToFirebase), userInfo: ["key": "scratchPercent"], repeats: false) //need to use a timer to avoid too many changes
                     userSettings.set(row.value, forKey: "scratchPercent")
                 })
+            }.cellSetup { cell, row in
+                cell.slider.minimumValue = 1
+                cell.slider.maximumValue = 99
+                row.steps = UInt(cell.slider.maximumValue - cell.slider.minimumValue)
             }
         +++ Section("Feed Settings")
             <<< NameRow("feedNameRow"){ row in
@@ -71,14 +72,15 @@ class SettingsViewController: FormViewController {
             }
             <<< SliderRow("feedRangeRow") { row in
                 row.title = "Feed Range (km)"
-                row.minimumValue = 1
-                row.maximumValue = 50
-                row.steps = UInt(row.maximumValue - row.minimumValue)
                 row.value = userSettings.float(forKey: "feedRange") != 0 ? userSettings.float(forKey: "feedRange") : 1.0
                 row.onChange({row in
                     userSettings.set(row.value, forKey: "feedRange")
                     Timer.scheduledTimer(timeInterval: 0.5, target: FirebaseController.self, selector: #selector(FirebaseController.saveSettingsToFirebase), userInfo: ["key": "feedRange"], repeats: false) //need to use a timer to avoid too many changes
                 })
+            }.cellSetup { cell, row in
+                cell.slider.minimumValue = 1
+                cell.slider.maximumValue = 50
+                row.steps = UInt(cell.slider.maximumValue - cell.slider.minimumValue)
             }
             
         +++ Section("About")

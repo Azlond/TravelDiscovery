@@ -161,17 +161,17 @@ class FirebaseController {
                     
                     //UPLOAD SUCCESS
                     //retrieve URL of uploaded image
-                    if let imageURL = metadata?.downloadURL()?.absoluteString {
-                        pin.imageURLs?.append(imageURL)
-                        
-                        count += 1
-                        //save pin after last image was uploaded
-                        if count == (pin.photos!.count) {
-                            self.uploadingImages = false
-                            self.savePinToFirebase(pin: pin, user: user, travel: travel)
-                            NotificationCenter.default.post(name: Notification.Name("uploadSuccess"), object: nil, userInfo: ["type":"Image"])
-                        }
-                    }
+//                    if let imageURL = metadata?.downloadURL()?.absoluteString {
+//                        pin.imageURLs?.append(imageURL)
+//
+//                        count += 1
+//                        //save pin after last image was uploaded
+//                        if count == (pin.photos!.count) {
+//                            self.uploadingImages = false
+//                            self.savePinToFirebase(pin: pin, user: user, travel: travel)
+//                            NotificationCenter.default.post(name: Notification.Name("uploadSuccess"), object: nil, userInfo: ["type":"Image"])
+//                        }
+//                    }
                 })
             }
         }
@@ -196,12 +196,13 @@ class FirebaseController {
             }
             //UPLOAD SUCCESS
             //retrieve URL of uploaded video
-            if let videoURL = metadata?.downloadURL()?.absoluteString {
-                pin.videoDownloadURL = videoURL
-                self.uploadingVideo = false
-                self.savePinToFirebase(pin: pin, user: user, travel: travel)
-                NotificationCenter.default.post(name: Notification.Name("uploadSuccess"), object: nil, userInfo: ["type":"Video"])
-            }
+            //TODO:
+//            if let videoURL = metadata?.downloadURL()?.absoluteString {
+//                pin.videoDownloadURL = videoURL
+//                self.uploadingVideo = false
+//                self.savePinToFirebase(pin: pin, user: user, travel: travel)
+//                NotificationCenter.default.post(name: Notification.Name("uploadSuccess"), object: nil, userInfo: ["type":"Video"])
+//            }
         })
         //upload video thumbnail
         let imageName = UUID().uuidString + ".jpeg"
@@ -219,11 +220,12 @@ class FirebaseController {
                 }
                 //UPLOAD SUCCESS
                 //retrieve URL of uploaded video thumbnail
-                if let imageURL = metadata?.downloadURL()?.absoluteString {
-                    pin.videoThumbnailURL = imageURL
-                    self.uploadingVideoThumbnail = false
-                    self.savePinToFirebase(pin: pin, user: user, travel: travel)
-                }
+                //TODO:
+//                if let imageURL = metadata?.downloadURL()?.absoluteString {
+//                    pin.videoThumbnailURL = imageURL
+//                    self.uploadingVideoThumbnail = false
+//                    self.savePinToFirebase(pin: pin, user: user, travel: travel)
+//                }
             })
         }
     }
